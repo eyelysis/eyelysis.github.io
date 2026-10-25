@@ -1,0 +1,2610 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EYELYSIS | Insight, Made Visible — Graphic Design × Data Analytics</title>
+  <link id="dynamic-favicon" rel="icon" type="image/png" href="images/favicon.png" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#191C22',
+            graphite: '#383D46',
+            eyegold: '#D4AA65',
+            champagne: '#F1D396',
+            porcelain: '#F6F2E9'
+          },
+          fontFamily: {
+            sans: ['Inter', 'Cairo', 'sans-serif'],
+            serif: ['"Noto Serif Display"', 'Cairo', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Noto Serif Display (Editorial), Inter (Data/UI), Cairo (Arabic) -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Noto+Serif+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --obsidian: #191C22;
+      --graphite: #383D46;
+      --gold: #D4AA65;
+      --champagne: #F1D396;
+      --porcelain: #F6F2E9;
+      --glass-blur: 20px;
+      --mouse-x: 50%;
+      --mouse-y: 30%;
+    }
+
+    body {
+      font-family: 'Inter', 'Cairo', sans-serif;
+      overflow-x: hidden;
+      transition: background-color 0.45s ease, color 0.45s ease;
+    }
+
+    .editorial-heading {
+      font-family: 'Noto Serif Display', 'Cairo', serif;
+    }
+
+    .eyelysis-logotype {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      letter-spacing: 0.28em;
+    }
+
+    /* Porcelain & Champagne Light Mode Glassmorphism */
+    .glass-panel {
+      background: linear-gradient(135deg, rgba(246, 242, 233, 0.92) 0%, rgba(241, 211, 150, 0.24) 100%);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid rgba(212, 170, 101, 0.45);
+      box-shadow: 0 14px 36px -6px rgba(25, 28, 34, 0.08);
+    }
+
+    /* Obsidian & Graphite Dark Mode Glassmorphism */
+    .dark .glass-panel {
+      background: linear-gradient(135deg, rgba(25, 28, 34, 0.88) 0%, rgba(56, 61, 70, 0.68) 100%);
+      border: 1px solid rgba(212, 170, 101, 0.30);
+      box-shadow: 0 18px 44px -6px rgba(0, 0, 0, 0.65);
+    }
+
+    .glass-card-hover {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card-hover:hover {
+      transform: translateY(-6px) scale(1.01);
+      border-color: #D4AA65;
+      box-shadow: 0 22px 48px -12px rgba(212, 170, 101, 0.28);
+    }
+
+    .spotlight-bg {
+      background: radial-gradient(
+        700px circle at var(--mouse-x) var(--mouse-y),
+        rgba(241, 211, 150, 0.22),
+        transparent 70%
+      );
+    }
+    .dark .spotlight-bg {
+      background: radial-gradient(
+        750px circle at var(--mouse-x) var(--mouse-y),
+        rgba(212, 170, 101, 0.14),
+        transparent 70%
+      );
+    }
+
+    @keyframes orbitRotateCW {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes orbitRotateCCW {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+    .orbit-cw {
+      animation: orbitRotateCW 65s linear infinite;
+      transform-origin: center;
+    }
+    .orbit-ccw {
+      animation: orbitRotateCCW 48s linear infinite;
+      transform-origin: center;
+    }
+
+    .wheel-slice {
+      transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+      transform-origin: 210px 210px;
+      cursor: pointer;
+    }
+    .wheel-slice:hover {
+      transform: scale(1.065);
+      filter: drop-shadow(0 0 16px rgba(212, 170, 101, 0.55));
+      z-index: 20;
+    }
+    .wheel-text {
+      pointer-events: none;
+      user-select: none;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #F6F2E9 0%, #F1D396 42%, #D4AA65 80%, #9E732F 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    html:not(.dark) .gold-gradient-text {
+      background: linear-gradient(135deg, #191C22 0%, #383D46 40%, #9A6F27 80%, #D4AA65 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ================= DIRECT ON-PAGE VISUAL EDITING STYLES ================= */
+    body.direct-edit-mode [data-edit-path],
+    body.direct-edit-mode [data-static-edit] {
+      outline: 1.5px dashed rgba(212, 170, 101, 0.85);
+      outline-offset: 4px;
+      border-radius: 6px;
+      cursor: text !important;
+      transition: all 0.2s ease;
+    }
+    body.direct-edit-mode [data-edit-path]:hover,
+    body.direct-edit-mode [data-edit-path]:focus,
+    body.direct-edit-mode [data-static-edit]:hover,
+    body.direct-edit-mode [data-static-edit]:focus {
+      outline: 2px solid #D4AA65;
+      background-color: rgba(212, 170, 101, 0.16);
+      box-shadow: 0 0 16px rgba(212, 170, 101, 0.3);
+    }
+    .direct-edit-only {
+      display: none !important;
+    }
+    body.direct-edit-mode .direct-edit-only {
+      display: flex !important;
+    }
+    .direct-edit-inline {
+      display: none !important;
+    }
+    body.direct-edit-mode .direct-edit-inline {
+      display: inline-flex !important;
+    }
+
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(212, 170, 101, 0.45); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #D4AA65; }
+  </style>
+</head>
+
+<body class="direct-edit-mode bg-[#F6F2E9] text-[#191C22] dark:bg-[#191C22] dark:text-[#F6F2E9] min-h-screen relative selection:bg-[#D4AA65] selection:text-[#191C22]">
+
+  <!-- ================= DIRECT ON-PAGE VISUAL EDITOR TOP BAR (URL LINK BASED) ================= -->
+  <div id="direct-edit-top-bar" class="sticky top-0 z-[60] bg-gradient-to-r from-[#563B80] via-[#6B4C9A] to-[#563B80] text-[#F6F2E9] border-b-2 border-[#D4AA65] px-4 py-2.5 shadow-2xl flex flex-wrap items-center justify-between gap-3 text-xs">
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="px-2.5 py-1 rounded-full bg-[#191C22]/70 border border-[#D4AA65]/60 font-extrabold text-[#F1D396] flex items-center gap-1.5">
+        <i class="fa-solid fa-wand-magic-sparkles text-[#D4AA65]"></i>
+        <span>EYELYSIS Direct Editor</span>
+      </span>
+      <button id="btn-toggle-direct-edit" onclick="toggleDirectEditMode()" class="px-3.5 py-1.5 rounded-xl bg-[#D4AA65] text-[#191C22] font-extrabold shadow hover:scale-105 transition flex items-center gap-1.5">
+        <i class="fa-solid fa-pen-to-square"></i>
+        <span id="lbl-toggle-direct-edit">✏️ التعديل المباشر: مفعل (اضغطي على أي نص لتعديله)</span>
+      </button>
+      <button onclick="promptImageLink('branding.logoImageUrl', 'رابط صورة الشعار (مثال: images/logo.webp أو https://...)')" class="px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 border border-[#F1D396]/40 font-bold transition flex items-center gap-1.5">
+        <i class="fa-solid fa-link text-[#F1D396]"></i>
+        <span>🔗 رابط الشعار (Logo Link)</span>
+      </button>
+      <button onclick="promptImageLink('hero.heroBgImage', 'رابط خلفية الواجهة (مثال: images/hero-bg.webp أو https://...)')" class="px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 border border-[#F1D396]/40 font-bold transition flex items-center gap-1.5">
+        <i class="fa-solid fa-link text-[#F1D396]"></i>
+        <span>🔗 رابط خلفية الواجهة</span>
+      </button>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      <button onclick="addNewCustomSection()" class="px-3 py-1.5 rounded-xl bg-white/15 hover:bg-[#D4AA65] hover:text-[#191C22] border border-[#F1D396]/40 font-bold transition">
+        + إضافة قسم جديد
+      </button>
+      <button onclick="toggleStudioPanel()" class="px-3 py-1.5 rounded-xl bg-[#191C22]/80 hover:bg-[#191C22] text-[#F1D396] border border-[#D4AA65]/60 font-bold transition">
+        <i class="fa-solid fa-sliders mr-1"></i> لوحة الاستوديو
+      </button>
+      <button onclick="exportCleanVisitorHTML()" class="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold shadow-lg transition flex items-center gap-1.5">
+        <i class="fa-solid fa-cloud-arrow-down"></i>
+        <span>💾 حفظ وتنزيل index.html النهائي (نظيف لـ GitHub)</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= AMBIENT CALIBRATION GRID & MOUSE SPOTLIGHT ================= -->
+  <div id="bg-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-40 -left-40 w-[520px] h-[520px] rounded-full bg-[#F1D396]/35 dark:bg-[#D4AA65]/10 blur-[130px]"></div>
+    <div class="absolute top-1/3 -right-40 w-[480px] h-[480px] rounded-full bg-[#D4AA65]/25 dark:bg-[#383D46]/40 blur-[140px]"></div>
+    <div id="bg-image-layer" class="absolute inset-0 bg-cover bg-center opacity-15 dark:opacity-15 transition-opacity duration-700"></div>
+    <div class="spotlight-bg absolute inset-0"></div>
+    <svg class="absolute inset-0 w-full h-full opacity-[0.11] dark:opacity-[0.07]" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="eyelysis-grid" width="64" height="64" patternUnits="userSpaceOnUse">
+          <path d="M 64 0 L 0 0 0 64" fill="none" stroke="#D4AA65" stroke-width="0.75" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#eyelysis-grid)" />
+    </svg>
+  </div>
+
+  <!-- ================= TOP NAVBAR ================= -->
+  <header class="sticky top-0 z-40 px-4 sm:px-8 pt-4">
+    <nav class="max-w-7xl mx-auto glass-panel rounded-2xl px-5 py-3.5 flex items-center justify-between transition-all">
+      <a href="#top" onclick="if(!isDirectEditMode) navigateToSection('top')" class="flex items-center gap-3.5 group">
+        <div class="w-12 h-11 rounded-xl bg-[#191C22] border border-[#D4AA65]/50 flex items-center justify-center shadow-lg group-hover:scale-105 transition p-1 overflow-hidden relative">
+          <img id="navbar-logo-img" src="images/logo.webp" alt="Eyelysis Logo" class="w-full h-full object-contain hidden" />
+          <svg id="navbar-logo-svg" viewBox="0 0 120 80" class="w-full h-full">
+            <defs>
+              <linearGradient id="navGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#F6F2E9"/>
+                <stop offset="40%" stop-color="#F1D396"/>
+                <stop offset="75%" stop-color="#D4AA65"/>
+                <stop offset="100%" stop-color="#8C6220"/>
+              </linearGradient>
+            </defs>
+            <path d="M 10 42 Q 60 82 110 42" fill="none" stroke="#383D46" stroke-width="6" stroke-linecap="round"/>
+            <path d="M 14 44 Q 60 80 106 44" fill="none" stroke="#F1D396" stroke-width="2" stroke-dasharray="1.5 3.5"/>
+            <path d="M 8 42 Q 58 2 112 42 Q 82 18 46 28 Z" fill="url(#navGoldGrad)"/>
+            <circle cx="60" cy="41" r="15" fill="none" stroke="url(#navGoldGrad)" stroke-width="5"/>
+            <circle cx="60" cy="41" r="9" fill="none" stroke="#F6F2E9" stroke-width="1.5" stroke-dasharray="2 3"/>
+          </svg>
+        </div>
+        <div>
+          <span id="nav-logo-text" class="eyelysis-logotype block text-lg sm:text-xl font-semibold text-[#191C22] dark:text-[#F6F2E9]">
+            EYELYSIS
+          </span>
+          <span id="nav-logo-sub" class="block text-[10px] uppercase tracking-[0.18em] text-[#383D46] dark:text-[#F1D396]/80 font-semibold">
+            Graphic Design × Data Analytics
+          </span>
+        </div>
+      </a>
+
+      <div id="nav-menu-desktop" class="hidden lg:flex items-center gap-6 text-xs sm:text-sm font-semibold"></div>
+
+      <div class="flex items-center gap-2">
+        <button id="nav-export-btn" onclick="exportUpdatedHTML()" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-[#D4AA65] to-[#F1D396] text-[#191C22] font-extrabold text-xs shadow-md hover:scale-105 transition" title="Download Complete Website Code (index.html)">
+          <i class="fa-solid fa-code"></i>
+          <span id="nav-download-label">Download HTML</span>
+        </button>
+
+        <div class="glass-panel rounded-xl p-1 flex items-center gap-1 border border-[#D4AA65]/40">
+          <button onclick="setLanguage('en')" id="lang-btn-en" title="English (UK)" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition">
+            <svg class="w-5 h-3.5 rounded-sm shadow-sm" viewBox="0 0 60 30">
+              <clipPath id="uk-clip"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
+              <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
+              <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6" clip-path="url(#uk-clip)"/>
+              <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4" clip-path="url(#uk-clip)"/>
+              <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+              <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/>
+            </svg>
+            <span>EN</span>
+          </button>
+          <button onclick="setLanguage('ar')" id="lang-btn-ar" title="العربية (الأردن)" class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition">
+            <svg class="w-5 h-3.5 rounded-sm shadow-sm" viewBox="0 0 60 30">
+              <rect width="60" height="10" fill="#000"/>
+              <rect y="10" width="60" height="10" fill="#fff"/>
+              <rect y="20" width="60" height="10" fill="#007A3D"/>
+              <polygon points="0,0 26,15 0,30" fill="#CE1126"/>
+              <polygon points="8.5,12.2 9.2,14.1 11.2,13.6 9.9,15.2 11.2,16.8 9.2,16.3 8.5,18.2 7.8,16.3 5.8,16.8 7.1,15.2 5.8,13.6 7.8,14.1" fill="#fff"/>
+            </svg>
+            <span>AR</span>
+          </button>
+        </div>
+
+        <button onclick="toggleTheme()" id="theme-toggle-btn" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-[#191C22] dark:text-[#F1D396] hover:scale-105 transition" title="Switch Theme">
+          <i id="theme-icon" class="fa-solid fa-sun text-lg"></i>
+        </button>
+
+        <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 rounded-xl glass-panel flex items-center justify-center">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </nav>
+
+    <div id="nav-menu-mobile" class="hidden lg:hidden max-w-7xl mx-auto mt-2 glass-panel rounded-2xl p-4 space-y-2"></div>
+  </header>
+
+  <!-- ================= FLOATING QUICK-NAV & SMART BACK BUTTON ================= -->
+  <div id="floating-quick-nav" class="fixed right-4 top-1/2 -translate-y-1/2 z-30 hidden sm:flex flex-col gap-2 glass-panel p-2 rounded-2xl"></div>
+
+  <button id="smart-back-btn" onclick="goBackSection()" class="fixed bottom-5 right-5 z-30 hidden items-center gap-2 px-4 py-2.5 rounded-full glass-panel text-xs font-bold shadow-2xl border border-[#D4AA65]/60 hover:bg-[#D4AA65] hover:text-[#191C22] transition">
+    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+    <span id="smart-back-label">Back to Services</span>
+  </button>
+
+  <!-- ================= MAIN CONTENT CONTAINER ================= -->
+  <main id="top" class="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 pt-8 pb-20 space-y-28">
+
+    <!-- 1. EYELYSIS INTERACTIVE 3D-PARALLAX HERO SECTION -->
+    <section id="hero-section" class="relative rounded-3xl overflow-hidden glass-panel p-8 sm:p-14 transition-all">
+      <div id="hero-bg-image" class="absolute inset-0 bg-cover bg-center opacity-15 dark:opacity-20 pointer-events-none transition-all duration-700"></div>
+
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <div class="lg:col-span-7 space-y-6 text-center lg:text-start">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-[0.2em] bg-[#F1D396]/40 dark:bg-[#D4AA65]/15 text-[#191C22] dark:text-[#F1D396] border border-[#D4AA65]/60">
+            <span class="w-2 h-2 rounded-full bg-[#D4AA65] animate-ping"></span>
+            <span id="hero-badge"></span>
+          </div>
+
+          <h1 id="hero-title" class="editorial-heading text-4xl sm:text-6xl font-bold tracking-tight leading-[1.12] gold-gradient-text"></h1>
+
+          <p id="hero-subtitle" class="text-base sm:text-lg text-[#383D46] dark:text-[#F6F2E9]/85 leading-relaxed max-w-2xl mx-auto lg:mx-0"></p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-[#D4AA65]/35 text-start">
+            <div class="p-3 rounded-2xl bg-[#F6F2E9]/60 dark:bg-[#191C22]/50 border border-[#D4AA65]/25">
+              <span data-static-edit="true" class="text-[10px] font-extrabold tracking-widest text-[#9A6F27] dark:text-[#D4AA65]">01 / PERCEPTION</span>
+              <p class="text-xs font-bold mt-1 text-[#191C22] dark:text-[#F6F2E9]" id="pillar-1">Recognize what matters.</p>
+            </div>
+            <div class="p-3 rounded-2xl bg-[#F6F2E9]/60 dark:bg-[#191C22]/50 border border-[#D4AA65]/25">
+              <span data-static-edit="true" class="text-[10px] font-extrabold tracking-widest text-[#9A6F27] dark:text-[#D4AA65]">02 / PRECISION</span>
+              <p class="text-xs font-bold mt-1 text-[#191C22] dark:text-[#F6F2E9]" id="pillar-2">Measure with intent.</p>
+            </div>
+            <div class="p-3 rounded-2xl bg-[#F6F2E9]/60 dark:bg-[#191C22]/50 border border-[#D4AA65]/25">
+              <span data-static-edit="true" class="text-[10px] font-extrabold tracking-widest text-[#9A6F27] dark:text-[#D4AA65]">03 / SYNTHESIS</span>
+              <p class="text-xs font-bold mt-1 text-[#191C22] dark:text-[#F6F2E9]" id="pillar-3">Translate insight into form.</p>
+            </div>
+          </div>
+
+          <div class="pt-3 flex flex-wrap items-center justify-center lg:justify-start gap-3.5">
+            <a id="hero-cta-primary" href="#wheels-section" onclick="if(!isDirectEditMode) navigateToSection('wheels-section')" class="px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#D4AA65] via-[#F1D396] to-[#D4AA65] text-[#191C22] font-extrabold text-sm shadow-xl shadow-[#D4AA65]/25 hover:scale-[1.02] transition"></a>
+            <a id="hero-cta-secondary" href="#projects-section" onclick="if(!isDirectEditMode) navigateToSection('projects-section')" class="px-6 py-3.5 rounded-xl glass-panel font-bold text-sm hover:border-[#D4AA65] transition"></a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 flex flex-col items-center justify-center">
+          <div id="hero-eye-card" class="relative w-full max-w-[390px] aspect-square flex items-center justify-center transition-transform duration-200 ease-out">
+            <svg viewBox="0 0 400 400" class="absolute inset-0 w-full h-full pointer-events-none">
+              <g class="orbit-cw">
+                <circle cx="200" cy="200" r="184" fill="none" stroke="#D4AA65" stroke-opacity="0.35" stroke-width="1.2" stroke-dasharray="5 9" />
+                <circle cx="200" cy="200" r="170" fill="none" stroke="#D4AA65" stroke-opacity="0.5" stroke-width="3.5" stroke-dasharray="1.5 14" />
+              </g>
+              <g class="orbit-ccw">
+                <circle cx="200" cy="200" r="152" fill="none" stroke="#383D46" stroke-opacity="0.35" stroke-width="1.5" stroke-dasharray="18 10 2 10" />
+              </g>
+            </svg>
+
+            <img id="hero-logo-img" src="images/logo.webp" alt="EYELYSIS Master Symbol" class="relative z-10 w-[82%] h-[82%] object-contain drop-shadow-[0_22px_35px_rgba(25,28,34,0.45)] hidden" />
+
+            <svg id="hero-logo-svg" viewBox="0 0 400 400" class="relative z-10 w-full h-full drop-shadow-[0_20px_35px_rgba(212,170,101,0.32)]">
+              <defs>
+                <linearGradient id="masterGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#F6F2E9"/>
+                  <stop offset="30%" stop-color="#F1D396"/>
+                  <stop offset="68%" stop-color="#D4AA65"/>
+                  <stop offset="100%" stop-color="#7A5419"/>
+                </linearGradient>
+                <linearGradient id="masterGoldDark" x1="100%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#F1D396"/>
+                  <stop offset="50%" stop-color="#D4AA65"/>
+                  <stop offset="100%" stop-color="#593B0E"/>
+                </linearGradient>
+                <linearGradient id="graphiteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#525967"/>
+                  <stop offset="50%" stop-color="#383D46"/>
+                  <stop offset="100%" stop-color="#191C22"/>
+                </linearGradient>
+              </defs>
+
+              <path d="M 32 205 Q 200 355 368 205" fill="none" stroke="url(#graphiteGrad)" stroke-width="26" stroke-linecap="round" />
+              <path d="M 38 206 Q 200 350 362 206" fill="none" stroke="#F6F2E9" stroke-opacity="0.75" stroke-width="9" stroke-dasharray="1.5 6" />
+              <path d="M 65 215 Q 200 320 335 215" fill="none" stroke="url(#graphiteGrad)" stroke-width="14" stroke-linecap="round" />
+              <path d="M 70 216 Q 200 316 330 216" fill="none" stroke="#F1D396" stroke-opacity="0.75" stroke-width="5" stroke-dasharray="1 5" />
+
+              <path d="M 24 205 Q 190 45 376 205 Q 275 100 130 140 Z" fill="url(#masterGold)" />
+              <path d="M 85 165 Q 215 78 368 205 Q 255 125 145 170 Z" fill="url(#masterGoldDark)" opacity="0.92" />
+
+              <circle cx="200" cy="202" r="56" fill="none" stroke="url(#graphiteGrad)" stroke-width="16" />
+              <circle cx="200" cy="202" r="56" fill="none" stroke="#F6F2E9" stroke-opacity="0.75" stroke-width="5" stroke-dasharray="1.5 5" />
+              <path d="M 148 180 A 58 58 0 1 1 165 248" fill="none" stroke="url(#masterGold)" stroke-width="18" stroke-linecap="round" />
+              <circle cx="200" cy="202" r="18" fill="#D4AA65" fill-opacity="0.22" stroke="#F1D396" stroke-width="1.5" />
+            </svg>
+          </div>
+          <span data-static-edit="true" class="text-[11px] uppercase tracking-[0.25em] text-[#9A6F27] dark:text-[#D4AA65] font-bold mt-1">THE APPROVED METALLIC SYMBOL</span>
+        </div>
+      </div>
+    </section>
+
+    <div id="custom-slot-after-hero" class="space-y-24 empty:hidden"></div>
+
+    <!-- 2. CHROME-STYLE INTERACTIVE DUAL WHEELS + FLASH GALLERY -->
+    <section id="wheels-section" class="space-y-10 scroll-mt-28">
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <span data-static-edit="true" class="text-xs font-extrabold uppercase tracking-[0.25em] text-[#9A6F27] dark:text-[#D4AA65]">01 / INTERACTIVE DISCIPLINES</span>
+        <h2 id="wheels-heading" class="editorial-heading text-3xl sm:text-5xl font-bold"></h2>
+        <p id="wheels-subheading" class="text-sm sm:text-base text-[#383D46] dark:text-[#F6F2E9]/75"></p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start justify-items-center">
+        <!-- Data Analysis Wheel Card -->
+        <div class="w-full glass-panel rounded-3xl p-6 sm:p-8 flex flex-col items-center relative border-t-4 border-t-[#383D46] dark:border-t-[#D4AA65]">
+          <div class="w-full flex items-center justify-between text-xs font-extrabold text-[#383D46] dark:text-[#D4AA65] mb-2 px-2">
+            <span data-static-edit="true">ANALYTICAL THINKING</span>
+            <span data-static-edit="true">01 / DATA INTELLIGENCE</span>
+          </div>
+          <div id="wheel-data-container" class="w-full max-w-[390px] aspect-square flex items-center justify-center"></div>
+          <p class="text-xs text-[#383D46] dark:text-[#F1D396]/80 mt-3 flex items-center gap-1.5 font-semibold">
+            <i class="fa-solid fa-bolt text-[#D4AA65]"></i>
+            <span class="wheel-hint-text">Hover or tap any segment to trigger Flash Gallery</span>
+          </p>
+          <!-- Direct On-Page Wheel Editor (Link-based) -->
+          <div id="onpage-wheel-data-editor" class="direct-edit-only w-full mt-4 pt-3 border-t border-[#D4AA65]/40 flex-col gap-2 text-xs"></div>
+        </div>
+
+        <!-- Graphic Design Wheel Card -->
+        <div class="w-full glass-panel rounded-3xl p-6 sm:p-8 flex flex-col items-center relative border-t-4 border-t-[#D4AA65] dark:border-t-[#F1D396]">
+          <div class="w-full flex items-center justify-between text-xs font-extrabold text-[#9A6F27] dark:text-[#F1D396] mb-2 px-2">
+            <span data-static-edit="true">DESIGN THINKING</span>
+            <span data-static-edit="true">02 / VISUAL EXPRESSION</span>
+          </div>
+          <div id="wheel-design-container" class="w-full max-w-[390px] aspect-square flex items-center justify-center"></div>
+          <p class="text-xs text-[#383D46] dark:text-[#F1D396]/80 mt-3 flex items-center gap-1.5 font-semibold">
+            <i class="fa-solid fa-bolt text-[#D4AA65]"></i>
+            <span class="wheel-hint-text">Hover or tap any segment to trigger Flash Gallery</span>
+          </p>
+          <!-- Direct On-Page Wheel Editor (Link-based) -->
+          <div id="onpage-wheel-design-editor" class="direct-edit-only w-full mt-4 pt-3 border-t border-[#D4AA65]/40 flex-col gap-2 text-xs"></div>
+        </div>
+      </div>
+    </section>
+
+    <div id="custom-slot-after-wheels" class="space-y-24 empty:hidden"></div>
+
+    <!-- 3. SPLIT PROJECTS ACCORDION SECTION (BEHANCE SHOWCASE) -->
+    <section id="projects-section" class="space-y-10 scroll-mt-28">
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <span data-static-edit="true" class="text-xs font-extrabold uppercase tracking-[0.25em] text-[#9A6F27] dark:text-[#D4AA65]">02 / CURATED CASE STUDIES</span>
+        <h2 id="projects-heading" class="editorial-heading text-3xl sm:text-5xl font-bold"></h2>
+        <p id="projects-subheading" class="text-sm sm:text-base text-[#383D46] dark:text-[#F6F2E9]/75"></p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Left Half: Data Analysis Categories -->
+        <div class="glass-panel rounded-3xl p-6 sm:p-8 space-y-5 border-t-4 border-t-[#383D46]">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-[#383D46] text-[#F1D396] flex items-center justify-center text-lg border border-[#D4AA65]/40">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+              <h3 id="proj-col-data-title" class="text-xl font-extrabold"></h3>
+            </div>
+            <span data-static-edit="true" class="text-xs px-3 py-1 rounded-full bg-[#D4AA65]/20 text-[#191C22] dark:text-[#F1D396] font-bold border border-[#D4AA65]/40">Behance Stream</span>
+          </div>
+          <div id="projects-data-list" class="space-y-3.5"></div>
+          <button onclick="addProjectCategory('data')" class="direct-edit-only w-full py-2.5 rounded-xl bg-[#D4AA65]/20 hover:bg-[#D4AA65] hover:text-[#191C22] border border-dashed border-[#D4AA65] font-extrabold text-xs items-center justify-center gap-2 transition">
+            <i class="fa-solid fa-plus"></i> إضافة تصنيف مشاريع بيانات جديد (Add Data Category)
+          </button>
+        </div>
+
+        <!-- Right Half: Graphic Design Categories -->
+        <div class="glass-panel rounded-3xl p-6 sm:p-8 space-y-5 border-t-4 border-t-[#D4AA65]">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-[#D4AA65] text-[#191C22] flex items-center justify-center text-lg border border-[#F1D396]">
+                <i class="fa-solid fa-pen-ruler"></i>
+              </div>
+              <h3 id="proj-col-design-title" class="text-xl font-extrabold"></h3>
+            </div>
+            <span data-static-edit="true" class="text-xs px-3 py-1 rounded-full bg-[#D4AA65]/20 text-[#191C22] dark:text-[#F1D396] font-bold border border-[#D4AA65]/40">Behance Stream</span>
+          </div>
+          <div id="projects-design-list" class="space-y-3.5"></div>
+          <button onclick="addProjectCategory('design')" class="direct-edit-only w-full py-2.5 rounded-xl bg-[#D4AA65]/20 hover:bg-[#D4AA65] hover:text-[#191C22] border border-dashed border-[#D4AA65] font-extrabold text-xs items-center justify-center gap-2 transition">
+            <i class="fa-solid fa-plus"></i> إضافة تصنيف مشاريع تصميم جديد (Add Design Category)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div id="custom-slot-after-projects" class="space-y-24 empty:hidden"></div>
+
+    <!-- 4. SPLIT INTERACTIVE SERVICE BRIEF FORMS SECTION -->
+    <section id="forms-section" class="space-y-10 scroll-mt-28">
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <span data-static-edit="true" class="text-xs font-extrabold uppercase tracking-[0.25em] text-[#9A6F27] dark:text-[#D4AA65]">03 / PROJECT DIAGNOSTIC & BRIEFS</span>
+        <h2 id="forms-heading" class="editorial-heading text-3xl sm:text-5xl font-bold"></h2>
+        <p id="forms-subheading" class="text-sm sm:text-base text-[#383D46] dark:text-[#F6F2E9]/75"></p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Data Analysis Service Briefs -->
+        <div class="glass-panel rounded-3xl p-6 sm:p-8 space-y-4">
+          <h3 id="forms-col-data-title" class="text-lg font-extrabold text-[#383D46] dark:text-[#F1D396] flex items-center gap-2">
+            <i class="fa-solid fa-database text-[#D4AA65]"></i> <span></span>
+          </h3>
+          <div id="forms-data-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5"></div>
+          <button onclick="addServiceFormBrief('data')" class="direct-edit-only w-full py-2.5 rounded-xl bg-[#D4AA65]/20 hover:bg-[#D4AA65] hover:text-[#191C22] border border-dashed border-[#D4AA65] font-extrabold text-xs items-center justify-center gap-2 transition mt-2">
+            <i class="fa-solid fa-plus"></i> إضافة نموذج طلب بيانات (Add Data Brief)
+          </button>
+        </div>
+
+        <!-- Graphic Design Service Briefs -->
+        <div class="glass-panel rounded-3xl p-6 sm:p-8 space-y-4">
+          <h3 id="forms-col-design-title" class="text-lg font-extrabold text-[#9A6F27] dark:text-[#D4AA65] flex items-center gap-2">
+            <i class="fa-solid fa-compass-drafting text-[#D4AA65]"></i> <span></span>
+          </h3>
+          <div id="forms-design-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5"></div>
+          <button onclick="addServiceFormBrief('design')" class="direct-edit-only w-full py-2.5 rounded-xl bg-[#D4AA65]/20 hover:bg-[#D4AA65] hover:text-[#191C22] border border-dashed border-[#D4AA65] font-extrabold text-xs items-center justify-center gap-2 transition mt-2">
+            <i class="fa-solid fa-plus"></i> إضافة نموذج طلب تصميم (Add Design Brief)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div id="custom-slot-before-footer" class="space-y-24 empty:hidden"></div>
+
+  </main>
+
+  <!-- ================= FOOTER & DIRECT CONTACT ================= -->
+  <footer id="footer-section" class="relative z-10 border-t border-[#D4AA65]/35 glass-panel mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-4 text-center md:text-start">
+        <div class="w-12 h-12 rounded-xl bg-[#191C22] border border-[#D4AA65]/50 p-1.5 hidden sm:flex items-center justify-center">
+          <img id="footer-logo-img" src="images/logo.webp" alt="Eyelysis" class="w-full h-full object-contain hidden" />
+          <i id="footer-logo-icon" class="fa-solid fa-eye text-[#D4AA65] text-xl"></i>
+        </div>
+        <div class="space-y-1">
+          <h4 id="footer-title" class="editorial-heading text-xl sm:text-2xl font-bold gold-gradient-text"></h4>
+          <p id="footer-subtitle" class="text-xs sm:text-sm text-[#383D46] dark:text-[#F6F2E9]/70"></p>
+        </div>
+      </div>
+
+      <div id="footer-social-links" class="flex flex-wrap items-center justify-center gap-3"></div>
+    </div>
+    <div class="text-center py-4 text-xs text-[#383D46] dark:text-[#F6F2E9]/60 border-t border-[#D4AA65]/20 select-none">
+      <span id="footer-copyright" onclick="handleSecretCopyrightClick()" class="cursor-pointer" title="Eyelysis Studio"></span>
+    </div>
+  </footer>
+
+  <!-- ================= FLOATING FLASH GALLERY POPUP ================= -->
+  <div id="flash-gallery-popup" class="fixed z-50 hidden pointer-events-none sm:pointer-events-none w-72 sm:w-80 glass-panel rounded-2xl overflow-hidden shadow-2xl border-2 border-[#D4AA65] transition-opacity duration-200">
+    <div class="relative aspect-video bg-[#191C22] overflow-hidden">
+      <img id="flash-img" src="" alt="Flash Preview" class="w-full h-full object-cover transition-all duration-300" />
+      <div class="absolute inset-0 bg-gradient-to-t from-[#191C22]/90 via-transparent to-[#191C22]/40"></div>
+      <div class="absolute top-2.5 left-3 right-3 flex items-center justify-between text-[11px] font-bold text-[#F6F2E9]">
+        <span id="flash-slice-title" class="px-2.5 py-0.5 rounded-md bg-[#191C22]/80 backdrop-blur-md border border-[#D4AA65]/50"></span>
+        <span id="flash-counter" class="px-2 py-0.5 rounded-md bg-[#D4AA65] text-[#191C22] font-extrabold">1 / 2</span>
+      </div>
+      <div class="absolute bottom-2 left-3 text-[10px] text-[#F1D396] font-mono truncate max-w-[200px]" id="flash-file-path"></div>
+      <button onclick="hideFlashGallery()" class="sm:hidden pointer-events-auto absolute bottom-2 right-2 w-7 h-7 rounded-full bg-[#191C22]/80 text-[#F6F2E9] text-xs flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="w-full bg-[#383D46] h-1.5 overflow-hidden">
+      <div id="flash-progress" class="bg-gradient-to-r from-[#D4AA65] to-[#F1D396] h-full w-0"></div>
+    </div>
+  </div>
+
+  <!-- ================= INTERNAL BEHANCE-STYLE PROJECT VIEWER MODAL ================= -->
+  <div id="behance-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-[#191C22]/90 backdrop-blur-xl">
+    <div class="min-h-screen px-2 sm:px-6 py-8">
+      <div class="max-w-5xl mx-auto sticky top-4 z-20 glass-panel rounded-2xl px-4 sm:px-6 py-3.5 mb-6 flex items-center justify-between shadow-2xl border border-[#D4AA65]/50">
+        <button onclick="closeBehanceModal()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#D4AA65] text-[#191C22] text-xs sm:text-sm font-extrabold hover:opacity-90 transition">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span id="behance-back-text">Back to Portfolio</span>
+        </button>
+        <div class="text-center hidden sm:block">
+          <h4 id="behance-header-title" class="font-extrabold text-base"></h4>
+        </div>
+        <div class="flex items-center gap-2">
+          <a id="behance-external-btn" href="#" target="_blank" class="hidden px-3.5 py-2 rounded-xl glass-panel text-xs font-bold hover:border-[#D4AA65] transition">
+            <i class="fa-solid fa-up-right-from-square mr-1"></i> External Link
+          </a>
+          <button onclick="openFormFromProject()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-[#D4AA65] to-[#F1D396] text-[#191C22] text-xs sm:text-sm font-extrabold">
+            <i class="fa-solid fa-bolt mr-1"></i> <span id="behance-order-btn-text">Request Similar</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="max-w-5xl mx-auto glass-panel rounded-3xl overflow-hidden shadow-2xl">
+        <div class="p-6 sm:p-10 space-y-4 border-b border-[#D4AA65]/25">
+          <div id="behance-tags" class="flex flex-wrap gap-2"></div>
+          <h2 id="behance-title" class="editorial-heading text-2xl sm:text-4xl font-bold"></h2>
+          <p id="behance-desc" class="text-[#383D46] dark:text-[#F6F2E9]/80 leading-relaxed"></p>
+        </div>
+        <div id="behance-images-stream" class="flex flex-col bg-[#191C22]"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= INTERACTIVE SERVICE BRIEF FORM MODAL ================= -->
+  <div id="service-form-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-[#191C22]/85 backdrop-blur-md">
+    <div class="w-full max-w-xl glass-panel rounded-3xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto space-y-6 relative border border-[#D4AA65]/50">
+      <div class="flex items-center justify-between border-b border-[#D4AA65]/25 pb-4">
+        <div>
+          <span class="text-xs font-extrabold uppercase tracking-widest text-[#9A6F27] dark:text-[#D4AA65]" id="form-modal-category">EYELYSIS SERVICE BRIEF</span>
+          <h3 id="form-modal-title" class="editorial-heading text-xl sm:text-2xl font-bold mt-0.5"></h3>
+        </div>
+        <button onclick="closeServiceFormModal()" class="w-9 h-9 rounded-xl glass-panel flex items-center justify-center hover:bg-[#D4AA65] hover:text-[#191C22] transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="dynamic-service-form" onsubmit="submitServiceForm(event)" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold mb-1.5 opacity-85" id="lbl-client-name">Your Name *</label>
+            <input type="text" required id="form-client-name" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F2E9] dark:bg-[#191C22] border border-[#D4AA65]/40 text-sm focus:outline-none focus:border-[#D4AA65]" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold mb-1.5 opacity-85" id="lbl-client-contact">Email or WhatsApp *</label>
+            <input type="text" required id="form-client-contact" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F2E9] dark:bg-[#191C22] border border-[#D4AA65]/40 text-sm focus:outline-none focus:border-[#D4AA65]" />
+          </div>
+        </div>
+
+        <div id="form-questions-container" class="space-y-4 pt-2"></div>
+
+        <div class="pt-4 flex flex-wrap items-center justify-end gap-3 border-t border-[#D4AA65]/25">
+          <button type="button" onclick="submitServiceFormViaWhatsApp()" class="px-4 py-2.5 rounded-xl bg-[#383D46] hover:bg-[#191C22] text-[#F1D396] border border-[#D4AA65]/40 font-bold text-xs sm:text-sm flex items-center gap-2 transition">
+            <i class="fa-brands fa-whatsapp text-base"></i>
+            <span id="btn-send-wa">Send via WhatsApp</span>
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#D4AA65] to-[#F1D396] text-[#191C22] font-extrabold text-xs sm:text-sm flex items-center gap-2 shadow-lg hover:opacity-95 transition">
+            <i class="fa-solid fa-envelope"></i>
+            <span id="btn-send-email">Send to Email</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= LIVE STUDIO CUSTOMIZER & QUICK HTML DOWNLOAD BAR ================= -->
+  <div id="studio-floating-Group" class="fixed bottom-5 left-5 z-50 flex items-center gap-2">
+    <button id="studio-floating-btn" onclick="toggleStudioPanel()" class="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-[#191C22] text-[#F1D396] border border-[#D4AA65] font-extrabold text-xs sm:text-sm shadow-2xl hover:scale-105 transition">
+      <i class="fa-solid fa-sliders text-[#D4AA65]"></i>
+      <span>Eyelysis Studio</span>
+    </button>
+    <button id="floating-export-btn" onclick="exportUpdatedHTML()" class="flex items-center gap-2 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#D4AA65] to-[#F1D396] text-[#191C22] font-extrabold text-xs sm:text-sm shadow-2xl hover:scale-105 transition" title="Download Complete Website Code (index.html)">
+      <i class="fa-solid fa-download"></i>
+      <span>Download HTML</span>
+    </button>
+  </div>
+
+  <div id="studio-panel" class="fixed inset-y-0 left-0 z-50 w-full sm:w-[500px] glass-panel border-r border-[#D4AA65]/50 shadow-2xl transform -translate-x-full transition-transform duration-300 flex flex-col bg-[#F6F2E9]/98 dark:bg-[#191C22]/98">
+    <div class="p-4 border-b border-[#D4AA65]/30 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-eye text-[#D4AA65]"></i>
+        <h3 class="font-extrabold text-sm sm:text-base">EYELYSIS Studio & Link Manager</h3>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="exportUpdatedHTML()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#D4AA65] to-[#F1D396] text-[#191C22] text-xs font-extrabold shadow hover:opacity-90 transition">
+          <i class="fa-solid fa-download mr-1"></i> Download index.html
+        </button>
+        <button onclick="toggleStudioPanel()" class="w-8 h-8 rounded-lg glass-panel flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="flex overflow-x-auto border-b border-[#D4AA65]/25 px-3 pt-2 gap-1 text-xs font-bold">
+      <button onclick="switchStudioTab('general')" id="stab-general" class="px-3 py-2 rounded-t-lg border-b-2 border-[#D4AA65] text-[#9A6F27] dark:text-[#F1D396] whitespace-nowrap">👁️ Logo & Brand</button>
+      <button onclick="switchStudioTab('files')" id="stab-files" class="px-3 py-2 rounded-t-lg border-b-2 border-transparent opacity-70 whitespace-nowrap">📂 Image Links Map</button>
+      <button onclick="switchStudioTab('custom')" id="stab-custom" class="px-3 py-2 rounded-t-lg border-b-2 border-transparent opacity-70 whitespace-nowrap">✨ + Custom Sections</button>
+      <button onclick="switchStudioTab('navbar')" id="stab-navbar" class="px-3 py-2 rounded-t-lg border-b-2 border-transparent opacity-70 whitespace-nowrap">Navbar</button>
+      <button onclick="switchStudioTab('wheels')" id="stab-wheels" class="px-3 py-2 rounded-t-lg border-b-2 border-transparent opacity-70 whitespace-nowrap">Wheels</button>
+      <button onclick="switchStudioTab('projects')" id="stab-projects" class="px-3 py-2 rounded-t-lg border-b-2 border-transparent opacity-70 whitespace-nowrap">Projects</button>
+      <button onclick="switchStudioTab('forms')" id="stab-forms" class="px-3 py-2 rounded-t-lg border-b-2 border-transparent opacity-70 whitespace-nowrap">Brief Forms</button>
+      <button onclick="switchStudioTab('footer')" id="stab-footer" class="px-3 py-2 rounded-t-lg border-b-2 border-transparent opacity-70 whitespace-nowrap">Contact</button>
+    </div>
+
+    <div id="studio-content" class="flex-1 overflow-y-auto p-4 space-y-5 text-xs"></div>
+
+    <div class="p-3.5 border-t border-[#D4AA65]/30 bg-[#F1D396]/20 dark:bg-[#383D46]/40 flex items-center justify-between">
+      <span class="text-[11px] font-semibold">Ready to save your changes?</span>
+      <button onclick="exportCleanVisitorHTML()" class="px-4 py-2 rounded-xl bg-emerald-600 text-white font-extrabold text-xs shadow-md hover:scale-105 transition">
+        <i class="fa-solid fa-file-code mr-1"></i> Save Clean index.html for GitHub
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= MASTER CONFIGURATION & DATA ================= -->
+  <script id="master-config-script">
+    const IMAGE_FALLBACK_MAP = {
+      'images/hero-bg.webp': 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1400&q=80',
+      'images/data-dashboard-1.webp': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80',
+      'images/data-dashboard-2.webp': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80',
+      'images/data-report-1.webp': 'https://images.unsplash.com/photo-1543286386-713bdd548da4?auto=format&fit=crop&w=900&q=80',
+      'images/data-predict-1.webp': 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=900&q=80',
+      'images/data-cleaning-1.webp': 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80',
+      'images/design-brand-1.webp': 'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=900&q=80',
+      'images/design-brand-2.webp': 'https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&w=900&q=80',
+      'images/design-social-1.webp': 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=900&q=80',
+      'images/design-packaging-1.webp': 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=900&q=80',
+      'images/design-editorial-1.webp': 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=900&q=80',
+      'images/project-sales-kpi-1.webp': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=85',
+      'images/project-sales-kpi-2.webp': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=85',
+      'images/project-supply-1.webp': 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=1200&q=85',
+      'images/project-churn-1.webp': 'https://images.unsplash.com/photo-1543286386-713bdd548da4?auto=format&fit=crop&w=1200&q=85',
+      'images/project-coverbox-1.webp': 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=1200&q=85',
+      'images/project-coverbox-2.webp': 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1200&q=85',
+      'images/project-businesscard-1.webp': 'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&w=1200&q=85',
+      'images/project-brandbook-1.webp': 'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=1200&q=85',
+      'images/project-socialgrid-1.webp': 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=1200&q=85',
+      'images/project-editorial-1.webp': 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1200&q=85'
+    };
+
+    let SITE_CONFIG = {
+      settings: {
+        defaultLang: 'en',
+        defaultTheme: 'dark',
+        primaryColor: '#D4AA65',
+        secondaryColor: '#383D46',
+        bgImageUrl: '',
+        flashIntervalSeconds: 2.5,
+        wheelThickness: 58,
+        wheelSliceGap: 2.5,
+        showHeroSection: true,
+        hideStudioButtonForVisitors: false
+      },
+      branding: {
+        logoImageUrl: 'images/logo.webp',
+        faviconUrl: 'images/favicon.png',
+        logoTextEn: 'EYELYSIS',
+        logoTextAr: 'EYELYSIS | آيلايسز',
+        subTextEn: 'Graphic Design × Data Analytics',
+        subTextAr: 'التصميم الجرافيكي × تحليل البيانات'
+      },
+      navbar: [
+        {
+          id: 'nav1',
+          labelEn: 'Disciplines',
+          labelAr: 'دوائر التخصص',
+          href: '#wheels-section',
+          children: [
+            { labelEn: 'Data Analytics Wheel', labelAr: 'دائرة تحليل البيانات', href: '#wheels-section' },
+            { labelEn: 'Graphic Design Wheel', labelAr: 'دائرة التصميم الجرافيكي', href: '#wheels-section' }
+          ]
+        },
+        {
+          id: 'nav2',
+          labelEn: 'Case Studies',
+          labelAr: 'معرض الأعمال',
+          href: '#projects-section',
+          children: [
+            { labelEn: 'BI Dashboards & Reports', labelAr: 'لوحات البيانات والتقارير', href: '#projects-section' },
+            { labelEn: 'Brand Identity & Print', labelAr: 'الهوية البصرية والمطبوعات', href: '#projects-section' }
+          ]
+        },
+        {
+          id: 'nav3',
+          labelEn: 'Service Briefs',
+          labelAr: 'نماذج طلب الخدمة',
+          href: '#forms-section',
+          children: []
+        },
+        {
+          id: 'nav4',
+          labelEn: 'Methodology',
+          labelAr: 'منهجية العمل',
+          href: '#csec_eyelysis_framework',
+          children: []
+        },
+        {
+          id: 'nav5',
+          labelEn: 'Contact',
+          labelAr: 'تواصل مباشر',
+          href: '#footer-section',
+          children: []
+        }
+      ],
+      hero: {
+        badgeEn: 'EYELYSIS CREATIVE INTELLIGENCE',
+        badgeAr: 'آيلايسز للذكاء الإبداعي والتحليلي',
+        titleEn: 'Insight, made visible.',
+        titleAr: 'الرؤية العميقة، تصبح مرئية.',
+        subtitleEn: 'A distinctive visual & analytical language where graphic design and data intelligence meet. Two disciplines, one calibrated point of view.',
+        subtitleAr: 'لغة بصرية وتحليلية فريدة يلتقي فيها التصميم الجرافيكي مع ذكاء البيانات. تخصصان متكاملان في زاوية رؤية واحدة.',
+        ctaPrimaryEn: 'Explore Service Wheels',
+        ctaPrimaryAr: 'استكشف دوائر الخدمات',
+        ctaSecondaryEn: 'Browse Case Studies',
+        ctaSecondaryAr: 'تصفح دراسات الحالة',
+        pillar1En: 'Recognize what matters.',
+        pillar1Ar: 'إدراك ما يصنع الفارق.',
+        pillar2En: 'Measure with intent.',
+        pillar2Ar: 'القياس بدقة وهدف.',
+        pillar3En: 'Translate insight into form.',
+        pillar3Ar: 'تحويل الرؤية إلى شكل بصري.',
+        heroBgImage: 'images/hero-bg.webp'
+      },
+      wheelsSection: {
+        headingEn: 'Two Disciplines. One Point of View.',
+        headingAr: 'تخصصان متكاملان. رؤية بصرية واحدة.',
+        subheadingEn: 'Styled in Eyelysis Obsidian, Graphite, Gold & Champagne. Hover or tap any segment to trigger the Flash Gallery.',
+        subheadingAr: 'مصممة بدرجات ألوان الهوية الرسمية. مرر المؤشر أو اضغط على أي شريحة لاستعراض معرض الصور السريع.',
+        dataWheel: {
+          centerTitleEn: 'DATA ANALYTICS',
+          centerTitleAr: 'تحليل البيانات',
+          centerColor: '#191C22',
+          slices: [
+            {
+              id: 'dw1',
+              labelEn: 'BI Dashboards',
+              labelAr: 'لوحات التحكم BI',
+              color: '#D4AA65',
+              images: ['images/data-dashboard-1.webp', 'images/data-dashboard-2.webp']
+            },
+            {
+              id: 'dw2',
+              labelEn: 'Smart Reports',
+              labelAr: 'التقارير الإحصائية',
+              color: '#383D46',
+              images: ['images/data-report-1.webp']
+            },
+            {
+              id: 'dw3',
+              labelEn: 'Customer & Predictive',
+              labelAr: 'سلوك العملاء والتنبؤ',
+              color: '#9A6F27',
+              images: ['images/data-predict-1.webp']
+            },
+            {
+              id: 'dw4',
+              labelEn: 'Data Cleaning',
+              labelAr: 'تنظيف وهيكلة البيانات',
+              color: '#252A34',
+              images: ['images/data-cleaning-1.webp']
+            }
+          ]
+        },
+        designWheel: {
+          centerTitleEn: 'GRAPHIC DESIGN',
+          centerTitleAr: 'التصميم الجرافيكي',
+          centerColor: '#191C22',
+          slices: [
+            {
+              id: 'gw1',
+              labelEn: 'Brand Identity',
+              labelAr: 'الهوية البصرية',
+              color: '#D4AA65',
+              images: ['images/design-brand-1.webp', 'images/design-brand-2.webp']
+            },
+            {
+              id: 'gw2',
+              labelEn: 'Social Media & Ads',
+              labelAr: 'السوشيال ميديا والإعلانات',
+              color: '#383D46',
+              images: ['images/design-social-1.webp']
+            },
+            {
+              id: 'gw3',
+              labelEn: 'Packaging & Print',
+              labelAr: 'التغليف والمطبوعات',
+              color: '#B3873E',
+              images: ['images/design-packaging-1.webp']
+            },
+            {
+              id: 'gw4',
+              labelEn: 'Editorial & Decks',
+              labelAr: 'التصميم التحريري والعروض',
+              color: '#252A34',
+              images: ['images/design-editorial-1.webp']
+            }
+          ]
+        }
+      },
+      projectsSection: {
+        headingEn: 'Case Studies & Visual Evidence',
+        headingAr: 'معرض المشاريع ودراسات الحالة',
+        subheadingEn: 'Organized by solo-freelancer specialties. Click any sub-project to open its full Behance-style presentation.',
+        subheadingAr: 'مقسمة حسب التخصصات الاحترافية. اضغط على أي مشروع لفتح صفحة العرض الكاملة بأسلوب Behance.',
+        dataColumnTitleEn: 'Data Analytics Portfolio',
+        dataColumnTitleAr: 'أعمال تحليل البيانات',
+        designColumnTitleEn: 'Graphic Design Portfolio',
+        designColumnTitleAr: 'أعمال التصميم الجرافيكي',
+        dataCategories: [
+          {
+            id: 'pcat_d1',
+            titleEn: '1. Interactive BI Dashboards (Power BI / Tableau)',
+            titleAr: '1. لوحات المعلومات التفاعلية (BI Dashboards)',
+            items: [
+              {
+                id: 'proj_d1_1',
+                titleEn: 'Executive Sales & Revenue KPI Dashboard',
+                titleAr: 'لوحة مؤشرات المبيعات والإيرادات التنفيذية',
+                descriptionEn: 'Automated Power BI executive dashboard tracking revenue, profit margins, and regional performance.',
+                descriptionAr: 'لوحة تحكم تنفيذية لمتابعة الإيرادات، هوامش الربح، ومقارنة الأداء الشهري والسنوي.',
+                tags: ['Power BI', 'DAX', 'KPI Design', 'Data Storytelling'],
+                externalUrl: '',
+                images: ['images/project-sales-kpi-1.webp', 'images/project-sales-kpi-2.webp']
+              },
+              {
+                id: 'proj_d1_2',
+                titleEn: 'Marketing ROI & Supply Chain Tracker',
+                titleAr: 'لوحة متابعة الحملات التسويقية وسلاسل الإمداد',
+                descriptionEn: 'Unified dashboard measuring ad spend conversion and warehouse inventory turnover.',
+                descriptionAr: 'لوحة موحدة لقياس العائد على الاستثمار الإعلاني وحركة المخزون.',
+                tags: ['Tableau', 'ROI Analytics', 'Inventory'],
+                externalUrl: '',
+                images: ['images/project-supply-1.webp']
+              }
+            ]
+          },
+          {
+            id: 'pcat_d2',
+            titleEn: '2. Data Cleaning & Statistical Behavioral Reports',
+            titleAr: '2. تنظيف البيانات والتقارير الإحصائية وسلوك العملاء',
+            items: [
+              {
+                id: 'proj_d2_1',
+                titleEn: 'Customer Churn & Market Basket Analysis',
+                titleAr: 'تقرير تسرب العملاء وتحليل السلال الشرائية',
+                descriptionEn: 'Deep-dive statistical study identifying retention drivers and cross-selling opportunities.',
+                descriptionAr: 'دراسة إحصائية لسلوك المستهلك وأسباب تسرب العملاء مع توصيات عملية لزيادة المبيعات.',
+                tags: ['Python', 'Pandas', 'Excel Advanced', 'Cohort Analysis'],
+                externalUrl: '',
+                images: ['images/project-churn-1.webp']
+              }
+            ]
+          }
+        ],
+        designCategories: [
+          {
+            id: 'pcat_g1',
+            titleEn: '1. Brand Identity, Stationery & Luxury Packaging',
+            titleAr: '1. الهوية البصرية والمطبوعات والتغليف',
+            items: [
+              {
+                id: 'proj_g1_1',
+                titleEn: 'Cover Box & Luxury Packaging System',
+                titleAr: 'تصميم العلب والتغليف الفاخر (Cover Box)',
+                descriptionEn: 'Tactile luxury packaging with metallic gold foil stamping and structural precision.',
+                descriptionAr: 'تصميم علب وتغليف منتجات فاخرة بلمسات ذهبية تعكس فخامة العلامة التجارية.',
+                tags: ['Packaging', 'Cover Box', '3D Mockup', 'Print Ready'],
+                externalUrl: '',
+                images: ['images/project-coverbox-1.webp', 'images/project-coverbox-2.webp']
+              },
+              {
+                id: 'proj_g1_2',
+                titleEn: 'Corporate Stationery & Business Cards',
+                titleAr: 'بطاقات العمل والمطبوعات الرسمية (Business Cards)',
+                descriptionEn: 'Obsidian and gold-stamped business cards, letterheads, and executive stationery kit.',
+                descriptionAr: 'تشكيلة مطبوعات رسمية تشمل بطاقات العمل، الأوراق الرسمية، والمغلفات.',
+                tags: ['Business Card', 'Stationery', 'Typography'],
+                externalUrl: '',
+                images: ['images/project-businesscard-1.webp']
+              },
+              {
+                id: 'proj_g1_3',
+                titleEn: 'Full Brand Identity & Guidelines Book',
+                titleAr: 'دليل الهوية البصرية الكامل (Full Brand Identity)',
+                descriptionEn: 'Complete brand architecture: logo construction grid, obsidian/gold palette, and visual system.',
+                descriptionAr: 'بناء الهوية البصرية الكاملة من الشعار وشبكة البناء الهندسية إلى دليل الاستخدام.',
+                tags: ['Brand Identity', 'Logo System', 'Art Direction'],
+                externalUrl: '',
+                images: ['images/project-brandbook-1.webp']
+              }
+            ]
+          },
+          {
+            id: 'pcat_g2',
+            titleEn: '2. Social Media Creatives & Editorial Pitch Decks',
+            titleAr: '2. السوشيال ميديا والتصميم التحريري والعروض',
+            items: [
+              {
+                id: 'proj_g2_1',
+                titleEn: 'Educational Carousel & Social Campaign Architecture',
+                titleAr: 'تصاميم الكاروسيل التعليمي وحملات السوشيال ميديا',
+                descriptionEn: 'Five-frame connected editorial carousels turning complex data lessons into visual stories.',
+                descriptionAr: 'تصاميم كاروسيل متسلسلة تحول الأفكار والبيانات المعقدة إلى قصص بصرية جذابة.',
+                tags: ['Social Media', 'Carousel Design', 'Visual Storytelling'],
+                externalUrl: '',
+                images: ['images/project-socialgrid-1.webp']
+              },
+              {
+                id: 'proj_g2_2',
+                titleEn: 'Executive Pitch Decks & Annual Reports',
+                titleAr: 'العروض التقديمية الاحترافية والكتيبات التحريرية',
+                descriptionEn: 'High-impact investor presentations, e-books, and annual data reports.',
+                descriptionAr: 'تصميم عروض تقديمية للشركات الناشئة وكتيبات وتقارير سنوية بطابع تحريري راقٍ.',
+                tags: ['Pitch Deck', 'Editorial Design', 'InDesign'],
+                externalUrl: '',
+                images: ['images/project-editorial-1.webp']
+              }
+            ]
+          }
+        ]
+      },
+      formsSection: {
+        headingEn: 'Start With a Better Question.',
+        headingAr: 'ابدأ مشروعك بسؤال أدق.',
+        subheadingEn: 'Select a specialized service brief below. Your answers determine how we measure, compare, and design.',
+        subheadingAr: 'اختر النموذج المخصص لخدمتك؛ إجاباتك تساعدنا على تحويل الفكرة أو البيانات إلى نتيجة بصرية دقيقة.',
+        dataColTitleEn: 'Data Analytics Service Briefs',
+        dataColTitleAr: 'نماذج خدمات تحليل البيانات',
+        designColTitleEn: 'Graphic Design Service Briefs',
+        designColTitleAr: 'نماذج خدمات التصميم الجرافيكي',
+        dataForms: [
+          {
+            id: 'form_d1',
+            titleEn: 'BI Dashboard & KPI System',
+            titleAr: 'طلب تصميم لوحة تحكم (BI Dashboard)',
+            descEn: 'Power BI, Tableau, or Excel interactive dashboards.',
+            descAr: 'تحويل بيانات المبيعات أو التسويق إلى لوحة تفاعلية ذكية.',
+            questions: [
+              { qEn: 'What decision should this dashboard help you make?', qAr: 'ما هو القرار الأساسي الذي تريد أن تساعدك هذه اللوحة في اتخاذه؟' },
+              { qEn: 'What data sources do you have (Excel, SQL, CSV, Ads)?', qAr: 'ما هي مصادر البيانات المتوفرة لديك حالياً (Excel, SQL, إعلانات)؟' },
+              { qEn: 'What are the top 3 KPIs or metrics that matter most?', qAr: 'ما هي أهم 3 مؤشرات أداء (KPIs) تود التركيز عليها؟' }
+            ]
+          },
+          {
+            id: 'form_d2',
+            titleEn: 'Data Cleaning & Statistical Report',
+            titleAr: 'تنظيف بيانات وتقرير إحصائي',
+            descEn: 'Raw data structuring, churn analysis, or behavioral insights.',
+            descAr: 'معالجة البيانات الخام واستخراج تقارير سلوك العملاء.',
+            questions: [
+              { qEn: 'Describe your dataset format and approximate size:', qAr: 'صف لنا نوع ملفات البيانات وحجمها التقريبي:' },
+              { qEn: 'What specific business question or problem are we solving?', qAr: 'ما هو السؤال التحليلي أو المشكلة التي نبحث لها عن إجابة؟' }
+            ]
+          }
+        ],
+        designForms: [
+          {
+            id: 'form_g1',
+            titleEn: 'Brand Identity, Packaging & Print',
+            titleAr: 'هوية بصرية وتغليف ومطبوعات',
+            descEn: 'Logo, Brand Book, Cover Box, Business Cards & Stationery.',
+            descAr: 'شعار، دليل هوية، علب تغليف (Cover Box)، وبزنس كارد.',
+            questions: [
+              { qEn: 'Tell us about your brand name, industry, and core values:', qAr: 'حدثنا عن اسم العلامة التجارية، مجالها، والجمهور المستهدف:' },
+              { qEn: 'Which deliverables do you need (Logo, Business Card, Cover Box, Brand Book)?', qAr: 'ما هي المخرجات المطلوبة (شعار، بزنس كارد، علب وتغليف، دليل كامل)؟' },
+              { qEn: 'What visual tone & color mood represent your brand best?', qAr: 'ما هو الطابع البصري والألوان التي تفضلها لعلامتك؟' }
+            ]
+          },
+          {
+            id: 'form_g2',
+            titleEn: 'Social Media, Carousels & Pitch Decks',
+            titleAr: 'سوشيال ميديا وعروض تقديمية',
+            descEn: 'Educational carousels, ad creatives, or investor pitch decks.',
+            descAr: 'تصاميم منشورات، كاروسيل تعليمي، إعلانات، أو عروض تقديمية.',
+            questions: [
+              { qEn: 'Which platforms or presentation format are we designing for?', qAr: 'ما هي المنصات المستهدفة أو نوع العرض التقديمي المطلوب؟' },
+              { qEn: 'What is the #1 takeaway or action you want viewers to take?', qAr: 'ما هي الرسالة الأساسية أو الإجراء الذي تريد من المشاهد اتخاذه؟' },
+              { qEn: 'How many slides/designs do you need?', qAr: 'كم عدد التصاميم أو الشرائح المطلوبة؟' }
+            ]
+          }
+        ]
+      },
+      customSections: [
+        {
+          id: 'csec_eyelysis_framework',
+          placement: 'before-footer',
+          layout: 'cards',
+          accentColor: '#D4AA65',
+          titleEn: 'The Eyelysis Framework: Clarity Creates Action',
+          titleAr: 'منهجية EYELYSIS: الوضوح يصنع القرار',
+          subtitleEn: 'Data alone is not insight. Good visual design reduces cognitive load and turns complex numbers into clear stories.',
+          subtitleAr: 'البيانات وحدها ليست رؤية؛ التصميم البصري الذكي يقلل التشتت ويحول الأرقام المعقدة إلى قصة واضحة تقود للقرار.',
+          bannerImage: '',
+          freeHtmlEn: '',
+          freeHtmlAr: '',
+          cards: [
+            {
+              badgeEn: '01 / ASK',
+              badgeAr: '01 / السؤال',
+              titleEn: 'Begin With a Better Question',
+              titleAr: 'ابدأ بسؤال أكثر دقة',
+              textEn: 'The question determines what you measure, compare, and ultimately understand.',
+              textAr: 'السؤال الصحيح هو الذي يحدد ما نقيسه وما نقارنه للوصول إلى جوهر الحقيقة.',
+              imageUrl: '',
+              btnTextEn: '',
+              btnTextAr: '',
+              btnUrl: ''
+            },
+            {
+              badgeEn: '02 / COMPARE',
+              badgeAr: '02 / المقارنة',
+              titleEn: 'Measure What Matters',
+              titleAr: 'قِس ما يصنع الفارق الحقيقي',
+              textEn: 'Traffic alone does not reveal effectiveness. We compare conversion and true value—not just volume.',
+              textAr: 'الأرقام الكبيرة وحدها لا تكفي؛ نحن نقارن معدلات التحويل والأثر الفعلي وليس مجرد الكمية.',
+              imageUrl: '',
+              btnTextEn: '',
+              btnTextAr: '',
+              btnUrl: ''
+            },
+            {
+              badgeEn: '03 / DESIGN & ACT',
+              badgeAr: '03 / التصميم والقرار',
+              titleEn: 'One Visual. One Point.',
+              titleAr: 'تصميم واحد. رسالة واضحة.',
+              textEn: 'We remove anything that does not support the message so your audience can understand and act immediately.',
+              textAr: 'نزيل كل تشويش بصري لا يخدم الرسالة، ليتمكن جمهورك من الفهم واتخاذ القرار فوراً.',
+              imageUrl: '',
+              btnTextEn: '',
+              btnTextAr: '',
+              btnUrl: ''
+            }
+          ]
+        }
+      ],
+      contact: {
+        email: 'hello@eyelysis.com',
+        whatsapp: '962790000000',
+        footerTitleEn: 'EYELYSIS — See Further. Think Clearly. Create Meaning.',
+        footerTitleAr: 'EYELYSIS — انظر أبعد. فكّر بوضوح. اصنع المعنى.',
+        footerSubtitleEn: 'Graphic Design × Data Analytics | Pre-launch Portfolio & Creative Intelligence Studio.',
+        footerSubtitleAr: 'التصميم الجرافيكي × تحليل البيانات | معرض الأعمال واستوديو الذكاء الإبداعي.',
+        copyrightEn: '© 2026 EYELYSIS Creative Intelligence. All rights reserved. (Click 5x or press Ctrl+Shift+E for Studio)',
+        copyrightAr: '© 2026 EYELYSIS للذكاء الإبداعي والتحليلي. جميع الحقوق محفوظة.',
+        socials: [
+          { label: 'WhatsApp', icon: 'fa-brands fa-whatsapp', url: 'https://wa.me/962790000000', color: 'hover:bg-[#D4AA65] hover:text-[#191C22]' },
+          { label: 'Email', icon: 'fa-solid fa-envelope', url: 'mailto:hello@eyelysis.com', color: 'hover:bg-[#D4AA65] hover:text-[#191C22]' },
+          { label: 'Behance', icon: 'fa-brands fa-behance', url: 'https://behance.net', color: 'hover:bg-[#383D46] hover:text-[#F1D396]' },
+          { label: 'LinkedIn', icon: 'fa-brands fa-linkedin-in', url: 'https://linkedin.com', color: 'hover:bg-[#383D46] hover:text-[#F1D396]' },
+          { label: 'GitHub', icon: 'fa-brands fa-github', url: 'https://github.com', color: 'hover:bg-[#383D46] hover:text-[#F1D396]' },
+          { label: 'Instagram', icon: 'fa-brands fa-instagram', url: 'https://instagram.com', color: 'hover:bg-[#D4AA65] hover:text-[#191C22]' }
+        ]
+      }
+    };
+  </script>
+
+  <!-- ================= APPLICATION LOGIC ================= -->
+  <script>
+    let currentLang = SITE_CONFIG.settings.defaultLang || 'en';
+    let previousSectionId = 'top';
+    let flashIntervalTimer = null;
+    let flashProgressTimer = null;
+    let activeFlashImages = [];
+    let activeFlashIndex = 0;
+    let activeFormObject = null;
+    let activeStudioTab = 'general';
+    let secretClickCount = 0;
+    let isDirectEditMode = true;
+
+    const t = (enVal, arVal) => (currentLang === 'ar' ? (arVal || enVal) : (enVal || arVal));
+
+    function resolveImageSrc(path) {
+      if (!path) return '';
+      return path;
+    }
+
+    function getFallbackSrc(path) {
+      return IMAGE_FALLBACK_MAP[path] || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=80';
+    }
+
+    function syncBrandLogoImages() {
+      const primaryPath = (SITE_CONFIG.branding && SITE_CONFIG.branding.logoImageUrl) ? SITE_CONFIG.branding.logoImageUrl.trim() : 'images/logo.webp';
+      const candidates = [primaryPath, 'images/logo.webp', 'images/eyelysis.png', 'eyelysis.png', 'images/logo.png'].filter(Boolean);
+
+      const slots = [
+        { imgId: 'navbar-logo-img', fallbackId: 'navbar-logo-svg' },
+        { imgId: 'hero-logo-img', fallbackId: 'hero-logo-svg' },
+        { imgId: 'footer-logo-img', fallbackId: 'footer-logo-icon' }
+      ];
+
+      const favEl = document.getElementById('dynamic-favicon');
+      if (favEl && SITE_CONFIG.branding.faviconUrl) {
+        favEl.href = SITE_CONFIG.branding.faviconUrl;
+      }
+
+      if (!primaryPath) {
+        slots.forEach(s => {
+          const img = document.getElementById(s.imgId);
+          const fb = document.getElementById(s.fallbackId);
+          if (img) img.classList.add('hidden');
+          if (fb) fb.classList.remove('hidden');
+        });
+        return;
+      }
+
+      let idx = 0;
+      function tryNextCandidate() {
+        if (idx >= candidates.length) {
+          slots.forEach(s => {
+            const img = document.getElementById(s.imgId);
+            const fb = document.getElementById(s.fallbackId);
+            if (img) img.classList.add('hidden');
+            if (fb) fb.classList.remove('hidden');
+          });
+          return;
+        }
+        const testUrl = candidates[idx++];
+        const probe = new Image();
+        probe.onload = function() {
+          slots.forEach(s => {
+            const img = document.getElementById(s.imgId);
+            const fb = document.getElementById(s.fallbackId);
+            if (img) {
+              img.src = testUrl;
+              img.classList.remove('hidden');
+            }
+            if (fb) fb.classList.add('hidden');
+          });
+        };
+        probe.onerror = tryNextCandidate;
+        probe.src = testUrl;
+      }
+      tryNextCandidate();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      applyThemeMode(SITE_CONFIG.settings.defaultTheme);
+      setLanguage(SITE_CONFIG.settings.defaultLang);
+      updateStudioButtonVisibility();
+      renderStudioPanel();
+      initMouseReactiveEffects();
+
+      if (window.location.search.includes('edit=true')) {
+        document.getElementById('studio-panel').classList.remove('-translate-x-full');
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.shiftKey && (e.key === 'E' || e.key === 'e')) {
+        e.preventDefault();
+        SITE_CONFIG.settings.hideStudioButtonForVisitors = false;
+        isDirectEditMode = true;
+        updateStudioButtonVisibility();
+        toggleStudioPanel();
+      }
+    });
+
+    function handleSecretCopyrightClick() {
+      secretClickCount++;
+      if (secretClickCount >= 5) {
+        secretClickCount = 0;
+        SITE_CONFIG.settings.hideStudioButtonForVisitors = false;
+        isDirectEditMode = true;
+        updateStudioButtonVisibility();
+        toggleStudioPanel();
+      }
+    }
+
+    function updateStudioButtonVisibility() {
+      const group = document.getElementById('studio-floating-Group');
+      const navExport = document.getElementById('nav-export-btn');
+      const topBar = document.getElementById('direct-edit-top-bar');
+      if (SITE_CONFIG.settings.hideStudioButtonForVisitors) {
+        if (group) group.classList.add('hidden');
+        if (navExport) navExport.classList.add('hidden');
+        if (topBar) topBar.classList.add('hidden');
+        document.body.classList.remove('direct-edit-mode');
+      } else {
+        if (group) group.classList.remove('hidden');
+        if (navExport) navExport.classList.remove('hidden');
+        if (topBar) topBar.classList.remove('hidden');
+        if (isDirectEditMode) document.body.classList.add('direct-edit-mode');
+      }
+      bindAllDirectEditables();
+    }
+
+    function initMouseReactiveEffects() {
+      window.addEventListener('mousemove', (e) => {
+        const xPct = (e.clientX / window.innerWidth) * 100;
+        const yPct = (e.clientY / window.innerHeight) * 100;
+        document.documentElement.style.setProperty('--mouse-x', xPct + '%');
+        document.documentElement.style.setProperty('--mouse-y', yPct + '%');
+
+        const eyeCard = document.getElementById('hero-eye-card');
+        if (eyeCard && window.innerWidth > 768) {
+          const rotY = ((e.clientX / window.innerWidth) - 0.5) * 18;
+          const rotX = ((0.5 - (e.clientY / window.innerHeight))) * 18;
+          eyeCard.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        }
+      });
+    }
+
+    function applyThemeMode(mode) {
+      const htmlEl = document.documentElement;
+      const iconEl = document.getElementById('theme-icon');
+      if (mode === 'dark') {
+        htmlEl.classList.add('dark');
+        iconEl.className = 'fa-solid fa-sun text-lg text-[#F1D396]';
+      } else {
+        htmlEl.classList.remove('dark');
+        iconEl.className = 'fa-solid fa-moon text-lg text-[#191C22]';
+      }
+      SITE_CONFIG.settings.defaultTheme = mode;
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      applyThemeMode(isDark ? 'light' : 'dark');
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      const htmlEl = document.documentElement;
+      htmlEl.lang = lang;
+      htmlEl.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+      const btnEn = document.getElementById('lang-btn-en');
+      const btnAr = document.getElementById('lang-btn-ar');
+      if (lang === 'en') {
+        btnEn.className = 'flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-extrabold bg-[#D4AA65] text-[#191C22] shadow';
+        btnAr.className = 'flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold opacity-70 hover:opacity-100 transition';
+      } else {
+        btnAr.className = 'flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-extrabold bg-[#D4AA65] text-[#191C22] shadow';
+        btnEn.className = 'flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold opacity-70 hover:opacity-100 transition';
+      }
+
+      renderAll();
+    }
+
+    // ============================================================================
+    // DIRECT ON-PAGE EDITING & LINK-BASED IMAGE CHANGER ENGINE
+    // ============================================================================
+    function getByPath(obj, path) {
+      return path.split('.').reduce((acc, part) => (acc && acc[part] !== undefined ? acc[part] : ''), obj);
+    }
+
+    function setByPath(obj, path, value) {
+      const parts = path.split('.');
+      let cur = obj;
+      for (let i = 0; i < parts.length - 1; i++) {
+        if (cur[parts[i]] === undefined) return;
+        cur = cur[parts[i]];
+      }
+      cur[parts[parts.length - 1]] = value;
+    }
+
+    function langKey(baseKey) {
+      return currentLang === 'ar' ? baseKey + 'Ar' : baseKey + 'En';
+    }
+
+    function promptImageLink(configPath, labelText) {
+      const currentVal = getByPath(SITE_CONFIG, configPath) || '';
+      const nextVal = prompt(labelText + '\n(ضعي مسار الصورة مثل images/logo.webp أو رابط مباشر https://...):', currentVal);
+      if (nextVal !== null) {
+        setByPath(SITE_CONFIG, configPath, nextVal.trim());
+        renderAll();
+        renderStudioPanel();
+      }
+    }
+
+    function toggleDirectEditMode() {
+      isDirectEditMode = !isDirectEditMode;
+      document.body.classList.toggle('direct-edit-mode', isDirectEditMode);
+      const lbl = document.getElementById('lbl-toggle-direct-edit');
+      const btn = document.getElementById('btn-toggle-direct-edit');
+      if (lbl) {
+        lbl.textContent = isDirectEditMode
+          ? '✏️ التعديل المباشر: مفعل (اضغطي على أي نص لتعديله)'
+          : '👁️ وضع المعاينة الصافي (اضغطي هنا لتفعيل التعديل)';
+      }
+      if (btn) {
+        btn.className = isDirectEditMode
+          ? 'px-3.5 py-1.5 rounded-xl bg-[#D4AA65] text-[#191C22] font-extrabold shadow hover:scale-105 transition flex items-center gap-1.5'
+          : 'px-3.5 py-1.5 rounded-xl bg-white/20 text-white font-bold shadow hover:scale-105 transition flex items-center gap-1.5';
+      }
+      bindAllDirectEditables();
+    }
+
+    function bindAllDirectEditables() {
+      const canEdit = isDirectEditMode && !SITE_CONFIG.settings.hideStudioButtonForVisitors;
+
+      document.querySelectorAll('[data-edit-path]').forEach(el => {
+        el.contentEditable = canEdit ? 'true' : 'false';
+        el.onblur = function() {
+          const p = this.getAttribute('data-edit-path');
+          if (p) {
+            setByPath(SITE_CONFIG, p, this.innerText.trim());
+            renderStudioPanel();
+          }
+        };
+        el.onclick = function(e) {
+          if (canEdit) {
+            e.stopPropagation();
+            if (this.tagName === 'A') e.preventDefault();
+          }
+        };
+      });
+
+      document.querySelectorAll('[data-static-edit]').forEach(el => {
+        el.contentEditable = canEdit ? 'true' : 'false';
+      });
+    }
+
+    function addProjectCategory(side) {
+      const cats = side === 'data' ? SITE_CONFIG.projectsSection.dataCategories : SITE_CONFIG.projectsSection.designCategories;
+      cats.push({
+        id: 'pcat_' + Date.now(),
+        titleEn: (cats.length + 1) + '. New Portfolio Category',
+        titleAr: (cats.length + 1) + '. تصنيف أعمال جديد',
+        items: [
+          {
+            id: 'proj_' + Date.now(),
+            titleEn: 'New Project Case Study',
+            titleAr: 'مشروع جديد (اضغط لتعديل الاسم)',
+            descriptionEn: 'Detailed project overview and methodology.',
+            descriptionAr: 'وصف تفصيلي للمشروع والمنهجية المستخدمة.',
+            tags: ['Eyelysis', 'Case Study'],
+            externalUrl: '',
+            images: ['images/project-sales-kpi-1.webp']
+          }
+        ]
+      });
+      renderAll();
+      renderStudioPanel();
+    }
+
+    function addProjectItem(side, catIdx) {
+      const cats = side === 'data' ? SITE_CONFIG.projectsSection.dataCategories : SITE_CONFIG.projectsSection.designCategories;
+      cats[catIdx].items.push({
+        id: 'proj_' + Date.now(),
+        titleEn: 'New Sub-Project Title',
+        titleAr: 'عنوان مشروع فرعي جديد',
+        descriptionEn: 'Click to edit project description and analytical/visual outcomes.',
+        descriptionAr: 'اضغط لتعديل وصف المشروع والنتائج البصرية أو التحليلية.',
+        tags: ['New Project', 'WebP Ready'],
+        externalUrl: '',
+        images: ['images/project-brandbook-1.webp']
+      });
+      renderAll();
+      renderStudioPanel();
+    }
+
+    function deleteProjectItem(side, catIdx, itemIdx) {
+      const cats = side === 'data' ? SITE_CONFIG.projectsSection.dataCategories : SITE_CONFIG.projectsSection.designCategories;
+      cats[catIdx].items.splice(itemIdx, 1);
+      renderAll();
+      renderStudioPanel();
+    }
+
+    function deleteProjectCategory(side, catIdx) {
+      const cats = side === 'data' ? SITE_CONFIG.projectsSection.dataCategories : SITE_CONFIG.projectsSection.designCategories;
+      cats.splice(catIdx, 1);
+      renderAll();
+      renderStudioPanel();
+    }
+
+    function addServiceFormBrief(side) {
+      const list = side === 'data' ? SITE_CONFIG.formsSection.dataForms : SITE_CONFIG.formsSection.designForms;
+      list.push({
+        id: 'form_' + Date.now(),
+        titleEn: 'New Custom Service Brief',
+        titleAr: 'نموذج طلب خدمة جديد',
+        descEn: 'Click directly on this text to customize the brief description.',
+        descAr: 'اضغط مباشرة على هذا النص لتعديل وصف النموذج.',
+        questions: [
+          { qEn: 'What is the main goal of your project?', qAr: 'ما هو الهدف الأساسي من مشروعك؟' },
+          { qEn: 'What is your expected timeline?', qAr: 'ما هو الجدول الزمني المتوقع للتنفيذ؟' }
+        ]
+      });
+      renderAll();
+      renderStudioPanel();
+    }
+
+    function deleteServiceFormBrief(event, side, idx) {
+      event.stopPropagation();
+      const list = side === 'data' ? SITE_CONFIG.formsSection.dataForms : SITE_CONFIG.formsSection.designForms;
+      list.splice(idx, 1);
+      renderAll();
+      renderStudioPanel();
+    }
+
+    // Master Render Function
+    function renderAll() {
+      const bgLayer = document.getElementById('bg-image-layer');
+      if (SITE_CONFIG.settings.bgImageUrl) {
+        const fallback = getFallbackSrc(SITE_CONFIG.settings.bgImageUrl);
+        bgLayer.style.backgroundImage = `url('${SITE_CONFIG.settings.bgImageUrl}'), url('${fallback}')`;
+      } else {
+        bgLayer.style.backgroundImage = 'none';
+      }
+
+      syncBrandLogoImages();
+      updateStudioButtonVisibility();
+      renderNavbar();
+      renderHero();
+      renderWheelsSection();
+      renderProjectsSection();
+      renderFormsSection();
+      renderCustomSections();
+      renderFloatingQuickNav();
+      renderFooter();
+      bindAllDirectEditables();
+    }
+
+    // 1. Render Navbar
+    function renderNavbar() {
+      const logoTxt = document.getElementById('nav-logo-text');
+      const logoSub = document.getElementById('nav-logo-sub');
+      logoTxt.textContent = t(SITE_CONFIG.branding.logoTextEn, SITE_CONFIG.branding.logoTextAr);
+      logoTxt.setAttribute('data-edit-path', `branding.${langKey('logoText')}`);
+      logoSub.textContent = t(SITE_CONFIG.branding.subTextEn, SITE_CONFIG.branding.subTextAr);
+      logoSub.setAttribute('data-edit-path', `branding.${langKey('subText')}`);
+
+      const dlLabel = document.getElementById('nav-download-label');
+      if (dlLabel) dlLabel.textContent = t('Download HTML', 'تنزيل الكود HTML');
+
+      const desktopNav = document.getElementById('nav-menu-desktop');
+      const mobileNav = document.getElementById('nav-menu-mobile');
+      desktopNav.innerHTML = '';
+      mobileNav.innerHTML = '';
+
+      SITE_CONFIG.navbar.forEach((item, nIdx) => {
+        const hasChildren = item.children && item.children.length > 0;
+        const label = t(item.labelEn, item.labelAr);
+        const editPath = `navbar.${nIdx}.${langKey('label')}`;
+
+        if (!hasChildren) {
+          desktopNav.innerHTML += `
+            <a href="${item.href}" data-edit-path="${editPath}" onclick="if(!isDirectEditMode) navigateToSection('${item.href.replace('#','') }')" class="hover:text-[#D4AA65] transition">${label}</a>
+          `;
+          mobileNav.innerHTML += `
+            <a href="${item.href}" data-edit-path="${editPath}" onclick="if(!isDirectEditMode){navigateToSection('${item.href.replace('#','') }'); toggleMobileMenu();}" class="block px-3 py-2 rounded-xl hover:bg-[#D4AA65]/20 font-bold text-sm">${label}</a>
+          `;
+        } else {
+          const childrenHtml = item.children.map((ch, cIdx) => `
+            <a href="${ch.href}" data-edit-path="navbar.${nIdx}.children.${cIdx}.${langKey('label')}" onclick="if(!isDirectEditMode) navigateToSection('${ch.href.replace('#','') }')" class="block px-3.5 py-2 rounded-xl text-xs font-semibold hover:bg-[#D4AA65] hover:text-[#191C22] transition whitespace-nowrap">
+              ${t(ch.labelEn, ch.labelAr)}
+            </a>
+          `).join('');
+
+          desktopNav.innerHTML += `
+            <div class="relative group py-2">
+              <button class="flex items-center gap-1.5 hover:text-[#D4AA65] transition">
+                <span data-edit-path="${editPath}">${label}</span>
+                <i class="fa-solid fa-chevron-down text-[10px] group-hover:rotate-180 transition-transform"></i>
+              </button>
+              <div class="absolute top-full left-0 pt-2 hidden group-hover:block min-w-[210px] z-50">
+                <div class="glass-panel rounded-2xl p-2 shadow-2xl space-y-1 border border-[#D4AA65]/40">
+                  ${childrenHtml}
+                </div>
+              </div>
+            </div>
+          `;
+
+          mobileNav.innerHTML += `
+            <div class="space-y-1 px-3 py-1.5">
+              <div data-edit-path="${editPath}" class="font-extrabold text-xs uppercase text-[#9A6F27] dark:text-[#D4AA65]">${label}</div>
+              <div class="pl-3 space-y-1 border-l-2 border-[#D4AA65]/40">${childrenHtml}</div>
+            </div>
+          `;
+        }
+      });
+    }
+
+    function toggleMobileMenu() {
+      document.getElementById('nav-menu-mobile').classList.toggle('hidden');
+    }
+
+    // 2. Render Hero
+    function renderHero() {
+      const heroSec = document.getElementById('hero-section');
+      if (!SITE_CONFIG.settings.showHeroSection) {
+        heroSec.classList.add('hidden');
+        return;
+      }
+      heroSec.classList.remove('hidden');
+
+      const bgImg = document.getElementById('hero-bg-image');
+      if (SITE_CONFIG.hero.heroBgImage) {
+        const fb = getFallbackSrc(SITE_CONFIG.hero.heroBgImage);
+        bgImg.style.backgroundImage = `url('${SITE_CONFIG.hero.heroBgImage}'), url('${fb}')`;
+      } else {
+        bgImg.style.backgroundImage = 'none';
+      }
+
+      const bEl = document.getElementById('hero-badge');
+      bEl.textContent = t(SITE_CONFIG.hero.badgeEn, SITE_CONFIG.hero.badgeAr);
+      bEl.setAttribute('data-edit-path', `hero.${langKey('badge')}`);
+
+      const tEl = document.getElementById('hero-title');
+      tEl.textContent = t(SITE_CONFIG.hero.titleEn, SITE_CONFIG.hero.titleAr);
+      tEl.setAttribute('data-edit-path', `hero.${langKey('title')}`);
+
+      const sEl = document.getElementById('hero-subtitle');
+      sEl.textContent = t(SITE_CONFIG.hero.subtitleEn, SITE_CONFIG.hero.subtitleAr);
+      sEl.setAttribute('data-edit-path', `hero.${langKey('subtitle')}`);
+
+      const c1El = document.getElementById('hero-cta-primary');
+      c1El.textContent = t(SITE_CONFIG.hero.ctaPrimaryEn, SITE_CONFIG.hero.ctaPrimaryAr);
+      c1El.setAttribute('data-edit-path', `hero.${langKey('ctaPrimary')}`);
+
+      const c2El = document.getElementById('hero-cta-secondary');
+      c2El.textContent = t(SITE_CONFIG.hero.ctaSecondaryEn, SITE_CONFIG.hero.ctaSecondaryAr);
+      c2El.setAttribute('data-edit-path', `hero.${langKey('ctaSecondary')}`);
+
+      const p1 = document.getElementById('pillar-1');
+      p1.textContent = t(SITE_CONFIG.hero.pillar1En, SITE_CONFIG.hero.pillar1Ar);
+      p1.setAttribute('data-edit-path', `hero.${langKey('pillar1')}`);
+
+      const p2 = document.getElementById('pillar-2');
+      p2.textContent = t(SITE_CONFIG.hero.pillar2En, SITE_CONFIG.hero.pillar2Ar);
+      p2.setAttribute('data-edit-path', `hero.${langKey('pillar2')}`);
+
+      const p3 = document.getElementById('pillar-3');
+      p3.textContent = t(SITE_CONFIG.hero.pillar3En, SITE_CONFIG.hero.pillar3Ar);
+      p3.setAttribute('data-edit-path', `hero.${langKey('pillar3')}`);
+    }
+
+    // ============================================================================
+    // 3. CHROME-STYLE CALIBRATED WHEELS WITH LINK-BASED ON-PAGE EDITOR
+    // ============================================================================
+    function polarToCartesian(cx, cy, r, angleDeg) {
+      const rad = ((angleDeg - 90) * Math.PI) / 180.0;
+      return {
+        x: cx + r * Math.cos(rad),
+        y: cy + r * Math.sin(rad)
+      };
+    }
+
+    function createDonutSlicePath(cx, cy, rInner, rOuter, startAngle, endAngle) {
+      const startOuter = polarToCartesian(cx, cy, rOuter, endAngle);
+      const endOuter = polarToCartesian(cx, cy, rOuter, startAngle);
+      const startInner = polarToCartesian(cx, cy, rInner, endAngle);
+      const endInner = polarToCartesian(cx, cy, rInner, startAngle);
+      const largeArc = endAngle - startAngle <= 180 ? '0' : '1';
+
+      return [
+        'M', startOuter.x, startOuter.y,
+        'A', rOuter, rOuter, 0, largeArc, 0, endOuter.x, endOuter.y,
+        'L', endInner.x, endInner.y,
+        'A', rInner, rInner, 0, largeArc, 1, startInner.x, startInner.y,
+        'Z'
+      ].join(' ');
+    }
+
+    function createCurvedTextArc(cx, cy, rMid, startAngle, endAngle) {
+      const midAngle = (startAngle + endAngle) / 2;
+      const isBottomHalf = midAngle > 105 && midAngle < 255;
+
+      if (!isBottomHalf) {
+        const pStart = polarToCartesian(cx, cy, rMid, startAngle + 4);
+        const pEnd = polarToCartesian(cx, cy, rMid, endAngle - 4);
+        const largeArc = endAngle - startAngle <= 180 ? 0 : 1;
+        return `M ${pStart.x} ${pStart.y} A ${rMid} ${rMid} 0 ${largeArc} 1 ${pEnd.x} ${pEnd.y}`;
+      } else {
+        const pStart = polarToCartesian(cx, cy, rMid, endAngle - 4);
+        const pEnd = polarToCartesian(cx, cy, rMid, startAngle + 4);
+        const largeArc = endAngle - startAngle <= 180 ? 0 : 1;
+        return `M ${pStart.x} ${pStart.y} A ${rMid} ${rMid} 0 ${largeArc} 0 ${pEnd.x} ${pEnd.y}`;
+      }
+    }
+
+    function buildWheelSVG(wheelObj, prefix) {
+      const cx = 210, cy = 210;
+      const rCenter = 72;
+      const rInner = 84;
+      const thickness = Number(SITE_CONFIG.settings.wheelThickness) || 58;
+      const rOuter = rInner + thickness;
+      const rMid = (rInner + rOuter) / 2;
+      const gap = Number(SITE_CONFIG.settings.wheelSliceGap) || 2.5;
+
+      const slices = wheelObj.slices || [];
+      const count = Math.max(slices.length, 1);
+      const step = 360 / count;
+
+      let defsHtml = '';
+      let slicesHtml = '';
+
+      slices.forEach((slice, idx) => {
+        const startAngle = idx * step + gap / 2;
+        const endAngle = (idx + 1) * step - gap / 2;
+        const dSlice = createDonutSlicePath(cx, cy, rInner, rOuter, startAngle, endAngle);
+        const dText = createCurvedTextArc(cx, cy, rMid, startAngle, endAngle);
+        const pathId = `${prefix}_text_arc_${idx}`;
+        const label = t(slice.labelEn, slice.labelAr);
+        const encodedImages = encodeURIComponent(JSON.stringify(slice.images || []));
+        const encodedTitle = encodeURIComponent(label);
+
+        defsHtml += `<path id="${pathId}" d="${dText}" fill="none" />`;
+
+        slicesHtml += `
+          <g class="wheel-slice"
+             onmouseenter="startFlashGallery(event, '${encodedTitle}', '${encodedImages}')"
+             onmousemove="moveFlashGallery(event)"
+             onmouseleave="hideFlashGallery()"
+             onclick="startFlashGallery(event, '${encodedTitle}', '${encodedImages}', true)">
+            <path d="${dSlice}" fill="${slice.color}" stroke="#F6F2E9" stroke-opacity="0.45" stroke-width="1.5" />
+            <text class="wheel-text fill-[#F6F2E9] text-[11.5px]" dy="4" style="text-shadow: 0 1px 4px rgba(25,28,34,0.85);">
+              <textPath href="#${pathId}" startOffset="50%" text-anchor="middle">${label}</textPath>
+            </text>
+          </g>
+        `;
+      });
+
+      const centerTitle = t(wheelObj.centerTitleEn, wheelObj.centerTitleAr);
+      const words = centerTitle.split(' ');
+      const line1 = words[0] || '';
+      const line2 = words.slice(1).join(' ') || '';
+
+      return `
+        <svg viewBox="0 0 420 420" class="w-full h-full drop-shadow-2xl select-none">
+          <defs>
+            ${defsHtml}
+            <radialGradient id="${prefix}_center_grad" cx="35%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#D4AA65" stop-opacity="0.38"/>
+              <stop offset="100%" stop-color="${wheelObj.centerColor}" stop-opacity="1"/>
+            </radialGradient>
+          </defs>
+
+          <circle cx="${cx}" cy="${cy}" r="${rOuter + 14}" fill="none" stroke="#D4AA65" stroke-opacity="0.55" stroke-width="4" stroke-dasharray="1.5 8" />
+          <circle cx="${cx}" cy="${cy}" r="${rOuter + 6}" fill="none" stroke="#383D46" stroke-opacity="0.4" stroke-width="1" />
+
+          ${slicesHtml}
+
+          <circle cx="${cx}" cy="${cy}" r="${rInner - 5}" fill="none" stroke="#F1D396" stroke-opacity="0.65" stroke-width="2.5" stroke-dasharray="2 5" />
+
+          <circle cx="${cx}" cy="${cy}" r="${rCenter}" fill="${wheelObj.centerColor}" stroke="#D4AA65" stroke-width="2.5" />
+          <circle cx="${cx}" cy="${cy}" r="${rCenter}" fill="url(#${prefix}_center_grad)" />
+
+          <text x="${cx}" y="${line2 ? cy - 5 : cy + 5}" text-anchor="middle" class="fill-[#F6F2E9] font-extrabold text-[13px] tracking-[0.14em]">${line1}</text>
+          ${line2 ? `<text x="${cx}" y="${cy + 15}" text-anchor="middle" class="fill-[#F1D396] font-extrabold text-[12px] tracking-[0.14em]">${line2}</text>` : ''}
+        </svg>
+      `;
+    }
+
+    function buildOnPageWheelEditor(wheelKey) {
+      const w = SITE_CONFIG.wheelsSection[wheelKey];
+      const rows = (w.slices || []).map((s, sIdx) => `
+        <div class="p-2.5 rounded-xl bg-[#F6F2E9]/90 dark:bg-[#191C22]/90 border border-[#D4AA65]/30 space-y-1.5">
+          <div class="flex flex-wrap items-center gap-1.5">
+            <input type="color" value="${s.color}" oninput="SITE_CONFIG.wheelsSection['${wheelKey}'].slices[${sIdx}].color=this.value; renderWheelsSection();" class="w-6 h-6 rounded cursor-pointer border-0" title="لون الشريحة" />
+            <input type="text" value="${currentLang === 'ar' ? s.labelAr : s.labelEn}" oninput="SITE_CONFIG.wheelsSection['${wheelKey}'].slices[${sIdx}]['${langKey('label')}']=this.value; renderWheelsSection();" class="flex-1 min-w-[110px] px-2 py-1 rounded-lg bg-black/5 dark:bg-white/10 font-bold text-xs" placeholder="اسم الشريحة" />
+            <button onclick="SITE_CONFIG.wheelsSection['${wheelKey}'].slices.splice(${sIdx},1); renderAll(); renderStudioPanel();" class="px-2 py-1 rounded-lg bg-rose-500/20 text-rose-400 font-bold text-[10px]" title="حذف الشريحة">🗑️</button>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-[10px] font-bold text-[#D4AA65] whitespace-nowrap">🔗 روابط صور الفلاش:</span>
+            <input type="text" value="${(s.images || []).join(', ')}" onchange="SITE_CONFIG.wheelsSection['${wheelKey}'].slices[${sIdx}].images=this.value.split(',').map(x=>x.trim()).filter(Boolean); renderWheelsSection(); renderStudioPanel();" class="flex-1 px-2 py-1 rounded-lg bg-black/5 dark:bg-white/10 font-mono text-[10px]" placeholder="images/data-1.webp, https://..." />
+          </div>
+        </div>
+      `).join('');
+
+      return `
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-extrabold text-[#9A6F27] dark:text-[#F1D396]">⚙️ تعديل شرائح الدائرة وروابط صور الفلاش (افصلي بين الروابط بفاصلة):</span>
+          <button onclick="SITE_CONFIG.wheelsSection['${wheelKey}'].slices.push({id:'sl_'+Date.now(), labelEn:'New Slice', labelAr:'شريحة جديدة', color:'#D4AA65', images:['images/data-dashboard-1.webp']}); renderAll(); renderStudioPanel();" class="px-2.5 py-1 rounded-lg bg-[#D4AA65] text-[#191C22] font-extrabold text-[11px]">+ شريحة</button>
+        </div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="text-[11px] opacity-80">عنوان المركز:</span>
+          <input type="text" value="${currentLang === 'ar' ? w.centerTitleAr : w.centerTitleEn}" oninput="SITE_CONFIG.wheelsSection['${wheelKey}']['${langKey('centerTitle')}']=this.value; renderWheelsSection();" class="flex-1 px-2 py-1 rounded-lg bg-[#F6F2E9] dark:bg-[#191C22] border border-[#D4AA65]/40 font-bold text-xs" />
+          <input type="color" value="${w.centerColor}" oninput="SITE_CONFIG.wheelsSection['${wheelKey}'].centerColor=this.value; renderWheelsSection();" class="w-6 h-6 rounded cursor-pointer" title="لون مركز الدائرة" />
+        </div>
+        <div class="space-y-1.5">${rows}</div>
+      `;
+    }
+
+    function renderWheelsSection() {
+      const wh = document.getElementById('wheels-heading');
+      wh.textContent = t(SITE_CONFIG.wheelsSection.headingEn, SITE_CONFIG.wheelsSection.headingAr);
+      wh.setAttribute('data-edit-path', `wheelsSection.${langKey('heading')}`);
+
+      const ws = document.getElementById('wheels-subheading');
+      ws.textContent = t(SITE_CONFIG.wheelsSection.subheadingEn, SITE_CONFIG.wheelsSection.subheadingAr);
+      ws.setAttribute('data-edit-path', `wheelsSection.${langKey('subheading')}`);
+
+      document.querySelectorAll('.wheel-hint-text').forEach(el => {
+        el.textContent = t(
+          'Hover or tap any calibrated ring segment to trigger Flash Gallery',
+          'مرر المؤشر أو اضغط على أي شريحة لونية لتشغيل معرض الفلاش'
+        );
+      });
+
+      document.getElementById('wheel-data-container').innerHTML = buildWheelSVG(SITE_CONFIG.wheelsSection.dataWheel, 'dataW');
+      document.getElementById('wheel-design-container').innerHTML = buildWheelSVG(SITE_CONFIG.wheelsSection.designWheel, 'designW');
+
+      const edData = document.getElementById('onpage-wheel-data-editor');
+      if (edData) edData.innerHTML = buildOnPageWheelEditor('dataWheel');
+      const edDesign = document.getElementById('onpage-wheel-design-editor');
+      if (edDesign) edDesign.innerHTML = buildOnPageWheelEditor('designWheel');
+    }
+
+    // ============================================================================
+    // FLASH GALLERY CONTROLLER
+    // ============================================================================
+    function startFlashGallery(e, encodedTitle, encodedImages, isTap = false) {
+      const images = JSON.parse(decodeURIComponent(encodedImages));
+      const title = decodeURIComponent(encodedTitle);
+      if (!images || images.length === 0) return;
+
+      clearInterval(flashIntervalTimer);
+      clearInterval(flashProgressTimer);
+
+      activeFlashImages = images;
+      activeFlashIndex = 0;
+
+      const popup = document.getElementById('flash-gallery-popup');
+      document.getElementById('flash-slice-title').textContent = title;
+      updateFlashImageFrame();
+
+      popup.classList.remove('hidden');
+      moveFlashGallery(e, isTap);
+
+      const durationMs = (Number(SITE_CONFIG.settings.flashIntervalSeconds) || 2.5) * 1000;
+      let elapsed = 0;
+      const stepMs = 50;
+      const progBar = document.getElementById('flash-progress');
+      progBar.style.width = '0%';
+
+      flashProgressTimer = setInterval(() => {
+        elapsed += stepMs;
+        const pct = Math.min((elapsed / durationMs) * 100, 100);
+        progBar.style.width = pct + '%';
+      }, stepMs);
+
+      flashIntervalTimer = setInterval(() => {
+        elapsed = 0;
+        activeFlashIndex = (activeFlashIndex + 1) % activeFlashImages.length;
+        updateFlashImageFrame();
+      }, durationMs);
+    }
+
+    function updateFlashImageFrame() {
+      const imgEl = document.getElementById('flash-img');
+      const counterEl = document.getElementById('flash-counter');
+      const pathEl = document.getElementById('flash-file-path');
+      const rawPath = activeFlashImages[activeFlashIndex];
+      const fallbackUrl = getFallbackSrc(rawPath);
+
+      imgEl.onerror = function() {
+        if (this.src !== fallbackUrl) this.src = fallbackUrl;
+      };
+      imgEl.src = resolveImageSrc(rawPath);
+      pathEl.textContent = rawPath;
+      counterEl.textContent = `${activeFlashIndex + 1} / ${activeFlashImages.length}`;
+    }
+
+    function moveFlashGallery(e, isTap = false) {
+      const popup = document.getElementById('flash-gallery-popup');
+      if (window.innerWidth < 640 || isTap) {
+        popup.style.left = '50%';
+        popup.style.top = '50%';
+        popup.style.transform = 'translate(-50%, -50%)';
+        return;
+      }
+      popup.style.transform = 'none';
+      const offsetX = 24;
+      const offsetY = -30;
+      let left = e.clientX + offsetX;
+      let top = e.clientY + offsetY;
+
+      if (left + 340 > window.innerWidth) left = e.clientX - 350;
+      if (top + 230 > window.innerHeight) top = window.innerHeight - 240;
+      if (top < 15) top = 15;
+
+      popup.style.left = left + 'px';
+      popup.style.top = top + 'px';
+    }
+
+    function hideFlashGallery() {
+      clearInterval(flashIntervalTimer);
+      clearInterval(flashProgressTimer);
+      document.getElementById('flash-gallery-popup').classList.add('hidden');
+    }
+
+    // ============================================================================
+    // 4. SPLIT PROJECTS ACCORDION & BEHANCE SHOWCASE MODAL (LINK-BASED IMAGES)
+    // ============================================================================
+    function renderProjectsSection() {
+      const ps = SITE_CONFIG.projectsSection;
+      const ph = document.getElementById('projects-heading');
+      ph.textContent = t(ps.headingEn, ps.headingAr);
+      ph.setAttribute('data-edit-path', `projectsSection.${langKey('heading')}`);
+
+      const psub = document.getElementById('projects-subheading');
+      psub.textContent = t(ps.subheadingEn, ps.subheadingAr);
+      psub.setAttribute('data-edit-path', `projectsSection.${langKey('subheading')}`);
+
+      const dCol = document.getElementById('proj-col-data-title');
+      dCol.textContent = t(ps.dataColumnTitleEn, ps.dataColumnTitleAr);
+      dCol.setAttribute('data-edit-path', `projectsSection.${langKey('dataColumnTitle')}`);
+
+      const gCol = document.getElementById('proj-col-design-title');
+      gCol.textContent = t(ps.designColumnTitleEn, ps.designColumnTitleAr);
+      gCol.setAttribute('data-edit-path', `projectsSection.${langKey('designColumnTitle')}`);
+
+      document.getElementById('projects-data-list').innerHTML = buildCategoryAccordions(ps.dataCategories, 'data');
+      document.getElementById('projects-design-list').innerHTML = buildCategoryAccordions(ps.designCategories, 'design');
+    }
+
+    function buildCategoryAccordions(categories, side) {
+      const catKey = side === 'data' ? 'dataCategories' : 'designCategories';
+      return categories.map((cat, cIdx) => {
+        const catTitle = t(cat.titleEn, cat.titleAr);
+        const bodyId = `acc_${side}_${cIdx}`;
+        const catEditPath = `projectsSection.${catKey}.${cIdx}.${langKey('title')}`;
+
+        const itemsHtml = (cat.items || []).map((item, iIdx) => {
+          const itemTitlePath = `projectsSection.${catKey}.${cIdx}.items.${iIdx}.${langKey('title')}`;
+          const firstImg = (item.images && item.images[0]) ? item.images[0] : '';
+          return `
+          <div class="w-full flex flex-col gap-2 px-4 py-3 rounded-xl bg-[#F6F2E9]/90 dark:bg-[#191C22]/80 hover:border-[#D4AA65] transition group text-start border border-[#D4AA65]/25">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-3 flex-1">
+                <i class="fa-solid fa-layer-group text-[#D4AA65]"></i>
+                <div class="flex-1">
+                  <span data-edit-path="${itemTitlePath}" class="block text-xs sm:text-sm font-bold">${t(item.titleEn, item.titleAr)}</span>
+                  <span class="block text-[10px] font-mono opacity-65">${firstImg} (${(item.images||[]).length} slides)</span>
+                </div>
+              </div>
+              <button onclick="openBehanceProject('${side}', ${cIdx}, ${iIdx})" class="px-3 py-1.5 rounded-lg bg-[#D4AA65] text-[#191C22] text-[11px] font-extrabold hover:opacity-90 flex items-center gap-1 shadow">
+                <span>${t('Showcase', 'عرض المشروع')}</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+              </button>
+            </div>
+            <!-- Direct On-Page Project Link Input -->
+            <div class="direct-edit-only flex-wrap items-center gap-1.5 pt-2 border-t border-[#D4AA65]/20 text-[10px]">
+              <span class="font-bold text-[#D4AA65]">🔗 روابط صور المشروع (بفاصلة):</span>
+              <input type="text" value="${(item.images || []).join(', ')}" onchange="SITE_CONFIG.projectsSection['${catKey}'][${cIdx}].items[${iIdx}].images=this.value.split(',').map(x=>x.trim()).filter(Boolean); renderProjectsSection(); renderStudioPanel();" class="flex-1 min-w-[160px] px-2 py-1 rounded bg-black/5 dark:bg-white/10 font-mono text-[10px]" placeholder="images/proj-1.webp, https://..." />
+              <button onclick="deleteProjectItem('${side}', ${cIdx}, ${iIdx})" class="px-2 py-1 rounded bg-rose-500/20 text-rose-400 font-bold">🗑️ حذف</button>
+            </div>
+          </div>
+        `}).join('');
+
+        return `
+          <div class="rounded-2xl border border-[#D4AA65]/35 overflow-hidden">
+            <div class="w-full px-5 py-4 flex items-center justify-between font-bold text-sm sm:text-base bg-[#F1D396]/25 dark:bg-[#383D46]/50 text-start gap-2">
+              <span data-edit-path="${catEditPath}" class="flex-1">${catTitle}</span>
+              <div class="flex items-center gap-1.5">
+                <button onclick="addProjectItem('${side}', ${cIdx})" class="direct-edit-inline px-2 py-1 rounded-lg bg-emerald-600 text-white text-[10px] font-extrabold items-center gap-1" title="إضافة مشروع داخل هذا التصنيف">+ مشروع</button>
+                <button onclick="deleteProjectCategory('${side}', ${cIdx})" class="direct-edit-inline px-2 py-1 rounded-lg bg-rose-500/25 text-rose-400 text-[10px] font-extrabold" title="حذف التصنيف">🗑️</button>
+                <button onclick="toggleAccordion('${bodyId}')" class="text-xs px-2.5 py-1 rounded-lg bg-[#D4AA65] text-[#191C22] font-extrabold">${(cat.items || []).length} ▾</button>
+              </div>
+            </div>
+            <div id="${bodyId}" class="p-3 space-y-2 bg-[#F6F2E9]/50 dark:bg-[#191C22]/40">
+              ${itemsHtml}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleAccordion(id) {
+      document.getElementById(id).classList.toggle('hidden');
+    }
+
+    let currentOpenedProjectSide = 'data';
+    let currentOpenedCatIdx = 0;
+    let currentOpenedItemIdx = 0;
+
+    function openBehanceProject(side, catIdx, itemIdx) {
+      currentOpenedProjectSide = side;
+      currentOpenedCatIdx = catIdx;
+      currentOpenedItemIdx = itemIdx;
+      const catKey = side === 'data' ? 'dataCategories' : 'designCategories';
+      const categories = SITE_CONFIG.projectsSection[catKey];
+      const proj = categories[catIdx].items[itemIdx];
+      if (!proj) return;
+
+      document.getElementById('behance-back-text').textContent = t('Back to Case Studies', 'العودة لمعرض المشاريع');
+      document.getElementById('behance-order-btn-text').textContent = t('Request Similar Service', 'اطلب خدمة مماثلة');
+      document.getElementById('behance-header-title').textContent = t(proj.titleEn, proj.titleAr);
+
+      const bTitle = document.getElementById('behance-title');
+      bTitle.textContent = t(proj.titleEn, proj.titleAr);
+      bTitle.setAttribute('data-edit-path', `projectsSection.${catKey}.${catIdx}.items.${itemIdx}.${langKey('title')}`);
+
+      const bDesc = document.getElementById('behance-desc');
+      bDesc.textContent = t(proj.descriptionEn, proj.descriptionAr);
+      bDesc.setAttribute('data-edit-path', `projectsSection.${catKey}.${catIdx}.items.${itemIdx}.${langKey('description')}`);
+
+      const extBtn = document.getElementById('behance-external-btn');
+      if (proj.externalUrl && proj.externalUrl.trim() !== '') {
+        extBtn.href = proj.externalUrl;
+        extBtn.classList.remove('hidden');
+      } else {
+        extBtn.classList.add('hidden');
+      }
+
+      document.getElementById('behance-tags').innerHTML = (proj.tags || []).map((tag, tIdx) => `
+        <span data-edit-path="projectsSection.${catKey}.${catIdx}.items.${itemIdx}.tags.${tIdx}" class="px-3 py-1 rounded-full text-xs font-bold bg-[#D4AA65]/20 text-[#9A6F27] dark:text-[#F1D396] border border-[#D4AA65]/40">${tag}</span>
+      `).join('');
+
+      document.getElementById('behance-images-stream').innerHTML = (proj.images || []).map((imgUrl, imgIdx) => {
+        const fb = getFallbackSrc(imgUrl);
+        return `
+          <div class="relative group border-b border-[#D4AA65]/20">
+            <img src="${imgUrl}" onerror="if(this.src!=='${fb}') this.src='${fb}';" alt="Project Slide" class="w-full h-auto object-cover" loading="lazy" />
+            <div class="px-4 py-2.5 bg-[#191C22] text-[11px] text-[#F1D396] font-mono flex flex-wrap items-center justify-between gap-2">
+              <div class="flex items-center gap-2 flex-1">
+                <span>Slide ${imgIdx + 1} Link:</span>
+                <input type="text" value="${imgUrl}" onchange="updateBehanceSlideLink(${imgIdx}, this.value)" class="flex-1 max-w-md px-2 py-1 rounded bg-white/10 text-[#F6F2E9] border border-[#D4AA65]/40 font-mono text-xs" />
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="deleteBehanceSlide(${imgIdx})" class="direct-edit-inline px-2 py-0.5 rounded bg-rose-500/30 text-rose-300 font-sans font-bold">🗑️ حذف الصورة</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('') + `
+        <div class="direct-edit-only p-4 bg-[#191C22] items-center justify-center">
+          <button onclick="addBehanceSlideByLink()" class="px-4 py-2 rounded-xl bg-[#D4AA65] text-[#191C22] font-extrabold text-xs">+ إضافة رابط شريحة صورة جديدة لهذا المشروع</button>
+        </div>
+      `;
+
+      document.getElementById('behance-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      bindAllDirectEditables();
+    }
+
+    function updateBehanceSlideLink(imgIdx, newUrl) {
+      const catKey = currentOpenedProjectSide === 'data' ? 'dataCategories' : 'designCategories';
+      const proj = SITE_CONFIG.projectsSection[catKey][currentOpenedCatIdx].items[currentOpenedItemIdx];
+      proj.images[imgIdx] = newUrl.trim();
+      openBehanceProject(currentOpenedProjectSide, currentOpenedCatIdx, currentOpenedItemIdx);
+      renderProjectsSection();
+    }
+
+    function addBehanceSlideByLink() {
+      const url = prompt('أدخلي رابط أو مسار الصورة الجديدة (مثال: images/project-2.webp أو https://...):', 'images/project-sales-kpi-1.webp');
+      if (url && url.trim()) {
+        const catKey = currentOpenedProjectSide === 'data' ? 'dataCategories' : 'designCategories';
+        const proj = SITE_CONFIG.projectsSection[catKey][currentOpenedCatIdx].items[currentOpenedItemIdx];
+        proj.images.push(url.trim());
+        openBehanceProject(currentOpenedProjectSide, currentOpenedCatIdx, currentOpenedItemIdx);
+        renderProjectsSection();
+      }
+    }
+
+    function deleteBehanceSlide(imgIdx) {
+      const catKey = currentOpenedProjectSide === 'data' ? 'dataCategories' : 'designCategories';
+      const proj = SITE_CONFIG.projectsSection[catKey][currentOpenedCatIdx].items[currentOpenedItemIdx];
+      proj.images.splice(imgIdx, 1);
+      openBehanceProject(currentOpenedProjectSide, currentOpenedCatIdx, currentOpenedItemIdx);
+      renderProjectsSection();
+    }
+
+    function closeBehanceModal() {
+      document.getElementById('behance-modal').classList.add('hidden');
+      document.body.style.overflow = '';
+      renderProjectsSection();
+      bindAllDirectEditables();
+    }
+
+    function openFormFromProject() {
+      closeBehanceModal();
+      navigateToSection('forms-section');
+      const firstFormList = currentOpenedProjectSide === 'data' ? SITE_CONFIG.formsSection.dataForms : SITE_CONFIG.formsSection.designForms;
+      if (firstFormList && firstFormList.length > 0) {
+        setTimeout(() => openServiceFormModal(currentOpenedProjectSide, 0), 400);
+      }
+    }
+
+    // ============================================================================
+    // 5. SPLIT SERVICE INQUIRY FORMS
+    // ============================================================================
+    function renderFormsSection() {
+      const fs = SITE_CONFIG.formsSection;
+      const fh = document.getElementById('forms-heading');
+      fh.textContent = t(fs.headingEn, fs.headingAr);
+      fh.setAttribute('data-edit-path', `formsSection.${langKey('heading')}`);
+
+      const fsub = document.getElementById('forms-subheading');
+      fsub.textContent = t(fs.subheadingEn, fs.subheadingAr);
+      fsub.setAttribute('data-edit-path', `formsSection.${langKey('subheading')}`);
+
+      const fdCol = document.querySelector('#forms-col-data-title span');
+      fdCol.textContent = t(fs.dataColTitleEn, fs.dataColTitleAr);
+      fdCol.setAttribute('data-edit-path', `formsSection.${langKey('dataColTitle')}`);
+
+      const fgCol = document.querySelector('#forms-col-design-title span');
+      fgCol.textContent = t(fs.designColTitleEn, fs.designColTitleAr);
+      fgCol.setAttribute('data-edit-path', `formsSection.${langKey('designColTitle')}`);
+
+      const buildFormCards = (formsArr, side, arrKey) => (formsArr || []).map((f, idx) => `
+        <div onclick="openServiceFormModal('${side}', ${idx})" class="cursor-pointer p-5 rounded-2xl glass-panel glass-card-hover flex flex-col justify-between space-y-3 relative">
+          <button onclick="deleteServiceFormBrief(event, '${side}', ${idx})" class="direct-edit-inline absolute top-2.5 right-2.5 w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 items-center justify-center text-[10px] font-bold" title="حذف النموذج">✕</button>
+          <div class="space-y-1.5">
+            <h4 data-edit-path="formsSection.${arrKey}.${idx}.${langKey('title')}" class="font-extrabold text-sm sm:text-base">${t(f.titleEn, f.titleAr)}</h4>
+            <p data-edit-path="formsSection.${arrKey}.${idx}.${langKey('desc')}" class="text-xs text-[#383D46] dark:text-[#F6F2E9]/75">${t(f.descEn, f.descAr)}</p>
+          </div>
+          <div class="pt-2 flex items-center justify-between text-xs font-extrabold text-[#9A6F27] dark:text-[#D4AA65]">
+            <span>${(f.questions || []).length} ${t('Questions', 'أسئلة تشخيصية')}</span>
+            <span class="flex items-center gap-1">${t('Open Brief', 'فتح وتعديل الأسئلة')} <i class="fa-solid fa-chevron-right text-[10px]"></i></span>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('forms-data-list').innerHTML = buildFormCards(fs.dataForms, 'data', 'dataForms');
+      document.getElementById('forms-design-list').innerHTML = buildFormCards(fs.designForms, 'design', 'designForms');
+    }
+
+    let activeFormSide = 'data';
+    let activeFormIdx = 0;
+
+    function openServiceFormModal(side, idx) {
+      activeFormSide = side;
+      activeFormIdx = idx;
+      const arrKey = side === 'data' ? 'dataForms' : 'designForms';
+      const list = SITE_CONFIG.formsSection[arrKey];
+      activeFormObject = list[idx];
+      if (!activeFormObject) return;
+
+      const fTitle = document.getElementById('form-modal-title');
+      fTitle.textContent = t(activeFormObject.titleEn, activeFormObject.titleAr);
+      fTitle.setAttribute('data-edit-path', `formsSection.${arrKey}.${idx}.${langKey('title')}`);
+
+      document.getElementById('lbl-client-name').textContent = t('Your Name *', 'الاسم الكامل *');
+      document.getElementById('lbl-client-contact').textContent = t('Your Email or Phone *', 'البريد الإلكتروني أو رقم الهاتف *');
+      document.getElementById('btn-send-wa').textContent = t('Send via WhatsApp', 'إرسال عبر واتساب');
+      document.getElementById('btn-send-email').textContent = t('Send to Email', 'إرسال للبريد الإلكتروني');
+
+      const qKey = currentLang === 'ar' ? 'qAr' : 'qEn';
+      const qContainer = document.getElementById('form-questions-container');
+      qContainer.innerHTML = (activeFormObject.questions || []).map((q, qIndex) => `
+        <div class="space-y-1">
+          <div class="flex items-center justify-between gap-2">
+            <label data-edit-path="formsSection.${arrKey}.${idx}.questions.${qIndex}.${qKey}" class="block text-xs font-bold flex-1">${t(q.qEn, q.qAr)}</label>
+            <button type="button" onclick="deleteFormQuestion(${qIndex})" class="direct-edit-inline px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 text-[10px] font-bold">🗑️ حذف السؤال</button>
+          </div>
+          <textarea required data-q-index="${qIndex}" rows="2" class="form-dynamic-answer w-full px-3.5 py-2 rounded-xl bg-[#F6F2E9] dark:bg-[#191C22] border border-[#D4AA65]/40 text-sm focus:outline-none focus:border-[#D4AA65]"></textarea>
+        </div>
+      `).join('') + `
+        <button type="button" onclick="addFormQuestion()" class="direct-edit-only w-full py-2 rounded-xl bg-[#D4AA65]/20 hover:bg-[#D4AA65] hover:text-[#191C22] border border-dashed border-[#D4AA65] font-extrabold text-xs items-center justify-center gap-2 transition">
+          + إضافة سؤال تشخيصي جديد لهذا النموذج
+        </button>
+      `;
+
+      document.getElementById('service-form-modal').classList.remove('hidden');
+      bindAllDirectEditables();
+    }
+
+    function addFormQuestion() {
+      const arrKey = activeFormSide === 'data' ? 'dataForms' : 'designForms';
+      SITE_CONFIG.formsSection[arrKey][activeFormIdx].questions.push({
+        qEn: 'New diagnostic question (click to edit):',
+        qAr: 'سؤال تشخيصي جديد (اضغط عليه لتعديله):'
+      });
+      openServiceFormModal(activeFormSide, activeFormIdx);
+      renderFormsSection();
+    }
+
+    function deleteFormQuestion(qIndex) {
+      const arrKey = activeFormSide === 'data' ? 'dataForms' : 'designForms';
+      SITE_CONFIG.formsSection[arrKey][activeFormIdx].questions.splice(qIndex, 1);
+      openServiceFormModal(activeFormSide, activeFormIdx);
+      renderFormsSection();
+    }
+
+    function closeServiceFormModal() {
+      document.getElementById('service-form-modal').classList.add('hidden');
+      renderFormsSection();
+      bindAllDirectEditables();
+    }
+
+    function collectFormSummary() {
+      const name = document.getElementById('form-client-name').value.trim();
+      const contact = document.getElementById('form-client-contact').value.trim();
+      const serviceTitle = t(activeFormObject.titleEn, activeFormObject.titleAr);
+      const answerEls = document.querySelectorAll('.form-dynamic-answer');
+
+      let bodyLines = [
+        `EYELYSIS Service Brief: ${serviceTitle}`,
+        `Client Name: ${name}`,
+        `Client Contact: ${contact}`,
+        `----------------------------------------`
+      ];
+
+      answerEls.forEach((el, idx) => {
+        const qObj = activeFormObject.questions[idx];
+        const qText = t(qObj.qEn, qObj.qAr);
+        bodyLines.push(`Q${idx + 1}: ${qText}`);
+        bodyLines.push(`Answer: ${el.value.trim()}\n`);
+      });
+
+      return { serviceTitle, text: bodyLines.join('\n') };
+    }
+
+    function submitServiceForm(e) {
+      e.preventDefault();
+      const { serviceTitle, text } = collectFormSummary();
+      const mailtoUrl = `mailto:${SITE_CONFIG.contact.email}?subject=${encodeURIComponent('EYELYSIS Brief: ' + serviceTitle)}&body=${encodeURIComponent(text)}`;
+      window.location.href = mailtoUrl;
+      closeServiceFormModal();
+    }
+
+    function submitServiceFormViaWhatsApp() {
+      const formEl = document.getElementById('dynamic-service-form');
+      if (!formEl.reportValidity()) return;
+      const { text } = collectFormSummary();
+      const cleanPhone = SITE_CONFIG.contact.whatsapp.replace(/[^0-9]/g, '');
+      const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
+      window.open(waUrl, '_blank');
+      closeServiceFormModal();
+    }
+
+    // ============================================================================
+    // 6. CUSTOM SECTIONS RENDERER (LINK-BASED IMAGES)
+    // ============================================================================
+    function renderCustomSections() {
+      const slots = {
+        'after-hero': document.getElementById('custom-slot-after-hero'),
+        'after-wheels': document.getElementById('custom-slot-after-wheels'),
+        'after-projects': document.getElementById('custom-slot-after-projects'),
+        'before-footer': document.getElementById('custom-slot-before-footer')
+      };
+
+      Object.values(slots).forEach(el => { if (el) el.innerHTML = ''; });
+
+      (SITE_CONFIG.customSections || []).forEach((sec, sIdx) => {
+        const targetSlot = slots[sec.placement] || slots['before-footer'];
+        const title = t(sec.titleEn, sec.titleAr);
+        const subtitle = t(sec.subtitleEn, sec.subtitleAr);
+        const accent = sec.accentColor || '#D4AA65';
+        const secTitlePath = `customSections.${sIdx}.${langKey('title')}`;
+        const secSubPath = `customSections.${sIdx}.${langKey('subtitle')}`;
+
+        let bodyHtml = '';
+
+        if (sec.layout === 'cards') {
+          const cardsHtml = (sec.cards || []).map((card, cIdx) => {
+            const cTitle = t(card.titleEn, card.titleAr);
+            const cText = t(card.textEn, card.textAr);
+            const cBadge = t(card.badgeEn, card.badgeAr);
+            const cBtn = t(card.btnTextEn, card.btnTextAr);
+            return `
+              <div class="glass-panel glass-card-hover rounded-3xl p-7 flex flex-col justify-between space-y-4 border-t-4 relative" style="border-top-color: ${accent}">
+                <div class="direct-edit-only items-center justify-between gap-2 pb-2 border-b border-[#D4AA65]/20 text-[10px]">
+                  <button onclick="promptImageLink('customSections.${sIdx}.cards.${cIdx}.imageUrl', 'رابط صورة البطاقة (اتركيه فارغاً لإزالة الصورة)')" class="px-2 py-1 rounded bg-[#D4AA65]/25 font-bold">
+                    🔗 رابط صورة البطاقة
+                  </button>
+                  <button onclick="SITE_CONFIG.customSections[${sIdx}].cards.splice(${cIdx},1); renderAll(); renderStudioPanel();" class="px-2 py-1 rounded bg-rose-500/20 text-rose-400 font-bold">🗑️ حذف البطاقة</button>
+                </div>
+                <div class="space-y-3">
+                  ${card.imageUrl ? `<img src="${card.imageUrl}" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80'" alt="${cTitle}" class="w-full h-44 object-cover rounded-2xl mb-2" />` : ''}
+                  ${cBadge ? `<span data-edit-path="customSections.${sIdx}.cards.${cIdx}.${langKey('badge')}" class="inline-block px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-widest bg-[#D4AA65]/20 text-[#9A6F27] dark:text-[#F1D396] border border-[#D4AA65]/40">${cBadge}</span>` : ''}
+                  <h3 data-edit-path="customSections.${sIdx}.cards.${cIdx}.${langKey('title')}" class="editorial-heading text-xl sm:text-2xl font-bold">${cTitle}</h3>
+                  <p data-edit-path="customSections.${sIdx}.cards.${cIdx}.${langKey('text')}" class="text-xs sm:text-sm text-[#383D46] dark:text-[#F6F2E9]/80 leading-relaxed">${cText}</p>
+                </div>
+                ${cBtn ? `
+                  <div class="pt-2">
+                    <a href="${card.btnUrl || '#'}" data-edit-path="customSections.${sIdx}.cards.${cIdx}.${langKey('btnText')}" onclick="if(!isDirectEditMode && '${card.btnUrl}'.startsWith('#')) navigateToSection('${(card.btnUrl||'').replace('#','')}')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-extrabold text-[#191C22] shadow transition hover:opacity-90" style="background:${accent}">
+                      <span>${cBtn}</span>
+                      <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </a>
+                  </div>
+                ` : ''}
+              </div>
+            `;
+          }).join('');
+
+          bodyHtml = `<div class="grid grid-cols-1 md:grid-cols-3 gap-6">${cardsHtml}</div>`;
+        } else if (sec.layout === 'banner') {
+          bodyHtml = `
+            <div class="glass-panel rounded-3xl p-8 sm:p-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center border-l-8" style="border-left-color: ${accent}">
+              <div class="space-y-4">
+                <h3 data-edit-path="${secTitlePath}" class="editorial-heading text-2xl sm:text-4xl font-bold">${title}</h3>
+                <p data-edit-path="${secSubPath}" class="text-sm sm:text-base text-[#383D46] dark:text-[#F6F2E9]/80 leading-relaxed">${subtitle}</p>
+                <button onclick="promptImageLink('customSections.${sIdx}.bannerImage', 'رابط صورة البانر')" class="direct-edit-inline px-3 py-1.5 rounded-xl bg-[#D4AA65] text-[#191C22] font-extrabold text-xs">🔗 تغيير رابط صورة البانر</button>
+              </div>
+              ${sec.bannerImage ? `<img src="${sec.bannerImage}" alt="${title}" class="w-full h-64 sm:h-80 object-cover rounded-2xl shadow-xl" />` : ''}
+            </div>
+          `;
+        } else if (sec.layout === 'html') {
+          bodyHtml = `
+            <div data-edit-path="customSections.${sIdx}.${langKey('freeHtml')}" class="glass-panel rounded-3xl p-6 sm:p-10 prose dark:prose-invert max-w-none">
+              ${t(sec.freeHtmlEn, sec.freeHtmlAr)}
+            </div>
+          `;
+        }
+
+        const sectionHtml = `
+          <section id="${sec.id}" class="space-y-8 scroll-mt-28">
+            <div class="direct-edit-only flex-wrap items-center justify-end gap-2">
+              <button onclick="SITE_CONFIG.customSections[${sIdx}].cards.push({badgeEn:'NEW', badgeAr:'جديد', titleEn:'New Card', titleAr:'بطاقة جديدة', textEn:'Click to edit card text...', textAr:'اضغط هنا لتعديل نص البطاقة...', imageUrl:'', btnTextEn:'', btnTextAr:'', btnUrl:''}); renderAll(); renderStudioPanel();" class="px-3 py-1.5 rounded-xl bg-[#D4AA65] text-[#191C22] font-extrabold text-xs">+ إضافة بطاقة لهذا القسم</button>
+              <button onclick="SITE_CONFIG.customSections.splice(${sIdx},1); renderAll(); renderStudioPanel();" class="px-3 py-1.5 rounded-xl bg-rose-500/20 text-rose-400 font-extrabold text-xs">🗑️ حذف هذا القسم</button>
+            </div>
+            ${sec.layout !== 'banner' ? `
+              <div class="text-center max-w-2xl mx-auto space-y-2">
+                <h2 data-edit-path="${secTitlePath}" class="editorial-heading text-2xl sm:text-4xl font-bold">${title}</h2>
+                <p data-edit-path="${secSubPath}" class="text-sm sm:text-base text-[#383D46] dark:text-[#F6F2E9]/75">${subtitle}</p>
+              </div>
+            ` : ''}
+            ${bodyHtml}
+          </section>
+        `;
+
+        targetSlot.insertAdjacentHTML('beforeend', sectionHtml);
+      });
+    }
+
+    function renderFloatingQuickNav() {
+      const nav = document.getElementById('floating-quick-nav');
+      if (!nav) return;
+
+      let buttonsHtml = `
+        <button onclick="navigateToSection('top')" class="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-[#D4AA65] hover:text-[#191C22] transition" title="${t('Top / Hero', 'الأعلى')}">
+          <i class="fa-solid fa-eye text-xs"></i>
+        </button>
+        <button onclick="navigateToSection('wheels-section')" class="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-[#D4AA65] hover:text-[#191C22] transition" title="${t('Service Wheels', 'دوائر الخدمات')}">
+          <i class="fa-solid fa-circle-nodes text-xs"></i>
+        </button>
+        <button onclick="navigateToSection('projects-section')" class="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-[#D4AA65] hover:text-[#191C22] transition" title="${t('Case Studies', 'معرض المشاريع')}">
+          <i class="fa-solid fa-layer-group text-xs"></i>
+        </button>
+        <button onclick="navigateToSection('forms-section')" class="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-[#D4AA65] hover:text-[#191C22] transition" title="${t('Service Briefs', 'نماذج الطلب')}">
+          <i class="fa-solid fa-file-signature text-xs"></i>
+        </button>
+      `;
+
+      (SITE_CONFIG.customSections || []).forEach((sec, idx) => {
+        buttonsHtml += `
+          <button onclick="navigateToSection('${sec.id}')" class="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-[#D4AA65] hover:text-[#191C22] transition font-extrabold text-[11px]" title="${t(sec.titleEn, sec.titleAr)}">
+            S${idx + 1}
+          </button>
+        `;
+      });
+
+      buttonsHtml += `
+        <button onclick="navigateToSection('footer-section')" class="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-[#D4AA65] hover:text-[#191C22] transition" title="${t('Contact', 'التواصل')}">
+          <i class="fa-solid fa-paper-plane text-xs"></i>
+        </button>
+      `;
+
+      nav.innerHTML = buttonsHtml;
+    }
+
+    function renderFooter() {
+      const c = SITE_CONFIG.contact;
+      const ft = document.getElementById('footer-title');
+      ft.textContent = t(c.footerTitleEn, c.footerTitleAr);
+      ft.setAttribute('data-edit-path', `contact.${langKey('footerTitle')}`);
+
+      const fs = document.getElementById('footer-subtitle');
+      fs.textContent = t(c.footerSubtitleEn, c.footerSubtitleAr);
+      fs.setAttribute('data-edit-path', `contact.${langKey('footerSubtitle')}`);
+
+      const fc = document.getElementById('footer-copyright');
+      fc.textContent = t(c.copyrightEn, c.copyrightAr);
+      fc.setAttribute('data-edit-path', `contact.${langKey('copyright')}`);
+
+      document.getElementById('footer-social-links').innerHTML = (c.socials || []).map((soc, sIdx) => `
+        <div class="flex items-center gap-1">
+          <a href="${soc.url}" target="_blank" onclick="if(isDirectEditMode){event.preventDefault(); promptImageLink('contact.socials.${sIdx}.url', 'رابط حساب ' + '${soc.label}');}" class="px-4 py-2.5 rounded-xl glass-panel flex items-center gap-2 text-xs sm:text-sm font-bold ${soc.color} transition" title="اضغطي في وضع التعديل لتغيير الرابط">
+            <i class="${soc.icon}"></i>
+            <span data-edit-path="contact.socials.${sIdx}.label">${soc.label}</span>
+          </a>
+        </div>
+      `).join('');
+    }
+
+    function navigateToSection(targetId) {
+      const currentScroll = window.scrollY;
+      if (currentScroll > 300) {
+        previousSectionId = 'wheels-section';
+      }
+      const el = document.getElementById(targetId);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+
+      const backBtn = document.getElementById('smart-back-btn');
+      const backLbl = document.getElementById('smart-back-label');
+      if (targetId !== 'top' && targetId !== 'wheels-section') {
+        backBtn.classList.remove('hidden');
+        backBtn.classList.add('flex');
+        backLbl.textContent = t('Back to Service Wheels', 'العودة لدوائر الخدمات');
+      } else {
+        backBtn.classList.add('hidden');
+      }
+    }
+
+    function goBackSection() {
+      navigateToSection(previousSectionId || 'wheels-section');
+    }
+
+    // ============================================================================
+    // 7. EYELYSIS STUDIO & LINK MAP CONTROLLER
+    // ============================================================================
+    function toggleStudioPanel() {
+      const panel = document.getElementById('studio-panel');
+      panel.classList.toggle('-translate-x-full');
+    }
+
+    function switchStudioTab(tab) {
+      activeStudioTab = tab;
+      ['general', 'files', 'custom', 'navbar', 'wheels', 'projects', 'forms', 'footer'].forEach(tName => {
+        const btn = document.getElementById('stab-' + tName);
+        if (!btn) return;
+        if (tName === tab) {
+          btn.className = 'px-3 py-2 rounded-t-lg border-b-2 border-[#D4AA65] text-[#9A6F27] dark:text-[#F1D396] whitespace-nowrap';
+        } else {
+          btn.className = 'px-3 py-2 rounded-t-lg border-b-2 border-transparent opacity-70 whitespace-nowrap';
+        }
+      });
+      renderStudioPanel();
+    }
+
+    function addNewCustomSection() {
+      const newSec = {
+        id: 'csec_' + Date.now(),
+        placement: 'before-footer',
+        layout: 'cards',
+        accentColor: '#D4AA65',
+        titleEn: 'New Eyelysis Section',
+        titleAr: 'قسم مخصص جديد',
+        subtitleEn: 'Editorial subtitle for this new section.',
+        subtitleAr: 'وصف فرعي لهذا القسم الجديد.',
+        bannerImage: 'images/custom-section-img.webp',
+        freeHtmlEn: '<p>Custom content...</p>',
+        freeHtmlAr: '<p>محتوى حر...</p>',
+        cards: [
+          {
+            badgeEn: '01 / INSIGHT',
+            badgeAr: '01 / رؤية',
+            titleEn: 'Card Title',
+            titleAr: 'عنوان البطاقة',
+            textEn: 'Detailed description for this card.',
+            textAr: 'وصف تفصيلي لهذه البطاقة.',
+            imageUrl: '',
+            btnTextEn: '',
+            btnTextAr: '',
+            btnUrl: ''
+          }
+        ]
+      };
+      SITE_CONFIG.customSections.push(newSec);
+      renderAll();
+      renderStudioPanel();
+      setTimeout(() => navigateToSection(newSec.id), 150);
+    }
+
+    function renderStudioPanel() {
+      const box = document.getElementById('studio-content');
+      if (!box) return;
+
+      if (activeStudioTab === 'general') {
+        box.innerHTML = `
+          <div class="space-y-4">
+            <div class="p-3.5 rounded-2xl bg-[#383D46]/15 border border-[#D4AA65]/40 space-y-2.5">
+              <div class="font-extrabold text-xs uppercase tracking-wider text-[#9A6F27] dark:text-[#F1D396]">
+                🎨 Case Study Palette (Page 05/11)
+              </div>
+              <div class="grid grid-cols-5 gap-1.5 text-center text-[10px] font-mono">
+                <div class="p-2 rounded-lg bg-[#191C22] text-[#F6F2E9] border border-[#D4AA65]/40">OBSIDIAN<br>#191C22</div>
+                <div class="p-2 rounded-lg bg-[#383D46] text-[#F6F2E9] border border-[#D4AA65]/40">GRAPHITE<br>#383D46</div>
+                <div class="p-2 rounded-lg bg-[#D4AA65] text-[#191C22] font-bold">GOLD<br>#D4AA65</div>
+                <div class="p-2 rounded-lg bg-[#F1D396] text-[#191C22] font-bold">CHAMPAGNE<br>#F1D396</div>
+                <div class="p-2 rounded-lg bg-[#F6F2E9] text-[#191C22] border border-[#383D46]/30 font-bold">PORCELAIN<br>#F6F2E9</div>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-[#D4AA65]/15 border border-[#D4AA65]/40 space-y-2.5">
+              <label class="font-extrabold block text-[#9A6F27] dark:text-[#F1D396]">
+                🔗 Logo Image Link / Path (Navbar, Hero & Footer)
+              </label>
+              <input type="text" value="${SITE_CONFIG.branding.logoImageUrl}" oninput="SITE_CONFIG.branding.logoImageUrl=this.value; syncBrandLogoImages()" class="w-full p-2 rounded-lg bg-[#F6F2E9] dark:bg-[#191C22] border border-[#D4AA65]/40 font-mono text-xs" placeholder="images/logo.webp or https://..." />
+              <label class="font-extrabold block text-[#9A6F27] dark:text-[#F1D396] pt-1">
+                🔗 Hero Background Image Link
+              </label>
+              <input type="text" value="${SITE_CONFIG.hero.heroBgImage}" oninput="SITE_CONFIG.hero.heroBgImage=this.value; renderHero()" class="w-full p-2 rounded-lg bg-[#F6F2E9] dark:bg-[#191C22] border border-[#D4AA65]/40 font-mono text-xs" placeholder="images/hero-bg.webp or https://..." />
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-[#383D46]/20 border border-[#D4AA65]/30 flex items-center justify-between">
+              <div>
+                <span class="font-extrabold block text-[#9A6F27] dark:text-[#F1D396]">Hide Studio & Edit Bars for Visitors</span>
+                <span class="text-[10px] opacity-80">Unlock anytime via <strong>Ctrl+Shift+E</strong> or clicking copyright 5x.</span>
+              </div>
+              <input type="checkbox" ${SITE_CONFIG.settings.hideStudioButtonForVisitors ? 'checked' : ''} onchange="SITE_CONFIG.settings.hideStudioButtonForVisitors=this.checked; updateStudioButtonVisibility();" class="w-5 h-5" />
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block font-bold mb-1">Default Theme Mode</label>
+                <select onchange="applyThemeMode(this.value)" class="w-full p-2 rounded-lg bg-[#F6F2E9] dark:bg-[#191C22] border border-[#D4AA65]/40 font-bold">
+                  <option value="dark" ${SITE_CONFIG.settings.defaultTheme === 'dark' ? 'selected' : ''}>Obsidian Dark (#191C22)</option>
+                  <option value="light" ${SITE_CONFIG.settings.defaultTheme === 'light' ? 'selected' : ''}>Porcelain & Champagne Light (#F6F2E9)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold mb-1">Flash Speed (Seconds)</label>
+                <input type="number" step="0.5" min="0.5" value="${SITE_CONFIG.settings.flashIntervalSeconds}" oninput="SITE_CONFIG.settings.flashIntervalSeconds=this.value" class="w-full p-2 rounded-lg bg-[#F6F2E9] dark:bg-[#191C22] border border-[#D4AA65]/40" />
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (activeStudioTab === 'files') {
+        box.innerHTML = `
+          <div class="space-y-4">
+            <div class="p-3.5 rounded-2xl bg-[#D4AA65]/15 border border-[#D4AA65]/40 space-y-1.5">
+              <div class="font-extrabold text-sm text-[#9A6F27] dark:text-[#F1D396] flex items-center gap-2">
+                <i class="fa-solid fa-link"></i>
+                <span>How Image Links Work</span>
+              </div>
+              <p class="text-[11px] leading-relaxed opacity-90">
+                You can paste any direct external image link (<code>https://...</code>) OR local path inside your GitHub repository (<code>images/file.webp</code>).
+              </p>
+            </div>
+          </div>
+        `;
+      } else if (activeStudioTab === 'custom') {
+        const secsHtml = (SITE_CONFIG.customSections || []).map((sec, sIdx) => `
+          <div class="p-3.5 rounded-2xl bg-[#383D46]/15 border border-[#D4AA65]/35 space-y-3">
+            <div class="flex items-center justify-between border-b border-[#D4AA65]/25 pb-2">
+              <div class="flex items-center gap-2">
+                <input type="color" value="${sec.accentColor || '#D4AA65'}" oninput="SITE_CONFIG.customSections[${sIdx}].accentColor=this.value; renderAll()" class="w-6 h-6 rounded cursor-pointer border-0" />
+                <span class="font-extrabold text-sm">${sec.titleEn}</span>
+              </div>
+              <button onclick="SITE_CONFIG.customSections.splice(${sIdx},1); renderAll(); renderStudioPanel();" class="px-2 py-1 rounded bg-rose-500/20 text-rose-400 font-bold">Delete</button>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <select onchange="SITE_CONFIG.customSections[${sIdx}].placement=this.value; renderAll()" class="p-1.5 rounded bg-[#F6F2E9] dark:bg-[#191C22] font-semibold">
+                <option value="after-hero" ${sec.placement === 'after-hero' ? 'selected' : ''}>Below Hero</option>
+                <option value="after-wheels" ${sec.placement === 'after-wheels' ? 'selected' : ''}>Below Wheels</option>
+                <option value="after-projects" ${sec.placement === 'after-projects' ? 'selected' : ''}>Below Projects</option>
+                <option value="before-footer" ${sec.placement === 'before-footer' ? 'selected' : ''}>Above Footer</option>
+              </select>
+              <select onchange="SITE_CONFIG.customSections[${sIdx}].layout=this.value; renderAll(); renderStudioPanel();" class="p-1.5 rounded bg-[#F6F2E9] dark:bg-[#191C22] font-semibold">
+                <option value="cards" ${sec.layout === 'cards' ? 'selected' : ''}>Cards Grid</option>
+                <option value="banner" ${sec.layout === 'banner' ? 'selected' : ''}>Split Banner</option>
+                <option value="html" ${sec.layout === 'html' ? 'selected' : ''}>Free HTML</option>
+              </select>
+            </div>
+          </div>
+        `).join('');
+
+        box.innerHTML = `
+          <div class="space-y-4">
+            <button onclick="addNewCustomSection()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#D4AA65] to-[#F1D396] text-[#191C22] font-extrabold shadow-lg">
+              + Add New Custom Section
+            </button>
+            <div class="space-y-4">${secsHtml}</div>
+          </div>
+        `;
+      } else if (activeStudioTab === 'navbar') {
+        box.innerHTML = `
+          <div class="space-y-3">
+            <button onclick="SITE_CONFIG.navbar.push({id:'nav_'+Date.now(), labelEn:'New Link', labelAr:'رابط جديد', href:'#', children:[]}); renderAll(); renderStudioPanel();" class="w-full py-2 rounded-xl bg-[#D4AA65] text-[#191C22] font-extrabold">+ Add Top Menu Item</button>
+            ${SITE_CONFIG.navbar.map((n, idx) => `
+              <div class="p-3 rounded-xl bg-[#383D46]/15 space-y-2">
+                <div class="flex justify-between">
+                  <span class="font-bold">${n.labelEn}</span>
+                  <button onclick="SITE_CONFIG.navbar.splice(${idx},1); renderAll(); renderStudioPanel();" class="text-rose-500">Delete</button>
+                </div>
+                <input type="text" value="${n.href}" oninput="SITE_CONFIG.navbar[${idx}].href=this.value; renderAll()" class="w-full p-1.5 rounded bg-[#F6F2E9] dark:bg-[#191C22] font-mono" placeholder="#section-id" />
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else if (activeStudioTab === 'wheels') {
+        box.innerHTML = `<div class="p-3 rounded-xl bg-[#383D46]/15">Use the direct boxes right below each wheel on the page to edit slice colors, names, and image links!</div>`;
+      } else if (activeStudioTab === 'projects') {
+        box.innerHTML = `<div class="p-3 rounded-xl bg-[#383D46]/15">Use the direct link fields under each project item on the page (or inside the Behance popup) to paste your image URLs!</div>`;
+      } else if (activeStudioTab === 'forms') {
+        box.innerHTML = `<div class="p-3 rounded-xl bg-[#383D46]/15">Click any brief card on the page to edit questions directly or add new diagnostic questions!</div>`;
+      } else if (activeStudioTab === 'footer') {
+        box.innerHTML = `
+          <div class="space-y-3">
+            <div>
+              <label class="block font-bold mb-1">Receiving Email</label>
+              <input type="email" value="${SITE_CONFIG.contact.email}" oninput="SITE_CONFIG.contact.email=this.value; renderAll()" class="w-full p-2 rounded-lg bg-[#F6F2E9] dark:bg-[#191C22] border border-[#D4AA65]/40" />
+            </div>
+            <div>
+              <label class="block font-bold mb-1">WhatsApp Number</label>
+              <input type="text" value="${SITE_CONFIG.contact.whatsapp}" oninput="SITE_CONFIG.contact.whatsapp=this.value; renderAll()" class="w-full p-2 rounded-lg bg-[#F6F2E9] dark:bg-[#191C22] border border-[#D4AA65]/40" />
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function exportUpdatedHTML() {
+      const configScript = document.getElementById('master-config-script');
+      configScript.textContent = `\n    const IMAGE_FALLBACK_MAP = ${JSON.stringify(IMAGE_FALLBACK_MAP, null, 2)};\n    let SITE_CONFIG = ${JSON.stringify(SITE_CONFIG, null, 2)};\n  `;
+
+      const panel = document.getElementById('studio-panel');
+      panel.classList.add('-translate-x-full');
+
+      const fullHtml = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'index.html';
+      a.click();
+    }
+
+    function exportCleanVisitorHTML() {
+      const prevHide = SITE_CONFIG.settings.hideStudioButtonForVisitors;
+      SITE_CONFIG.settings.hideStudioButtonForVisitors = true;
+      isDirectEditMode = false;
+      updateStudioButtonVisibility();
+      document.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+
+      exportUpdatedHTML();
+
+      SITE_CONFIG.settings.hideStudioButtonForVisitors = prevHide;
+      isDirectEditMode = true;
+      updateStudioButtonVisibility();
+    }
+  </script>
+</body>
+</html>
