@@ -2,20 +2,20 @@
 <html lang="en" dir="ltr" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EYELYSIS | Visual Design & Data Intelligence</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>EYELYSIS | Creative Intelligence</title>
 
-  <!-- الخطوط الرسمية المعتمدة للهوية + خط جوجل العربي -->
+  <!-- خطوط احترافية للغتين: IBM Plex Sans Arabic و Cairo للعربية + Inter و Noto Serif Display للإنجليزية -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Serif+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
-  <!-- مكتبة أيقونات Lucide الاحترافية -->
+  <!-- مكتبة أيقونات Lucide -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
     /* ==========================================================================
-       1. المتغيرات اللونية والخطوط من ملف الهوية (Eyelysis Case Study)
+       1. المتغيرات اللونية والخطوط المعتمدة للهوية البصرية
        ========================================================================== */
     :root {
       --obsidian: #191C22;
@@ -28,9 +28,9 @@
       --bg-primary: #191C22;
       --bg-secondary: #20242C;
       --bg-elevated: #282D37;
-      --bg-glass: rgba(25, 28, 34, 0.82);
-      --bg-card: rgba(40, 45, 55, 0.55);
-      --bg-card-hover: rgba(56, 61, 70, 0.85);
+      --bg-glass: rgba(25, 28, 34, 0.84);
+      --bg-card: rgba(40, 45, 55, 0.58);
+      --bg-card-hover: rgba(56, 61, 70, 0.88);
       --text-primary: #F6F2E9;
       --text-secondary: #C5C1B8;
       --accent-primary: #D4AA65;
@@ -39,7 +39,8 @@
       --border-strong: rgba(212, 170, 101, 0.55);
       --shadow-main: 0 18px 45px rgba(0, 0, 0, 0.55);
 
-      --font-ar: 'Noto Sans Arabic', sans-serif;
+      --font-ar-body: 'IBM Plex Sans Arabic', sans-serif;
+      --font-ar-heading: 'Cairo', 'IBM Plex Sans Arabic', sans-serif;
       --font-en-sans: 'Inter', sans-serif;
       --font-en-serif: 'Noto Serif Display', serif;
     }
@@ -49,8 +50,8 @@
       --bg-primary: #F6F2E9;
       --bg-secondary: #EBE4D4;
       --bg-elevated: #FFFFFF;
-      --bg-glass: rgba(246, 242, 233, 0.88);
-      --bg-card: rgba(255, 255, 255, 0.78);
+      --bg-glass: rgba(246, 242, 233, 0.9);
+      --bg-card: rgba(255, 255, 255, 0.82);
       --bg-card-hover: rgba(241, 211, 150, 0.35);
       --text-primary: #191C22;
       --text-secondary: #383D46;
@@ -65,10 +66,12 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     html {
       scroll-behavior: smooth;
+      overflow-x: hidden;
     }
 
     body {
@@ -79,13 +82,24 @@
       overflow-x: hidden;
       transition: background-color 0.35s ease, color 0.35s ease;
       min-height: 100vh;
+      position: relative;
     }
 
     html[lang="ar"] body {
-      font-family: var(--font-ar);
+      font-family: var(--font-ar-body);
+      line-height: 1.8;
     }
 
-    /* الخلفية التفاعلية المتحركة */
+    html[lang="ar"] h1,
+    html[lang="ar"] h2,
+    html[lang="ar"] h3,
+    html[lang="ar"] .wheel-title,
+    html[lang="ar"] .pillar-title {
+      font-family: var(--font-ar-heading);
+      letter-spacing: 0;
+    }
+
+    /* الخلفية التفاعلية المتحركة الاحترافية */
     #brand-canvas {
       position: fixed;
       inset: 0;
@@ -103,8 +117,20 @@
       box-shadow: var(--shadow-main);
     }
 
+    /* جعل خلفية اللوغو شفافة تماماً وإزالة الخلفية السوداء */
+    .logo-transparent {
+      background: transparent !important;
+      mix-blend-mode: screen;
+      filter: url(#remove-black-bg) drop-shadow(0 2px 10px rgba(212, 170, 101, 0.3));
+    }
+
+    [data-theme="light"] .navbar .logo-transparent {
+      mix-blend-mode: normal;
+      filter: url(#remove-black-bg) drop-shadow(0 2px 6px rgba(25, 28, 34, 0.25));
+    }
+
     /* ==========================================================================
-       2. الشريط العلوي الثابت مع اللوجو من Google Drive وأزرار اللغتين والمودين
+       2. الشريط العلوي الثابت (Navbar) + دعم كامل للموبايل
        ========================================================================== */
     .navbar {
       position: fixed;
@@ -117,7 +143,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 32px;
-      direction: ltr; /* يبقى الشعار يساراً وأدوات التبديل يميناً في جميع الصفحات */
+      direction: ltr;
       border-bottom: 1px solid var(--border-subtle);
     }
 
@@ -128,13 +154,13 @@
       text-decoration: none;
       color: var(--text-primary);
       cursor: pointer;
+      flex-shrink: 0;
     }
 
     .brand-logo-img {
       height: 48px;
       width: auto;
       object-fit: contain;
-      filter: drop-shadow(0 2px 10px rgba(212, 170, 101, 0.35));
       transition: transform 0.3s ease;
     }
 
@@ -147,30 +173,29 @@
       flex-direction: column;
     }
 
-    /* اسم الموقع ثابت بالإنجليزية دائماً كما طلبت */
     .brand-main-title {
       font-family: var(--font-en-sans);
-      font-weight: 400;
+      font-weight: 500;
       font-size: 1.22rem;
       letter-spacing: 0.25em;
       color: var(--text-primary);
+      line-height: 1.2;
     }
 
     .brand-sub-title {
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
+      font-family: var(--font-en-sans);
+      font-size: 0.64rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
       color: var(--accent-primary);
-    }
-
-    html[lang="ar"] .brand-sub-title {
-      letter-spacing: 0;
+      text-transform: uppercase;
     }
 
     /* القوائم المنسدلة العلوية */
     .nav-menus {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     html[lang="ar"] .nav-menus {
@@ -244,11 +269,11 @@
       color: var(--accent-primary);
     }
 
-    /* أزرار التبديل المزدوجة (اللغتين معاً + المودين معاً) */
+    /* أزرار التبديل + زر قائمة الموبايل */
     .nav-controls {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .switcher-pill {
@@ -265,13 +290,13 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 12px;
+      padding: 6px 11px;
       border-radius: 999px;
       border: none;
       background: transparent;
       color: var(--text-secondary);
       font-family: inherit;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.25s ease;
@@ -288,22 +313,93 @@
     }
 
     .flag-svg {
-      width: 20px;
-      height: 14px;
+      width: 18px;
+      height: 13px;
       border-radius: 2px;
       flex-shrink: 0;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
     }
 
+    .mobile-menu-btn {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      color: var(--gold);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    /* القائمة المنزلقة للموبايل (Mobile Drawer) */
+    .mobile-drawer {
+      position: fixed;
+      top: 82px;
+      left: 0;
+      right: 0;
+      max-height: calc(100vh - 82px);
+      overflow-y: auto;
+      z-index: 1190;
+      padding: 20px 24px 32px;
+      transform: translateY(-110%);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+      border-bottom: 2px solid var(--gold);
+    }
+
+    .mobile-drawer.open {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-group {
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 12px;
+    }
+
+    .mobile-nav-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .mobile-nav-links {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+
+    .mobile-nav-item {
+      padding: 9px 12px;
+      border-radius: 8px;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 0.88rem;
+      text-decoration: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
     /* ==========================================================================
-       3. القائمة الجانبية لمنصات التواصل الاجتماعي + أزرار التنقل السريع
+       3. القائمة الجانبية لمنصات التواصل (ثابتة على يمين الموقع في جميع الصفحات)
        ========================================================================== */
     .social-sidebar {
       position: fixed;
       top: 50%;
-      left: 20px;
+      right: 18px !important;
+      left: auto !important;
       transform: translateY(-50%);
-      z-index: 1100;
+      z-index: 1150;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -311,35 +407,43 @@
       border-radius: 999px;
     }
 
-    html[lang="ar"] .social-sidebar {
-      left: auto;
-      right: 20px;
-    }
-
     .social-link {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--text-secondary);
+      color: var(--text-primary);
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       text-decoration: none;
       transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .social-link svg {
+      width: 19px;
+      height: 19px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.25s ease;
     }
 
     .social-link:hover {
       color: #191C22;
       background: var(--gold);
       border-color: var(--gold);
-      transform: scale(1.12);
+      transform: translateX(-4px) scale(1.08);
+      box-shadow: 0 6px 18px rgba(212, 170, 101, 0.45);
     }
 
     .quick-float-nav {
       position: fixed;
-      bottom: 22px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 1100;
@@ -348,6 +452,9 @@
       gap: 6px;
       padding: 6px 10px;
       border-radius: 999px;
+      max-width: 94vw;
+      overflow-x: auto;
+      white-space: nowrap;
     }
 
     .quick-nav-link {
@@ -362,6 +469,7 @@
       border: none;
       background: transparent;
       font-family: inherit;
+      flex-shrink: 0;
     }
 
     .quick-nav-link:hover {
@@ -382,7 +490,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 64px 72px;
+      padding: 64px 84px 64px 72px;
       overflow: hidden;
     }
 
@@ -403,7 +511,7 @@
     }
 
     .hero-grid {
-      max-width: 1260px;
+      max-width: 1240px;
       width: 100%;
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
@@ -427,14 +535,15 @@
     }
 
     .hero-headline {
-      font-size: clamp(2.3rem, 4.4vw, 4rem);
+      font-size: clamp(2.1rem, 4.2vw, 3.8rem);
       font-weight: 700;
-      line-height: 1.15;
+      line-height: 1.22;
       margin-bottom: 20px;
     }
 
     html[lang="en"] .hero-headline {
       font-family: var(--font-en-serif);
+      line-height: 1.15;
     }
 
     .gold-gradient-text {
@@ -444,9 +553,9 @@
     }
 
     .hero-desc {
-      font-size: 1.08rem;
+      font-size: 1.06rem;
       color: var(--text-secondary);
-      max-width: 600px;
+      max-width: 610px;
       margin-bottom: 30px;
     }
 
@@ -498,6 +607,7 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
       font-family: inherit;
       font-size: 0.95rem;
@@ -520,6 +630,7 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
       font-family: inherit;
       font-size: 0.95rem;
@@ -560,6 +671,7 @@
       flex-direction: column;
       align-items: center;
       gap: 8px;
+      text-align: center;
     }
 
     .bar-fill {
@@ -568,12 +680,12 @@
     }
 
     /* ==========================================================================
-       5. قسم الدائرتين + نافذة الفلاش التي تتبع يمين مؤشر الماوس
+       5. قسم عجلات الدوائر بتصميم مشابه لعلامة Google Chrome وتباين لوني قوي
        ========================================================================== */
     .section-wrapper {
-      max-width: 1340px;
+      max-width: 1320px;
       margin: 0 auto;
-      padding: 84px 72px;
+      padding: 84px 84px 84px 72px;
       position: relative;
     }
 
@@ -597,7 +709,7 @@
     }
 
     .section-title {
-      font-size: clamp(1.85rem, 3vw, 2.65rem);
+      font-size: clamp(1.75rem, 3vw, 2.6rem);
       font-weight: 700;
       margin-bottom: 12px;
     }
@@ -617,7 +729,7 @@
 
     .wheel-pedestal {
       border-radius: 28px;
-      padding: 36px 28px;
+      padding: 36px 26px;
       text-align: center;
       position: relative;
       overflow: hidden;
@@ -625,14 +737,14 @@
     }
 
     .wheel-pedestal.analytics-theme {
-      background: radial-gradient(circle at top left, rgba(56, 61, 70, 0.72), rgba(25, 28, 34, 0.92));
-      border: 1px solid rgba(241, 211, 150, 0.28);
+      background: radial-gradient(circle at top left, rgba(56, 61, 70, 0.72), rgba(25, 28, 34, 0.94));
+      border: 1px solid rgba(241, 211, 150, 0.32);
       box-shadow: 0 22px 50px rgba(0, 0, 0, 0.45);
     }
 
     .wheel-pedestal.design-theme {
-      background: radial-gradient(circle at top right, rgba(212, 170, 101, 0.22), rgba(25, 28, 34, 0.92));
-      border: 1px solid rgba(212, 170, 101, 0.45);
+      background: radial-gradient(circle at top right, rgba(212, 170, 101, 0.24), rgba(25, 28, 34, 0.94));
+      border: 1px solid rgba(212, 170, 101, 0.48);
       box-shadow: 0 22px 50px rgba(212, 170, 101, 0.12);
     }
 
@@ -677,42 +789,36 @@
 
     .wheel-svg-container {
       width: 100%;
-      max-width: 450px;
+      max-width: 460px;
       margin: 0 auto;
       aspect-ratio: 1 / 1;
       position: relative;
     }
 
-    .wheel-sector {
+    .chrome-blade {
       cursor: pointer;
-      transition: all 0.28s ease;
-      stroke: rgba(212, 170, 101, 0.35);
-      stroke-width: 1.5px;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), filter 0.28s ease, opacity 0.28s ease;
+      transform-origin: 230px 230px;
     }
 
-    .wheel-sector:hover {
-      fill: var(--gold) !important;
-      filter: drop-shadow(0 0 16px rgba(212, 170, 101, 0.65));
-    }
-
-    .wheel-group:hover .wheel-label-line {
-      fill: #191C22 !important;
-      font-weight: 700;
+    .wheel-group:hover .chrome-blade {
+      transform: scale(1.035);
+      filter: drop-shadow(0 0 18px rgba(212, 170, 101, 0.75)) brightness(1.08);
     }
 
     .wheel-label-line {
-      font-size: 9.2px;
-      font-weight: 600;
-      fill: #F6F2E9;
+      font-size: 9.6px;
+      font-weight: 700;
       pointer-events: none;
-      transition: fill 0.2s ease;
+      transition: all 0.2s ease;
     }
 
-    [data-theme="light"] .wheel-label-line {
-      fill: #191C22;
+    html[lang="ar"] .wheel-label-line {
+      font-family: var(--font-ar-heading);
+      font-size: 10px;
     }
 
-    /* نافذة الفلاش العائمة التي تظهر على يمين مؤشر الماوس */
+    /* نافذة الفلاش العائمة */
     .wheel-flash-popover {
       position: fixed;
       top: 0;
@@ -723,7 +829,7 @@
       z-index: 2500;
       opacity: 0;
       visibility: hidden;
-      pointer-events: none; /* لا تعيق حركة الماوس أثناء التنقل في العجلة */
+      pointer-events: none;
       transition: opacity 0.18s ease, visibility 0.18s ease;
       border: 1px solid var(--gold);
       box-shadow: 0 24px 55px rgba(0, 0, 0, 0.78);
@@ -737,7 +843,7 @@
     .flash-image-frame {
       position: relative;
       width: 100%;
-      height: 195px;
+      height: 190px;
       border-radius: 12px;
       overflow: hidden;
       background: #111318;
@@ -781,7 +887,7 @@
     }
 
     /* ==========================================================================
-       6. قسم استعراض الخدمات (قوائم منسدلة عند التأشير بدلاً من الصناديق)
+       6. قسم استعراض الخدمات (يدعم التأشير على الكمبيوتر واللمس على الموبايل)
        ========================================================================== */
     .services-filter-bar {
       display: flex;
@@ -791,7 +897,7 @@
 
     .search-input-wrap {
       width: 100%;
-      max-width: 500px;
+      max-width: 520px;
       position: relative;
     }
 
@@ -834,6 +940,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
     }
 
     .service-hover-group {
@@ -848,28 +955,32 @@
       border: none;
       color: var(--text-primary);
       font-family: inherit;
-      font-size: 1.05rem;
+      font-size: 1.04rem;
       font-weight: 600;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
       cursor: pointer;
       transition: all 0.25s ease;
       text-align: start;
     }
 
-    .service-hover-group:hover .service-main-trigger {
+    .service-hover-group:hover .service-main-trigger,
+    .service-hover-group.open .service-main-trigger {
       color: var(--gold);
-      padding-inline-start: 22px;
-      background: rgba(212, 170, 101, 0.07);
+      padding-inline-start: 20px;
+      background: rgba(212, 170, 101, 0.08);
     }
 
     .trigger-icon {
       transition: transform 0.3s ease;
       color: var(--accent-primary);
+      flex-shrink: 0;
     }
 
-    .service-hover-group:hover .trigger-icon {
+    .service-hover-group:hover .trigger-icon,
+    .service-hover-group.open .trigger-icon {
       transform: rotate(180deg);
     }
 
@@ -887,9 +998,18 @@
       background: rgba(212, 170, 101, 0.08);
     }
 
-    .service-hover-group:hover .service-sub-dropdown,
+    @media (hover: hover) and (pointer: fine) {
+      .service-hover-group:hover .service-sub-dropdown {
+        max-height: 750px;
+        opacity: 1;
+        padding: 10px 14px 16px;
+        margin-bottom: 12px;
+      }
+    }
+
+    .service-hover-group.open .service-sub-dropdown,
     .service-hover-group.force-open .service-sub-dropdown {
-      max-height: 680px;
+      max-height: 750px;
       opacity: 1;
       padding: 10px 14px 16px;
       margin-bottom: 12px;
@@ -899,8 +1019,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 10px;
       width: 100%;
-      padding: 9px 12px;
+      padding: 10px 12px;
       border: none;
       background: transparent;
       color: var(--text-secondary);
@@ -925,7 +1046,7 @@
       display: none;
       max-width: 1180px;
       margin: 40px auto 90px;
-      padding: 0 72px;
+      padding: 0 84px 0 72px;
       animation: fadeIn 0.35s ease;
     }
 
@@ -990,50 +1111,29 @@
     }
 
     /* ==========================================================================
-       8. شريط السينما المتحرك (بدون أي نصوص قبله أو بعده أو فوق الصور)
+       8. شريط الصور السينمائي بدون أي إطار وبمسافات علوية وسفلية كبيرة
        ========================================================================== */
     .filmstrip-section {
-      padding: 20px 0 60px;
+      padding: 120px 0 135px;
       overflow: hidden;
       position: relative;
     }
 
     .filmstrip-reel {
-      background: #121419;
-      padding: 22px 0;
-      border-top: 3px solid var(--gold);
-      border-bottom: 3px solid var(--gold);
+      background: transparent;
+      padding: 0;
+      border: none;
+      box-shadow: none;
       position: relative;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
       direction: ltr;
     }
 
-    .filmstrip-reel::before,
-    .filmstrip-reel::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 12px;
-      background-image: repeating-linear-gradient(
-        to right,
-        transparent 0px,
-        transparent 12px,
-        rgba(246, 242, 233, 0.72) 12px,
-        rgba(246, 242, 233, 0.72) 28px
-      );
-      z-index: 3;
-    }
-
-    .filmstrip-reel::before { top: 5px; }
-    .filmstrip-reel::after { bottom: 5px; }
-
     .filmstrip-track {
       display: flex;
-      gap: 16px;
+      gap: 22px;
       width: max-content;
       animation: rollFilm 155s linear infinite;
-      padding: 12px 0;
+      padding: 10px 0;
     }
 
     .filmstrip-reel:hover .filmstrip-track {
@@ -1046,35 +1146,37 @@
     }
 
     .film-frame {
-      width: 245px;
-      height: 158px;
-      border-radius: 6px;
+      width: 265px;
+      height: 172px;
+      border-radius: 14px;
       overflow: hidden;
       position: relative;
-      border: 2px solid rgba(212, 170, 101, 0.35);
+      border: none;
       flex-shrink: 0;
-      background: #191C22;
+      background: transparent;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.38);
     }
 
     .film-frame img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.35s ease;
+      transition: transform 0.4s ease;
+      display: block;
     }
 
     .film-frame:hover img {
-      transform: scale(1.09);
+      transform: scale(1.08);
     }
 
     /* ==========================================================================
-       9. الجزء السفلي الحديث (Modern Architectural Footer)
+       9. الجزء السفلي (Footer) مع لوغو بخلفية شفافة تماماً
        ========================================================================== */
     .site-footer {
       position: relative;
       background: linear-gradient(180deg, var(--bg-secondary) 0%, #111318 100%);
       color: #F6F2E9;
-      padding: 80px 72px 95px;
+      padding: 80px 84px 100px 72px;
       border-top: 1px solid var(--border-strong);
     }
 
@@ -1153,7 +1255,7 @@
       inset: 0;
       background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(8px);
-      z-index: 2000;
+      z-index: 2600;
       display: none;
       align-items: center;
       justify-content: center;
@@ -1167,6 +1269,8 @@
       border-radius: 22px;
       background: var(--bg-secondary);
       border: 1px solid var(--gold);
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     .form-group {
@@ -1190,7 +1294,27 @@
       font-family: inherit;
     }
 
+    /* ==========================================================================
+       10. التجاوب الاحترافي الكامل مع الموبايل والأجهزة اللوحية
+       ========================================================================== */
     @media (max-width: 1080px) {
+      .navbar {
+        padding: 0 18px;
+        height: 74px;
+      }
+      .main-container {
+        padding-top: 74px;
+      }
+      .mobile-drawer {
+        top: 74px;
+        max-height: calc(100vh - 74px);
+      }
+      .nav-menus {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: inline-flex;
+      }
       .hero-grid,
       .wheels-dual-stage,
       .services-split-grid,
@@ -1202,27 +1326,128 @@
       .section-wrapper,
       #service-detail-view,
       .site-footer {
-        padding-inline: 24px;
-      }
-      .nav-menus,
-      .social-sidebar {
-        display: none;
+        padding-inline: 22px 68px;
       }
       .detail-gallery {
         grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .navbar {
+        padding: 0 12px;
+        height: 68px;
+      }
+      .main-container {
+        padding-top: 68px;
+      }
+      .mobile-drawer {
+        top: 68px;
+        max-height: calc(100vh - 68px);
+      }
+      .brand-logo-img {
+        height: 36px;
+      }
+      .brand-main-title {
+        font-size: 1rem;
+        letter-spacing: 0.16em;
+      }
+      .brand-sub-title {
+        font-size: 0.52rem;
+        letter-spacing: 0.1em;
+      }
+      .switcher-option {
+        padding: 5px 8px;
+        font-size: 0.72rem;
+      }
+      .switcher-option span {
+        display: none;
+      }
+      .hero-section {
+        padding: 36px 56px 44px 16px;
+        min-height: auto;
+      }
+      .section-wrapper {
+        padding: 54px 56px 54px 16px;
+      }
+      #service-detail-view {
+        padding: 0 56px 0 16px;
+      }
+      .site-footer {
+        padding: 56px 56px 96px 16px;
+      }
+      .hero-pillars {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .hero-actions {
+        flex-direction: column;
+      }
+      .hero-actions .btn-primary,
+      .hero-actions .btn-outline {
+        width: 100%;
+      }
+      .wheel-pedestal {
+        padding: 24px 14px;
+      }
+      .social-sidebar {
+        right: 8px !important;
+        padding: 8px 5px;
+        gap: 7px;
+      }
+      .social-link {
+        width: 34px;
+        height: 34px;
+      }
+      .social-link svg {
+        width: 16px;
+        height: 16px;
+      }
+      .filmstrip-section {
+        padding: 80px 0 90px;
+      }
+      .film-frame {
+        width: 210px;
+        height: 138px;
+      }
+      .footer-cta-banner {
+        padding: 26px 22px;
+      }
+      .detail-hero-box {
+        padding: 22px 18px;
+      }
+      .wheel-flash-popover {
+        width: calc(100vw - 74px);
+        max-width: 300px;
+        left: 14px !important;
+        top: auto !important;
+        bottom: 76px !important;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- الخلفية التفاعلية المتحركة -->
+  <!-- فلتر SVG لتحويل الخلفية السوداء للوغو إلى شفافة تماماً -->
+  <svg width="0" height="0" style="position:absolute;pointer-events:none;">
+    <defs>
+      <filter id="remove-black-bg" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="
+          1 0 0 0 0
+          0 1 0 0 0
+          0 0 1 0 0
+          1.8 1.8 1.8 0 -0.18" />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- الخلفية التفاعلية المتحركة الاحترافية -->
   <canvas id="brand-canvas"></canvas>
 
-  <!-- القائمة الجانبية لمنصات التواصل الاجتماعي -->
-  <aside class="social-sidebar glass" id="social-sidebar-container"></aside>
+  <!-- القائمة الجانبية لمنصات التواصل الاجتماعي (على يمين الموقع دائماً في العربي والإنجليزي) -->
+  <aside class="social-sidebar glass" id="social-sidebar-container" aria-label="Social Media Links"></aside>
 
-  <!-- شريط التنقل السريع العائم لتسهيل حركة العميل في الموقع -->
+  <!-- شريط التنقل السريع العائم -->
   <nav class="quick-float-nav glass">
     <button class="quick-nav-link" onclick="showHomePage()" data-i18n="floatTop">Top</button>
     <a class="quick-nav-link" href="#interactive-wheels" onclick="showHomePage()" data-i18n="floatWheels">Domains</a>
@@ -1232,24 +1457,22 @@
 
   <!-- ========================================================================
        الشريط العلوي الثابت (Navbar)
-       اليسار: اللوجو المرفق من Google Drive + اسم الموقع EYELYSIS ثابت بدون ترجمة
        ======================================================================== -->
   <header class="navbar glass">
     <a class="nav-logo" onclick="showHomePage()">
-      <!-- رابط اللوجو المباشر من Google Drive مع بديل تلقائي ذكي في حال تقييد الصلاحيات -->
       <img
         src="https://drive.google.com/thumbnail?id=19Vn2ScqjhwToGi9uUwOCr0utc6JjKetO&sz=w800"
         alt="EYELYSIS Logo"
-        class="brand-logo-img"
+        class="brand-logo-img logo-transparent"
         onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/19Vn2ScqjhwToGi9uUwOCr0utc6JjKetO';"
       />
       <div class="brand-title-box">
         <span class="brand-main-title">EYELYSIS</span>
-        <span class="brand-sub-title" data-i18n="brandTagline">DESIGN & ANALYTICS</span>
+        <span class="brand-sub-title" data-i18n="brandTagline">CREATIVE INTELLIGENCE</span>
       </div>
     </a>
 
-    <!-- المنتصف: القوائم المنسدلة -->
+    <!-- المنتصف: القوائم المنسدلة لسطح المكتب -->
     <nav class="nav-menus">
       <button class="nav-btn" onclick="showHomePage()" data-i18n="navHome">Home</button>
 
@@ -1278,7 +1501,7 @@
       </div>
     </nav>
 
-    <!-- أقصى اليمين: الأيقونتان للغتين معاً + الأيقونتان للمودين معاً -->
+    <!-- أقصى اليمين: أزرار اللغة والمود + زر قائمة الموبايل -->
     <div class="nav-controls">
       <div class="switcher-pill" role="group" aria-label="Language Switcher">
         <button class="switcher-option active" id="btn-lang-en" onclick="setLanguage('en')" title="English">
@@ -1297,20 +1520,41 @@
             <polygon points="0,0 16,12 0,24" fill="#CE1126"/>
             <circle cx="5.5" cy="12" r="1.6" fill="#fff"/>
           </svg>
-          <span style="font-family:var(--font-ar);">عربي</span>
+          <span style="font-family:var(--font-ar-body);">عربي</span>
         </button>
       </div>
 
       <div class="switcher-pill" role="group" aria-label="Theme Switcher">
         <button class="switcher-option" id="btn-theme-light" onclick="setTheme('light')" title="Light Mode">
-          <i data-lucide="sun" style="width:16px;height:16px;"></i>
+          <i data-lucide="sun" style="width:15px;height:15px;"></i>
         </button>
         <button class="switcher-option active" id="btn-theme-dark" onclick="setTheme('dark')" title="Dark Mode">
-          <i data-lucide="moon" style="width:16px;height:16px;"></i>
+          <i data-lucide="moon" style="width:15px;height:15px;"></i>
         </button>
       </div>
+
+      <button class="mobile-menu-btn" onclick="toggleMobileDrawer()" aria-label="Toggle Menu">
+        <i data-lucide="menu" style="width:20px;height:20px;"></i>
+      </button>
     </div>
   </header>
+
+  <!-- قائمة الموبايل المنزلقة (للتصفح السلس على الهواتف) -->
+  <div class="mobile-drawer glass" id="mobile-drawer">
+    <div class="mobile-nav-group">
+      <span class="mobile-nav-title" data-i18n="navGD">Graphic Design</span>
+      <div class="mobile-nav-links" id="mobile-gd-links"></div>
+    </div>
+    <div class="mobile-nav-group">
+      <span class="mobile-nav-title" data-i18n="navDA">Data Analytics</span>
+      <div class="mobile-nav-links" id="mobile-da-links"></div>
+    </div>
+    <div class="mobile-nav-group" style="border-bottom:none;margin-bottom:0;">
+      <button class="btn-primary" style="width:100%;" onclick="toggleMobileDrawer(); openOrderModal();">
+        <span data-i18n="floatOrder">Request Service</span>
+      </button>
+    </div>
+  </div>
 
   <!-- ========================================================================
        المحتوى الرئيسي للموقع
@@ -1327,10 +1571,10 @@
           <div>
             <div class="hero-badge">
               <i data-lucide="eye" style="width:16px;height:16px;"></i>
-              <span data-i18n="heroBadge">CREATIVE & ANALYTICAL INTELLIGENCE</span>
+              <span data-i18n="heroBadge">CREATIVE INTELLIGENCE STUDIO</span>
             </div>
             <h1 class="hero-headline" id="hero-title">
-              Insight, made <span class="gold-gradient-text">visible.</span>
+              Insight made <span class="gold-gradient-text">visible.</span>
             </h1>
             <p class="hero-desc" id="hero-subtitle">
               A distinctive visual language where aesthetic judgment in graphic design meets analytical intelligence in data science. Turning complex data into clear visual stories people can understand and act on.
@@ -1389,7 +1633,7 @@
               </div>
             </div>
 
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.84rem;color:var(--text-secondary);">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:0.84rem;color:var(--text-secondary);">
               <span data-i18n="cardVisualFooter">105 Design Services • 106 Analytics Services</span>
               <span style="color:var(--gold);font-weight:700;" data-i18n="cardVisualEdition">12 Integrated Solutions</span>
             </div>
@@ -1397,7 +1641,7 @@
         </div>
       </section>
 
-      <!-- 2. قسم الدائرتين التفاعليتين + ظهور صور الفلاش على يمين مؤشر الماوس -->
+      <!-- 2. قسم الدائرتين التفاعليتين بتصميم مستوحى من علامة جوجل كروم -->
       <section class="section-wrapper" id="interactive-wheels">
         <div class="section-header">
           <span class="section-tag" data-i18n="wheelsTag">INTERACTIVE DISCIPLINE WHEELS</span>
@@ -1431,7 +1675,7 @@
           </div>
         </div>
 
-        <!-- نافذة الفلاش العائمة التي تتبع يمين مؤشر الماوس -->
+        <!-- نافذة الفلاش العائمة -->
         <div class="wheel-flash-popover glass" id="wheel-flash-popover">
           <div style="display:flex;justify-content:space-between;align-items:center;">
             <span id="flash-cat-type" style="font-size:0.74rem;font-weight:700;color:var(--gold);"></span>
@@ -1448,13 +1692,13 @@
         </div>
       </section>
 
-      <!-- 3. قسم استعراض الخدمات (قوائم منسدلة عند التأشير) -->
+      <!-- 3. قسم استعراض الخدمات الشامل -->
       <section class="section-wrapper" id="services-catalog">
         <div class="section-header">
           <span class="section-tag" data-i18n="catalogTag">COMPREHENSIVE SERVICE DIRECTORY</span>
           <h2 class="section-title" data-i18n="catalogHeading">Specialized Services & Deliverables</h2>
           <p style="color:var(--text-secondary);" data-i18n="catalogSubheading">
-            Hover over any primary service category below to reveal its specialized sub-services, then click any task to view full requirements and request execution.
+            Hover over or tap any primary service category below to reveal its specialized sub-services, then select any task to view full requirements and request execution.
           </p>
         </div>
 
@@ -1472,7 +1716,7 @@
         <div style="margin-top:52px;" id="mx-column-list"></div>
       </section>
 
-      <!-- 4. شريط السينما المتحرك (بدون أي نصوص قبله أو بعده) -->
+      <!-- 4. شريط الصور المتحرك بدون إطار وبمسافة علوية وسفلية كبيرة -->
       <section class="filmstrip-section" id="filmstrip-showcase" aria-label="Visual Portfolio Reel">
         <div class="filmstrip-reel">
           <div class="filmstrip-track" id="filmstrip-track-container"></div>
@@ -1494,7 +1738,7 @@
           <span id="detail-service-cat" style="color:var(--gold);font-weight:700;font-size:0.92rem;"></span>
         </div>
 
-        <h1 id="detail-service-title" style="font-size:clamp(1.85rem, 3.2vw, 2.6rem);margin-bottom:14px;"></h1>
+        <h1 id="detail-service-title" style="font-size:clamp(1.7rem, 3.2vw, 2.5rem);margin-bottom:14px;"></h1>
         <p id="detail-service-desc" style="color:var(--text-secondary);font-size:1.05rem;line-height:1.8;"></p>
 
         <div class="detail-gallery" id="detail-service-gallery"></div>
@@ -1524,7 +1768,7 @@
   </main>
 
   <!-- ========================================================================
-       الجزء السفلي الاحترافي الحديث (مع بقاء اسم الموقع EYELYSIS بدون ترجمة)
+       الجزء السفلي الحديث (مع لوغو بخلفية شفافة تماماً)
        ======================================================================== -->
   <footer class="site-footer">
     <div class="footer-cta-banner">
@@ -1540,14 +1784,18 @@
 
     <div class="footer-grid">
       <div>
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
           <img
-            src="https://drive.google.com/thumbnail?id=19Vn2ScqjhwToGi9uUwOCr0utc6JjKetO&sz=w400"
+            src="https://drive.google.com/thumbnail?id=19Vn2ScqjhwToGi9uUwOCr0utc6JjKetO&sz=w800"
             alt="EYELYSIS Logo"
-            style="height:40px;width:auto;object-fit:contain;"
+            class="logo-transparent"
+            style="height:46px;width:auto;object-fit:contain;"
             onerror="this.onerror=null; this.src='https://lh3.googleusercontent.com/d/19Vn2ScqjhwToGi9uUwOCr0utc6JjKetO';"
           />
-          <span style="font-family:var(--font-en-sans);font-size:1.35rem;font-weight:500;letter-spacing:0.22em;color:var(--gold);">EYELYSIS</span>
+          <div style="display:flex;flex-direction:column;">
+            <span style="font-family:var(--font-en-sans);font-size:1.35rem;font-weight:500;letter-spacing:0.22em;color:var(--porcelain);line-height:1.15;">EYELYSIS</span>
+            <span style="font-family:var(--font-en-sans);font-size:0.62rem;font-weight:600;letter-spacing:0.16em;color:var(--gold);">CREATIVE INTELLIGENCE</span>
+          </div>
         </div>
         <p style="color:#C5C1B8;font-size:0.92rem;line-height:1.75;" data-i18n="footerBio">
           An integrated studio where graphic design thinking and analytical intelligence converge to build authoritative brands, clear reports, and high-impact visual systems.
@@ -1613,7 +1861,7 @@
   </div>
 
   <!-- ========================================================================
-       لوحة الإعدادات والبيانات
+       البيانات والمنطق البرمجي للموقع
        ======================================================================== -->
   <script>
     const SITE_CONFIG = {
@@ -1621,13 +1869,50 @@
       defaultTheme: "dark",
       flashIntervalMs: 3000,
 
+      /* أيقونات SVG مدمجة مباشرة لضمان ظهور LinkedIn و Instagram وجميع المنصات دائماً */
       socialLinks: [
-        { icon: "linkedin", url: "https://linkedin.com", titleEn: "LinkedIn", titleAr: "لينكد إن" },
-        { icon: "instagram", url: "https://instagram.com", titleEn: "Instagram", titleAr: "إنستغرام" },
-        { icon: "layers", url: "https://behance.net", titleEn: "Portfolio", titleAr: "معرض الأعمال" },
-        { icon: "globe", url: "https://x.com", titleEn: "Social X", titleAr: "منصة إكس" },
-        { icon: "message-circle", url: "https://wa.me/", titleEn: "WhatsApp", titleAr: "واتساب" },
-        { icon: "mail", url: "mailto:info@example.com", titleEn: "Email", titleAr: "البريد الإلكتروني" }
+        {
+          id: "linkedin",
+          url: "https://linkedin.com",
+          titleEn: "LinkedIn",
+          titleAr: "لينكد إن",
+          svg: `<svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>`
+        },
+        {
+          id: "instagram",
+          url: "https://instagram.com",
+          titleEn: "Instagram",
+          titleAr: "إنستغرام",
+          svg: `<svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>`
+        },
+        {
+          id: "behance",
+          url: "https://behance.net",
+          titleEn: "Behance Portfolio",
+          titleAr: "معرض الأعمال",
+          svg: `<svg viewBox="0 0 24 24"><path d="M3 6h5.5a3.5 3.5 0 0 1 0 7H3V6zm0 7h6a3.5 3.5 0 0 1 0 7H3v-7z"/><path d="M14 15h7a3.5 3.5 0 0 0-7 0v1a3.5 3.5 0 0 0 6.3 2"/><line x1="15" y1="7" x2="20" y2="7"/></svg>`
+        },
+        {
+          id: "x",
+          url: "https://x.com",
+          titleEn: "X Platform",
+          titleAr: "منصة إكس",
+          svg: `<svg viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></svg>`
+        },
+        {
+          id: "whatsapp",
+          url: "https://wa.me/",
+          titleEn: "WhatsApp",
+          titleAr: "واتساب",
+          svg: `<svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`
+        },
+        {
+          id: "email",
+          url: "mailto:info@eyelysis.com",
+          titleEn: "Email Us",
+          titleAr: "البريد الإلكتروني",
+          svg: `<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>`
+        }
       ],
 
       imagePools: {
@@ -1682,210 +1967,211 @@
       }
     };
 
+    /* مصطلحات عربية احترافية متداولة في مجالي التصميم الإبداعي وعلم البيانات بدون فواصل */
     const GD_CATEGORIES = [
       {
         id: "gd-1",
         wheelAr: ["الهوية البصرية", "والعلامات"],
         wheelEn: ["Brand", "Identity"],
-        titleAr: "الهوية البصرية والعلامات التجارية",
+        titleAr: "بناء الهوية البصرية والعلامات التجارية",
         titleEn: "Brand Identity & Branding",
         pool: "branding",
         services: [
           ["تصميم الشعارات الاحترافية", "Logo Design"],
-          ["تطوير تنويعات الشعار وأوضاعه", "Logo Variations & Lockups"],
-          ["تصميم منظومة الهوية البصرية المتكاملة", "Visual Identity System Design"],
-          ["إعداد لوحة الإلهام والتوجه البصري", "Moodboard Creation"],
-          ["تطوير لوحات الألوان المعتمدة للعلامة", "Brand Color Palette Development"],
-          ["اختيار النظام الطباعي والخطوط للعلامة", "Brand Typography System"],
-          ["تصميم الدليل المختصر للهوية البصرية", "Mini Brand Style Guide"],
-          ["إعداد الدليل الشامل لاستخدام العلامة", "Brand Guidelines Design"],
-          ["تحديث وتطوير الهوية البصرية الحالية", "Brand Identity Refresh"],
-          ["تصميم الأنماط الزخرفية وعناصر العلامة", "Brand Patterns & Graphic Elements"],
-          ["تطبيق الهوية البصرية على المطبوعات الورقية", "Brand Stationery Applications"],
-          ["تصميم نماذج العرض الواقعية للهوية", "Brand Presentation Mockups"]
+          ["تطوير بدائل الشعار وأوضاع الاستخدام", "Logo Variations & Lockups"],
+          ["بناء منظومة الهوية البصرية المتكاملة", "Visual Identity System Design"],
+          ["إعداد لوحات الإلهام والتوجه الفني", "Moodboard Creation"],
+          ["تأسيس الأنظمة اللونية للعلامة التجارية", "Brand Color Palette Development"],
+          ["اختيار الخطوط والنظام الطباعي للهوية", "Brand Typography System"],
+          ["إعداد الدليل المختصر للهوية البصرية", "Mini Brand Style Guide"],
+          ["تصميم الدليل الإرشادي الشامل للعلامة", "Brand Guidelines Design"],
+          ["تطوير وتحديث الهوية البصرية الحالية", "Brand Identity Refresh"],
+          ["ابتكار الأنماط البصرية والعناصر المساندة", "Brand Patterns & Graphic Elements"],
+          ["تطبيق الهوية على المطبوعات الرسمية", "Brand Stationery Applications"],
+          ["إخراج نماذج العرض الواقعية للهوية", "Brand Presentation Mockups"]
         ]
       },
       {
         id: "gd-2",
-        wheelAr: ["محتوى منصات", "التواصل"],
+        wheelAr: ["تصاميم منصات", "التواصل"],
         wheelEn: ["Social Media", "Content"],
-        titleAr: "محتوى ومنشورات وسائل التواصل الاجتماعي",
+        titleAr: "تصميم محتوى منصات التواصل الاجتماعي",
         titleEn: "Social Media Content Design",
         pool: "social",
         services: [
-          ["تصميم المنشورات الثابتة لمنصات التواصل", "Static Social Media Post Design"],
-          ["تصميم المنشورات المتسلسلة متعددة الشرائح", "Carousel Post Design"],
-          ["تصميم القصص المصورة اليومية", "Social Media Story Design"],
-          ["إنشاء قوالب منشورات قياسية قابلة للتعديل", "Editable Social Media Templates"],
-          ["تصميم أغلفة المقاطع المرئية القصيرة", "Reels Cover Design"],
-          ["تصميم صور الحسابات والملفات التعريفية", "Profile Picture Design"],
-          ["تصميم لافتات وأغلفة الصفحات الرسمية", "Social Media Header & Cover Design"],
-          ["تصميم الصور المصغرة للمقاطع المرئية", "Video Thumbnail Design"],
-          ["تصميم أيقونات القصص المثبتة", "Story Highlight Icon Design"],
-          ["تصميم تصاميم الحملات الموسمية والأعياد", "Seasonal Campaign Graphics"],
-          ["تصميم سلاسل المحتوى التثقيفي والمعرفي", "Educational Content Series Design"],
-          ["تصميم الإعلانات الترويجية لمنصات التواصل", "Social Media Ad Creatives"]
+          ["تصميم المنشورات الإبداعية الثابتة", "Static Social Media Post Design"],
+          ["تصميم المنشورات التفاعلية المتسلسلة كاروسيل", "Carousel Post Design"],
+          ["تصميم القصص اليومية ستوري", "Social Media Story Design"],
+          ["بناء قوالب النشر القياسية القابلة للتعديل", "Editable Social Media Templates"],
+          ["تصميم واجهات وأغلفة الريلز", "Reels Cover Design"],
+          ["تصميم صور الحسابات الرسمية للمنشآت", "Profile Picture Design"],
+          ["تصميم أغلفة البنرات للصفحات الرسمية", "Social Media Header & Cover Design"],
+          ["تصميم الصور المصغرة للفيديوهات ثامبنيل", "Video Thumbnail Design"],
+          ["تصميم أيقونات الهايلايت المثبتة", "Story Highlight Icon Design"],
+          ["تصميم حملات المناسبات والمواسم", "Seasonal Campaign Graphics"],
+          ["تصميم سلاسل المحتوى المعرفي والتسويقي", "Educational Content Series Design"],
+          ["تصميم إعلانات الحملات الممولة", "Social Media Ad Creatives"]
         ]
       },
       {
         id: "gd-3",
-        wheelAr: ["التصاميم الرقمية", "والإعلانية"],
+        wheelAr: ["واجهات الويب", "والإعلانات"],
         wheelEn: ["Digital & Ad", "Graphics"],
-        titleAr: "التصاميم الرقمية والإعلانات الشبكية",
+        titleAr: "تصميم الواجهات الرقمية والإعلانات الشبكية",
         titleEn: "Digital & Advertising Graphics",
         pool: "digital",
         services: [
-          ["تصميم اللافتات الإعلانية للمواقع الإلكترونية", "Web Display Banner Design"],
-          ["تصميم إعلانات إعادة الاستهداف الرقمي", "Retargeting Ad Graphics"],
-          ["تصميم رسومات الواجهة الترحيبية للمواقع", "Website Hero Graphics"],
-          ["التصميم البصري لواجهات صفحات الهبوط", "Landing Page Visual Design"],
-          ["تصميم قوالب النشرات البريدية الإلكترونية", "Email Newsletter Template Design"],
-          ["تصميم العناصر الرسومية للمتاجر الإلكترونية", "E-commerce Store Graphics"],
-          ["تصميم بطاقات العروض الترويجية للمواقع", "Website Promotional Tiles"],
-          ["تصميم أيقونات المواقع والتطبيقات الذكية", "Website & App Icon Design"],
-          ["تصميم النماذج البصرية لواجهات التطبيقات", "Mobile App UI Mockup Design"],
-          ["تصميم الأصول الرسومية للشاشات الرقمية", "Digital Screen Asset Design"]
+          ["تصميم البنرات الإعلانية للشبكات الرقمية", "Web Display Banner Design"],
+          ["تصميم إعلانات إعادة الاستهداف التسويقي", "Retargeting Ad Graphics"],
+          ["تصميم الواجهات الرئيسية للمواقع الإلكترونية", "Website Hero Graphics"],
+          ["التصميم البصري لصفحات الهبوط التسويقية", "Landing Page Visual Design"],
+          ["تصميم قوالب النشرات البريدية التسويقية", "Email Newsletter Template Design"],
+          ["تصميم واجهات وبنرات المتاجر الإلكترونية", "E-commerce Store Graphics"],
+          ["تصميم بطاقات العروض والحملات الترويجية", "Website Promotional Tiles"],
+          ["تصميم أيقونات التطبيقات والمنصات الرقمية", "Website & App Icon Design"],
+          ["التصميم البصري لواجهات تطبيقات الجوال", "Mobile App UI Mockup Design"],
+          ["تصميم المحتوى البصري للشاشات التفاعلية", "Digital Screen Asset Design"]
         ]
       },
       {
         id: "gd-4",
-        wheelAr: ["التصميم الطباعي", "واللافتات"],
+        wheelAr: ["المطبوعات", "والإعلان الخارجي"],
         wheelEn: ["Print Design", "& Signage"],
-        titleAr: "التصميم الطباعي واللافتات الإعلانية",
+        titleAr: "التصميم الطباعي وتجهيزات المعارض",
         titleEn: "Print Design & Signage",
         pool: "print",
         services: [
-          ["تصميم بطاقات الأعمال الشخصية", "Business Card Design"],
-          ["تصميم الأوراق الرسمية والمغلفات المطبوعة", "Letterhead & Envelope Design"],
-          ["تصميم المنشورات الورقية الترويجية", "Flyer Design"],
-          ["تصميم المطويات التعريفية متعددة الطيات", "Brochure Design"],
-          ["تصميم الملصقات الجدارية والإعلانية الكبيرة", "Poster Design"],
-          ["تصميم اللافتات القابلة للطي واللوحات المعرضية", "Banner & Roll-up Design"],
-          ["تصميم قوائم الطعام للمطاعم والمقاهي", "Menu Design"],
-          ["تصميم بطاقات الدعوة للمناسبات والفعاليات", "Invitation Card Design"],
-          ["تصميم شهادات التقدير والمشاركة الرسمية", "Certificate Design"],
-          ["تجهيز وضبط الملفات الفنية النهائية للطباعة", "Print-ready Artwork Preparation"]
+          ["تصميم بطاقات الأعمال التنفيذية", "Business Card Design"],
+          ["تصميم الورق الرسمي والمراسلات", "Letterhead & Envelope Design"],
+          ["تصميم الفلايرات الترويجية", "Flyer Design"],
+          ["تصميم البروشورات التعريفية المطوية", "Brochure Design"],
+          ["تصميم البوسترات والملصقات الإعلانية", "Poster Design"],
+          ["تصميم استاندات الرول أب وأجنحة المعارض", "Banner & Roll-up Design"],
+          ["تصميم قوائم الطعام والضيافة المنيو", "Menu Design"],
+          ["تصميم بطاقات الدعوات الرسمية للفعاليات", "Invitation Card Design"],
+          ["تصميم الشهادات الاحترافية والدروع", "Certificate Design"],
+          ["التجهيز الفني لملفات الفرز والطباعة", "Print-ready Artwork Preparation"]
         ]
       },
       {
         id: "gd-5",
-        wheelAr: ["النشر والتصميم", "التحريري"],
+        wheelAr: ["التصميم التحريري", "والتقارير"],
         wheelEn: ["Editorial &", "Publication"],
-        titleAr: "النشر المكتبي والتصميم التحريري",
+        titleAr: "التصميم التحريري والبروفايل المؤسسي",
         titleEn: "Editorial & Publication Design",
         pool: "print",
         services: [
-          ["تصميم أغلفة الكتب والمؤلفات", "Book Cover Design"],
-          ["تنسيق وإخراج الكتب الرقمية", "E-book Layout Design"],
-          ["تصميم وتنسيق المجلات والنشرات الدورية", "Magazine & Newsletter Layout"],
-          ["تصميم الملفات التعريفية للشركات والمؤسسات", "Company Profile Design"],
-          ["تصميم أدلة عرض المنتجات المصورة", "Product Catalog Design"],
-          ["تصميم وإخراج التقارير السنوية للمؤسسات", "Annual Report Design"],
-          ["تنسيق الأدلة الإرشادية والكتيبات التشغيلية", "Handbook & Manual Layout"],
-          ["تصميم القوالب الاحترافية للسير الذاتية", "Resume & CV Template Design"],
-          ["تصميم وتنسيق المستندات الرقمية التفاعلية", "Interactive PDF Layout Design"],
-          ["تصميم أوراق العمل والحقائب التدريبية", "Educational Worksheet Design"]
+          ["تصميم أغلفة الكتب والإصدارات", "Book Cover Design"],
+          ["الإخراج الفني للكتب الإلكترونية", "E-book Layout Design"],
+          ["تصميم وتنسيق المجلات والدوريات", "Magazine & Newsletter Layout"],
+          ["تصميم البروفايل التعريفي للشركات", "Company Profile Design"],
+          ["تصميم كتالوجات عرض المنتجات", "Product Catalog Design"],
+          ["الإخراج البصري للتقارير السنوية", "Annual Report Design"],
+          ["تنسيق الأدلة الإرشادية والتشغيلية", "Handbook & Manual Layout"],
+          ["تصميم السير الذاتية الاحترافية", "Resume & CV Template Design"],
+          ["تصميم الملفات التفاعلية الرقمية", "Interactive PDF Layout Design"],
+          ["تصميم الحقائب التدريبية والتعليمية", "Educational Worksheet Design"]
         ]
       },
       {
         id: "gd-6",
-        wheelAr: ["العبوات والمنتجات", "الدعائية"],
+        wheelAr: ["تصميم التغليف", "والمنتجات"],
         wheelEn: ["Packaging &", "Merchandise"],
-        titleAr: "تصميم العبوات والمنتجات الدعائية",
+        titleAr: "تصميم العبوات والتغليف التجاري",
         titleEn: "Packaging & Merchandise Design",
         pool: "branding",
         services: [
-          ["تصميم الملصقات التعريفية للمنتجات", "Product Label Design"],
-          ["تصميم الرسومات الخارجية لعلب المنتجات", "Product Box Artwork Design"],
-          ["تصميم الأغطية والأحزمة الورقية للعبوات", "Packaging Sleeve Design"],
-          ["تصميم عبوات وأغلفة مستحضرات التجميل", "Cosmetics Packaging Graphics"],
-          ["تصميم ملصقات وأغلفة المنتجات الغذائية", "Food Packaging Label Design"],
-          ["تصميم البطاقات المعلقة للمنتجات والملابس", "Hang Tag Design"],
-          ["تصميم الملصقات الإعلانية اللاصقة", "Sticker Design"],
-          ["تصميم الرسومات المطبوعة على القمصان", "T-shirt Graphic Design"],
-          ["تصميم المطبوعات الدعائية للأكواب والحقائب", "Mug & Tote Bag Graphics"],
-          ["إنتاج نماذج المحاكاة ثلاثية الأبعاد للعبوات", "Packaging Mockup Design"]
+          ["تصميم ملصقات المنتجات التجارية ليبل", "Product Label Design"],
+          ["التصميم الهيكلي والبصري لعلب المنتجات", "Product Box Artwork Design"],
+          ["تصميم الأحزمة والأغلفة الورقية للعبوات", "Packaging Sleeve Design"],
+          ["تصميم عبوات منتجات التجميل والعناية", "Cosmetics Packaging Graphics"],
+          ["تصميم أغلفة وعبوات المنتجات الغذائية", "Food Packaging Label Design"],
+          ["تصميم البطاقات التعريفية للمنتجات", "Hang Tag Design"],
+          ["تصميم الاستيكرات والأختام اللاصقة", "Sticker Design"],
+          ["تصميم المطبوعات على الأزياء والملابس", "T-shirt Graphic Design"],
+          ["تصميم الهدايا الدعائية للمؤسسات", "Mug & Tote Bag Graphics"],
+          ["إخراج نماذج المحاكاة الواقعية للتغليف", "Packaging Mockup Design"]
         ]
       },
       {
         id: "gd-7",
-        wheelAr: ["الرسم الرقمي", "والمتجهات"],
+        wheelAr: ["الرسم الرقمي", "والفيكتور"],
         wheelEn: ["Illustration", "& Vectors"],
-        titleAr: "الرسم الرقمي والعناصر المتجهة",
+        titleAr: "الرسوم التوضيحية وفن الفيكتور",
         titleEn: "Illustration & Vector Graphics",
         pool: "digital",
         services: [
-          ["تصميم الأيقونات المخصصة حسب الطلب", "Custom Icon Design"],
-          ["رسم العناصر التوضيحية المتجهة عالية الدقة", "Vector Illustration"],
-          ["إعادة رسم الصور وتحويلها إلى مسارات متجهة", "Vector Tracing"],
-          ["تصميم مجموعات الرموز الإرشادية الموحدة", "Icon Set Design"],
-          ["تصميم الرسوم التوضيحية للشروحات التقنية", "Illustrated Diagrams"],
-          ["تصميم الأنماط الزخرفية المتكررة والمتصلة", "Seamless Pattern Design"],
-          ["تصميم الشخصيات الكرتونية والتوضيحية المسطحة", "2D Character Illustration"],
-          ["تصميم الملصقات الرقمية المرسومة للمحادثات", "Digital Sticker Illustration"],
-          ["تصميم الرسومات الإرشادية لخطوات الاستخدام", "Instructional Illustration"],
-          ["إعداد الملفات المتجهة القياسية لخطوط الإنتاج", "Production-ready Vector Artwork"]
+          ["تصميم الأيقونات الخاصة بالعلامة", "Custom Icon Design"],
+          ["رسم اللوحات التوضيحية بصيغة فيكتور", "Vector Illustration"],
+          ["تحويل الشعارات والصور إلى مسارات فيكتور", "Vector Tracing"],
+          ["بناء مكتبات الأيقونات الإرشادية المتكاملة", "Icon Set Design"],
+          ["رسم المخططات التوضيحية المصورة", "Illustrated Diagrams"],
+          ["تصميم الأنماط الزخرفية المتصلة", "Seamless Pattern Design"],
+          ["رسم الشخصيات التوضيحية ثنائية الأبعاد", "2D Character Illustration"],
+          ["تصميم حزم الملصقات الرقمية للتطبيقات", "Digital Sticker Illustration"],
+          ["رسم اللوحات الإرشادية لخطوات العمل", "Instructional Illustration"],
+          ["تجهيز ملفات الفيكتور القياسية للإنتاج", "Production-ready Vector Artwork"]
         ]
       },
       {
         id: "gd-8",
-        wheelAr: ["تحرير الصور", "والتركيب"],
+        wheelAr: ["المعالجة اللونية", "والدمج"],
         wheelEn: ["Image Editing", "& Retouch"],
-        titleAr: "تحرير الصور والتركيب البصري",
+        titleAr: "المعالجة الفوتوغرافية والدمج البصري",
         titleEn: "Image Editing & Compositing",
         pool: "social",
         services: [
-          ["تفريغ وإزالة خلفيات الصور بدقة عالية", "Background Removal"],
-          ["تنقيح ومعالجة صور المنتجات التجارية", "Product Photo Retouching"],
-          ["تصحيح الألوان وموازنة الإضاءة والتعريض", "Color & Exposure Correction"],
-          ["تنظيف الصور وإزالة العناصر غير المرغوبة", "Object Removal & Cleanup"],
-          ["الدمج البصري للصور الإعلانية المركبة", "Advertising Photo Compositing"],
-          ["رفع الدقة وتحسين جودة الصور الفوتوغرافية", "Image Enhancement"],
-          ["تجهيز ومعايرة صور المنتجات للمتاجر الإلكترونية", "E-commerce Product Image Preparation"],
-          ["تصميم المشاهد المركبة لصور المنتجات", "Composite Product Visuals"],
-          ["تكييف مقاسات الصور لمختلف المنصات الرقمية", "Multi-format Image Adaptation"],
-          ["التحرير الإبداعي للصور الإعلانية بالمعالجة المتقدمة", "AI-assisted Creative Image Editing"]
+          ["القص الاحترافي وتفريغ الخلفيات", "Background Removal"],
+          ["ريتاتش ومعالجة صور المنتجات التجارية", "Product Photo Retouching"],
+          ["المعالجة اللونية وموازنة الإضاءة", "Color & Exposure Correction"],
+          ["إزالة الشوائب والعناصر غير المرغوبة", "Object Removal & Cleanup"],
+          ["الدمج الفوتوغرافي للإعلانات الإبداعية", "Advertising Photo Compositing"],
+          ["رفع جودة الصور ومعالجة التفاصيل", "Image Enhancement"],
+          ["تجهيز صور المنتجات للمتاجر العالمية", "E-commerce Product Image Preparation"],
+          ["بناء المشاهد الإعلانية المركبة للمنتجات", "Composite Product Visuals"],
+          ["تهيئة مقاسات الحملة لمختلف المنصات", "Multi-format Image Adaptation"],
+          ["المعالجة الإبداعية المتقدمة للصور الإعلانية", "AI-assisted Creative Image Editing"]
         ]
       },
       {
         id: "gd-9",
-        wheelAr: ["الرسوم المتحركة", "والموشن"],
+        wheelAr: ["الموشن جرافيك", "والتحريك"],
         wheelEn: ["Motion &", "Animation"],
-        titleAr: "الرسوم المتحركة والمقاطع التوضيحية",
+        titleAr: "الموشن جرافيك والتحريك البصري",
         titleEn: "Motion Graphics & Animation",
         pool: "digital",
         services: [
-          ["تحريك الشعارات الرسمية للعلامات التجارية", "Logo Animation"],
-          ["تحريك المنشورات الإعلانية لمنصات التواصل", "Animated Social Media Posts"],
-          ["تصميم القصص المصورة المتحركة", "Animated Stories"],
-          ["تصميم عروض النصوص الحركية المتزامنة", "Kinetic Typography"],
-          ["إنتاج المقاطع التوضيحية المتحركة القصيرة", "Short 2D Explainer Motion"],
-          ["تصميم شارات البداية والنهاية للمقاطع المرئية", "Video Intro & Outro Design"],
-          ["تصميم الأشرطة التعريفية السفلية للشاشات", "Lower-third Graphics"],
-          ["تصميم العناوين والفواصل الحركية للمقاطع", "Animated Video Titles"],
-          ["تصميم المؤثرات الانتقالية والطبقات الرسومية", "Video Transitions & Overlays"],
-          ["تصميم الصور المتحركة الترويجية القصيرة", "Marketing GIF Animation"],
-          ["تركيب وتحرير المقاطع القصيرة من المواد المتاحة", "Asset-based Reels Editing"]
+          ["تحريك الشعارات بأسلوب احترافي", "Logo Animation"],
+          ["تصميم إعلانات الموشن لمنصات التواصل", "Animated Social Media Posts"],
+          ["تحريك القصص الإعلانية التفاعلية", "Animated Stories"],
+          ["تحريك النصوص الإعلانية تايبوجرافي", "Kinetic Typography"],
+          ["إنتاج فيديوهات الموشن جرافيك التوضيحية", "Short 2D Explainer Motion"],
+          ["تصميم مقدمات وخواتيم الفيديوهات", "Video Intro & Outro Design"],
+          ["تصميم الشريط التعريفي المتحرك للشاشات", "Lower-third Graphics"],
+          ["تصميم العناوين والفواصل الحركية", "Animated Video Titles"],
+          ["تصميم الانتقالات البصرية للفيديو", "Video Transitions & Overlays"],
+          ["تصميم الصور المتحركة للحملات الرقمية", "Marketing GIF Animation"],
+          ["مونتاج وإخراج مقاطع الريلز الإعلانية", "Asset-based Reels Editing"]
         ]
       },
       {
         id: "gd-10",
-        wheelAr: ["العروض التقديمية", "والمعلومات"],
+        wheelAr: ["العروض التقديمية", "والإنفوجرافيك"],
         wheelEn: ["Presentations", "& Info Design"],
-        titleAr: "العروض التقديمية وتصميم المعلومات المرئية",
+        titleAr: "العروض التقديمية وتصميم الإنفوجرافيك",
         titleEn: "Presentations & Information Design",
         pool: "bi",
         services: [
-          ["تصميم العروض التقديمية الرسمية للشركات", "Corporate Presentation Design"],
-          ["تصميم عروض جذب المستثمرين ورواد الأعمال", "Pitch Deck Design"],
-          ["تصميم القوالب القياسية للعروض التقديمية", "PowerPoint Template Design"],
-          ["تصميم اللوحات المعلوماتية المصورة", "Infographic Design"],
-          ["إعادة تصميم المخططات والرسوم البيانية", "Chart Redesign"],
-          ["تصميم خرائط تدفق العمليات والإجراءات", "Process Flow Diagram Design"],
-          ["تصميم الجداول والخطوط الزمنية المرئية", "Visual Timeline Design"],
-          ["تصميم أوراق الحقائق والملخصات التنفيذية", "Fact Sheet Design"],
-          ["تصميم المواد والعروض البصرية للتدريب", "Training Material Design"],
-          ["التصميم البصري للوحات البيانات الثابتة بالتقارير", "Static Dashboard Visual Design"]
+          ["تصميم العروض التقديمية التنفيذية للشركات", "Corporate Presentation Design"],
+          ["تصميم عروض الاستثمار وجولات التمويل", "Pitch Deck Design"],
+          ["بناء القوالب الاحترافية للعروض التقديمية", "PowerPoint Template Design"],
+          ["تصميم لوحات الإنفوجرافيك الإبداعي", "Infographic Design"],
+          ["التصميم البصري للمخططات الإحصائية", "Chart Redesign"],
+          ["تصميم خرائط العمليات ومسارات العمل", "Process Flow Diagram Design"],
+          ["تصميم الخطوط الزمنية للمشاريع", "Visual Timeline Design"],
+          ["تصميم الملخصات التنفيذية وأوراق الحقائق", "Fact Sheet Design"],
+          ["تصميم العروض التدريبية وورش العمل", "Training Material Design"],
+          ["تصميم واجهات لوحات البيانات للتقارير", "Static Dashboard Visual Design"]
         ]
       }
     ];
@@ -1893,208 +2179,208 @@
     const DA_CATEGORIES = [
       {
         id: "da-1",
-        wheelAr: ["جمع البيانات", "وتجهيزها"],
+        wheelAr: ["هندسة وتهيئة", "البيانات"],
         wheelEn: ["Data Prep &", "Collection"],
-        titleAr: "جمع البيانات وتدقيقها وتجهيزها",
+        titleAr: "هندسة وتهيئة وتدقيق البيانات",
         titleEn: "Data Collection & Preparation",
         pool: "analytics",
         services: [
-          ["استيراد وتجميع ملفات البيانات من مصادرها", "Data Import & Ingestion"],
-          ["دمج وتوحيد ملفات الجداول والبيانات النصية", "Excel & CSV File Consolidation"],
-          ["تنظيف ومعالجة البيانات الخام من الشوائب", "Raw Data Cleaning"],
-          ["فحص وإزالة السجلات والمدخلات المكررة", "Duplicate Record Removal"],
-          ["معالجة القيم المفقودة والبيانات الناقصة", "Missing Value Handling"],
-          ["توحيد الصيغ القياسية ووحدات القياس", "Data Format Standardization"],
-          ["التحقق من صحة وسلامة المدخلات الرقمية", "Data Validation"],
-          ["التدقيق الشامل لجودة وموثوقية البيانات", "Data Quality Audit"],
-          ["بناء وإعداد قاموس تعريف حقول البيانات", "Data Dictionary Creation"],
-          ["هيكلة الجداول وتصنيف الحقول والسمات", "Dataset Structuring"],
-          ["استخلاص البيانات من المصادر الرقمية المصرح بها", "Authorized Data Extraction"],
-          ["تصميم نماذج واستبيانات جمع البيانات الميدانية", "Data Collection Form Design"]
+          ["استيراد وتجميع البيانات من المصادر المتعددة", "Data Import & Ingestion"],
+          ["دمج وتوحيد قواعد البيانات وملفات الجداول", "Excel & CSV File Consolidation"],
+          ["تنظيف ومعالجة البيانات الخام", "Raw Data Cleaning"],
+          ["اكتشاف وإزالة السجلات المكررة", "Duplicate Record Removal"],
+          ["المعالجة المنهجية للقيم المفقودة", "Missing Value Handling"],
+          ["توحيد الأنماط القياسية لحقول البيانات", "Data Format Standardization"],
+          ["بناء قواعد التحقق من سلامة المدخلات", "Data Validation"],
+          ["فحص وتدقيق جودة وموثوقية البيانات", "Data Quality Audit"],
+          ["إعداد دليل تعريف وهيكلة البيانات", "Data Dictionary Creation"],
+          ["بناء النماذج الهيكلية لقواعد البيانات", "Dataset Structuring"],
+          ["استخلاص البيانات الرقمية من المصادر المعتمدة", "Authorized Data Extraction"],
+          ["تصميم استمارات ومنظومات جمع البيانات", "Data Collection Form Design"]
         ]
       },
       {
         id: "da-2",
-        wheelAr: ["الجداول الإلكترونية", "المتقدمة"],
+        wheelAr: ["نماذج الإكسل", "والجداول"],
         wheelEn: ["Advanced", "Spreadsheets"],
-        titleAr: "تطوير الجداول الإلكترونية والنماذج الحسابية",
+        titleAr: "تطوير نماذج الإكسل والجداول السحابية",
         titleEn: "Excel & Google Sheets Services",
         pool: "analytics",
         services: [
-          ["بناء وتأسيس جداول العمل الاحترافية", "Professional Spreadsheet Setup"],
-          ["صياغة المعادلات الحسابية والمنطقية المتقدمة", "Advanced Excel Formula Design"],
-          ["إنشاء الجداول المحورية للتحليل متعدد الأبعاد", "Pivot Table Analysis"],
-          ["تصميم لوحات مؤشرات الأداء داخل الجداول", "Excel KPI Dashboard"],
-          ["تصميم نماذج تتبع النفقات والموازنات التقديرية", "Expense & Budget Tracker"],
-          ["إنشاء قوالب متابعة المبيعات والتحصيل", "Sales Tracking Templates"],
-          ["إعداد منظومة تتبع المخزون وحركة الأصناف", "Inventory Tracking Spreadsheet"],
-          ["بناء سجلات قواعد بيانات العملاء القابلة للبحث", "Customer Register Spreadsheet"],
-          ["إعداد التقارير التشاركية السحابية الحية", "Google Sheets Reporting"],
-          ["أتمتة العمليات الحسابية والجداول المتكررة", "Spreadsheet Automation"],
-          ["فحص وإصلاح وتحسين أداء ملفات الجداول المعقدة", "Spreadsheet Troubleshooting & Optimization"]
+          ["تأسيس منظومات الجداول الاحترافية للأعمال", "Professional Spreadsheet Setup"],
+          ["بناء المعادلات الحسابية والمنطقية المركبة", "Advanced Excel Formula Design"],
+          ["التحليل المتقدم عبر الجداول المحورية", "Pivot Table Analysis"],
+          ["تصميم داشبورد تفاعلي على برنامج إكسل", "Excel KPI Dashboard"],
+          ["بناء نماذج إدارة الموازنات والمصروفات", "Expense & Budget Tracker"],
+          ["تصميم أنظمة متابعة المبيعات والتحصيل", "Sales Tracking Templates"],
+          ["تطوير نماذج إدارة المخزون وحركة الأصناف", "Inventory Tracking Spreadsheet"],
+          ["بناء قواعد بيانات إدارة علاقات العملاء", "Customer Register Spreadsheet"],
+          ["بناء منظومات التقارير السحابية التفاعلية", "Google Sheets Reporting"],
+          ["أتمتة العمليات المتكررة داخل الجداول", "Spreadsheet Automation"],
+          ["تحسين كفاءة ومعالجة أخطاء الملفات الضخمة", "Spreadsheet Troubleshooting & Optimization"]
         ]
       },
       {
         id: "da-3",
-        wheelAr: ["الاستعلامات", "والأتمتة"],
+        wheelAr: ["قواعد البيانات", "والأتمتة"],
         wheelEn: ["Queries &", "Automation"],
-        titleAr: "استعلامات قواعد البيانات والتحويل والأتمتة",
+        titleAr: "استعلامات قواعد البيانات وأتمتة التقارير",
         titleEn: "SQL, Transformation & Automation",
         pool: "bi",
         services: [
-          ["كتابة استعلامات قواعد البيانات المهيكلة", "SQL Query Writing"],
-          ["ربط الجداول المتعددة واسترجاع البيانات المركبة", "SQL Joins & Data Retrieval"],
-          ["إنشاء تقارير التجميع والتلخيص من قواعد البيانات", "SQL Aggregation Reports"],
-          ["إنشاء العروض الافتراضية المخصصة للاستعلام", "SQL View Creation"],
-          ["تحويل وتشكيل البيانات عبر أدوات الاستخلاص", "Power Query Data Transformation"],
-          ["تحليل البيانات المتقدم باستخدام البرمجة التحليلية", "Python Pandas Data Analysis"],
-          ["بناء نصوص برمجية قياسية لتنظيف البيانات تلقائياً", "Reusable Data Cleaning Script"],
-          ["أتمتة إصدار وتحديث التقارير الدورية", "Recurring Report Automation"],
-          ["تأسيس مسارات تدفق ونقل البيانات المبسطة", "Small-scale Data Pipeline Setup"],
-          ["التوثيق الفني الشامل لخطوات معالجة وتحويل البيانات", "Data Transformation Documentation"]
+          ["بناء استعلامات قواعد البيانات المتقدمة", "SQL Query Writing"],
+          ["ربط الجداول واستخراج البيانات المركبة", "SQL Joins & Data Retrieval"],
+          ["إعداد تقارير التجميع التحليلي للبيانات", "SQL Aggregation Reports"],
+          ["تصميم العروض البرمجية المخصصة للاستعلام", "SQL View Creation"],
+          ["أتمتة سحب وتحويل البيانات عبر Power Query", "Power Query Data Transformation"],
+          ["التحليل البرمجي للبيانات بلغة بايثون", "Python Pandas Data Analysis"],
+          ["تطوير برمجيات المعالجة التلقائية للبيانات", "Reusable Data Cleaning Script"],
+          ["أتمتة إصدار التقارير التشغيلية الدورية", "Recurring Report Automation"],
+          ["تأسيس مسارات تدفق وتكامل البيانات", "Small-scale Data Pipeline Setup"],
+          ["التوثيق الفني لمنظومات تحويل البيانات", "Data Transformation Documentation"]
         ]
       },
       {
         id: "da-4",
         wheelAr: ["لوحات المؤشرات", "وذكاء الأعمال"],
         wheelEn: ["Dashboards &", "BI Systems"],
-        titleAr: "لوحات المؤشرات التفاعلية وذكاء الأعمال",
+        titleAr: "لوحات ذكاء الأعمال والمؤشرات التفاعلية",
         titleEn: "Dashboards & Business Intelligence",
         pool: "bi",
         services: [
-          ["تطوير لوحات ذكاء الأعمال التفاعلية المتكاملة", "Power BI Dashboard Development"],
-          ["تصميم لوحات التقارير السحابية التفاعلية", "Looker Studio Dashboard Design"],
-          ["بناء لوحات التحليل البصري المتقدمة للبيانات", "Tableau Dashboard Development"],
-          ["تحديد وتصميم بطاقات مؤشرات الأداء الرئيسية", "KPI Definition & Scorecards"],
-          ["تصميم الرسوم والمخططات البيانية التفاعلية", "Interactive Data Visualization"],
-          ["بناء نماذج العلاقات الهيكليّة بين جداول البيانات", "Data Relationship Modeling"],
-          ["تطوير المقاييس والمعادلات التحليلية المتقدمة", "DAX Measure Development"],
-          ["تصميم مرشحات البحث والتفاعل داخل التقارير", "Report Filters & Interactions"],
-          ["إعداد التقارير التنفيذية العليا لدعم القرار", "Executive BI Reports"],
-          ["مراجعة وتحسين تجربة المستخدم وسهولة قراءة اللوحات", "Dashboard UX & Accessibility Review"],
-          ["تهيئة وضبط التحديث التلقائي لبيانات اللوحات", "Dashboard Data Refresh Setup"]
+          ["تطوير لوحات ذكاء الأعمال على Power BI", "Power BI Dashboard Development"],
+          ["تصميم لوحات البيانات التفاعلية على Looker Studio", "Looker Studio Dashboard Design"],
+          ["بناء اللوحات التحليلية المتقدمة على Tableau", "Tableau Dashboard Development"],
+          ["هيكلة وتصميم بطاقات مؤشرات الأداء الرئيسية", "KPI Definition & Scorecards"],
+          ["التصميم البصري التفاعلي للبيانات", "Interactive Data Visualization"],
+          ["بناء النماذج العلائقية لقواعد البيانات", "Data Relationship Modeling"],
+          ["تطوير المعادلات والمقاييس التحليلية DAX", "DAX Measure Development"],
+          ["تصميم فلاتر التفاعل والاستكشاف اللحظي", "Report Filters & Interactions"],
+          ["تصميم لوحات القيادة التنفيذية للإدارة العليا", "Executive BI Reports"],
+          ["تطوير تجربة المستخدم وسهولة قراءة اللوحات", "Dashboard UX & Accessibility Review"],
+          ["ربط وجدولة التحديث التلقائي للبيانات", "Dashboard Data Refresh Setup"]
         ]
       },
       {
         id: "da-5",
-        wheelAr: ["التحليل الوصفي", "والتشخيصي"],
+        wheelAr: ["تحليل الأداء", "والتشخيص"],
         wheelEn: ["Descriptive &", "Diagnostic"],
-        titleAr: "التحليل الوصفي والتشخيصي للأداء",
+        titleAr: "تحليل الأداء والتشخيص التشغيلي",
         titleEn: "Descriptive & Diagnostic Analytics",
         pool: "analytics",
         services: [
-          ["تحليل الاتجاهات العامة والمسارات عبر الزمن", "Time-series Trend Analysis"],
-          ["تحليل وتقييم نتائج مؤشرات الأداء", "KPI Performance Analysis"],
-          ["المقارنة التحليلية للأداء بين الفترات الزمنية", "Period-over-Period Comparison"],
-          ["تحليل الفروقات والانحرافات عن المستهدفات", "Variance Analysis"],
-          ["التحليل التشخيصي للأسباب الجذرية للتغيرات", "Diagnostic Driver Analysis"],
-          ["تحليل نسب مساهمة الفئات والأقسام في النتائج", "Category Contribution Analysis"],
-          ["تحليل التوزيع التكراري وانتشار البيانات", "Distribution Analysis"],
-          ["اكتشاف وتحديد القيم الشاذة والاستثنائية", "Outlier Detection"],
-          ["تحليل السلوك المرحلي للمجموعات المتزامنة", "Cohort Analysis"],
-          ["إعداد التقرير الشامل للنتائج والتوصيات التنفيذية", "Insights & Recommendations Report"]
+          ["تحليل الاتجاهات الزمنية ومسارات النمو", "Time-series Trend Analysis"],
+          ["تقييم نتائج مؤشرات الأداء الاستراتيجية", "KPI Performance Analysis"],
+          ["المقارنة التحليلية للأداء عبر الفترات", "Period-over-Period Comparison"],
+          ["تحليل الانحرافات والفجوات عن المستهدفات", "Variance Analysis"],
+          ["التحليل التشخيصي للعوامل المؤثرة في الأداء", "Diagnostic Driver Analysis"],
+          ["تحليل الأوزان النسبية ومساهمة القطاعات", "Category Contribution Analysis"],
+          ["تحليل التوزيعات الإحصائية للبيانات", "Distribution Analysis"],
+          ["رصد وتحليل القيم الاستثنائية والشاذة", "Outlier Detection"],
+          ["تحليل السلوك التراكمي لشرائح العملاء", "Cohort Analysis"],
+          ["صياغة تقارير الرؤى والتوصيات التنفيذية", "Insights & Recommendations Report"]
         ]
       },
       {
         id: "da-6",
-        wheelAr: ["تحليلات التسويق", "والمواقع"],
+        wheelAr: ["تحليلات التسويق", "والنمو الرقمي"],
         wheelEn: ["Marketing &", "Web Analytics"],
-        titleAr: "تحليلات التسويق الرقمي والمواقع والتواصل",
+        titleAr: "تحليلات التسويق الرقمي ونمو المنصات",
         titleEn: "Marketing, Web & Social Analytics",
         pool: "social",
         services: [
-          ["تحليل أداء المواقع وسلوك الزوار الرقمي", "GA4 Website Performance Analysis"],
-          ["تحليل مصادر وقنوات تدفق الزيارات", "Traffic Source Analysis"],
-          ["تحليل مسارات التحويل ومراحل اتخاذ القرار", "Conversion Funnel Analysis"],
-          ["تحليل الأداء والنتائج للحملات الإعلانية الممولة", "Ad Campaign Performance Analysis"],
-          ["تحليل مؤشرات الأداء لمنصات التواصل الاجتماعي", "Social Media KPI Analysis"],
-          ["تحليل معدلات التفاعل مع المحتوى المنشور", "Content Engagement Analysis"],
-          ["قياس وتحليل معدلات التحويل وتحقيق الأهداف", "Conversion Rate Analysis"],
-          ["إعداد تقارير عائد الإنفاق الإعلاني وجدوى الحملات", "Return on Ad Spend (ROAS) Report"],
-          ["تحليل أداء حملات النشرات البريدية", "Email Marketing Performance Analysis"],
-          ["تحليل بيانات الظهور في محركات البحث", "SEO Performance Reporting"],
-          ["تصميم وإعداد تقرير الأداء التسويقي الشهري", "Monthly Marketing Performance Report"]
+          ["تحليل أداء المواقع وسلوك المستخدمين عبر GA4", "GA4 Website Performance Analysis"],
+          ["تحليل قنوات الاستحواذ ومصادر الزيارات", "Traffic Source Analysis"],
+          ["تحليل مسار التحويل التسويقي Funnel", "Conversion Funnel Analysis"],
+          ["تحليل كفاءة الحملات الإعلانية المدفوعة", "Ad Campaign Performance Analysis"],
+          ["قياس مؤشرات النمو لمنصات التواصل الاجتماعي", "Social Media KPI Analysis"],
+          ["تحليل تفاعل الجمهور مع المحتوى الرقمي", "Content Engagement Analysis"],
+          ["قياس وتحسين معدلات التحويل الرقمي", "Conversion Rate Analysis"],
+          ["تحليل العائد على الإنفاق الإعلاني ROAS", "Return on Ad Spend (ROAS) Report"],
+          ["تحليل أداء الحملات البريدية التسويقية", "Email Marketing Performance Analysis"],
+          ["تحليل أداء الظهور في محركات البحث SEO", "SEO Performance Reporting"],
+          ["إعداد التقرير التنفيذي الشهري للأداء التسويقي", "Monthly Marketing Performance Report"]
         ]
       },
       {
         id: "da-7",
-        wheelAr: ["تحليلات المبيعات", "والعملاء"],
+        wheelAr: ["تحليلات المبيعات", "والتجارة"],
         wheelEn: ["Sales &", "E-commerce"],
-        titleAr: "تحليلات المبيعات والعملاء والتجارة الإلكترونية",
+        titleAr: "تحليلات المبيعات والتجارة الإلكترونية",
         titleEn: "Sales, Customer & E-commerce Analytics",
         pool: "analytics",
         services: [
-          ["تحليل اتجاهات ونمو المبيعات الدورية", "Sales Trend Analysis"],
-          ["تحليل المنتجات الأعلى والأقل أداءً وربحية", "Product Performance Analysis"],
-          ["تحليل أنماط وسلوكيات الشراء لدى المستهلكين", "Purchase Behavior Analysis"],
-          ["تقسيم وتصنيف العملاء إلى شرائح تسويقية", "Customer Segmentation"],
-          ["تحليل معدلات الاحتفاظ بالعملاء والولاء", "Customer Retention Analysis"],
-          ["تحليل معدلات تكرار الشراء ودورة حياة العميل", "Repeat Purchase Analysis"],
-          ["تحليل متوسط قيمة سلة الطلبات الشرائية", "Average Order Value Analysis"],
-          ["التحليل الأساسي لترابط المنتجات في سلة المشتريات", "Basic Basket Analysis"],
-          ["تتبع وتحليل رحلة الشراء الكاملة للعميل", "Customer Journey Analysis"],
-          ["إعداد التقرير الشامل لأداء المتاجر الإلكترونية", "E-commerce Performance Report"]
+          ["تحليل اتجاهات المبيعات ومعدلات النمو", "Sales Trend Analysis"],
+          ["تحليل ربحية وأداء خطوط المنتجات", "Product Performance Analysis"],
+          ["تحليل الأنماط الشرائية وسلوك المستهلك", "Purchase Behavior Analysis"],
+          ["التقسيم الاستراتيجي لشرائح العملاء", "Customer Segmentation"],
+          ["تحليل معدلات ولاء واستبقاء العملاء", "Customer Retention Analysis"],
+          ["تحليل تكرار الشراء والقيمة الدائمة للعميل", "Repeat Purchase Analysis"],
+          ["تحليل متوسط قيمة سلة المشتريات AOV", "Average Order Value Analysis"],
+          ["تحليل ترابط المنتجات في السلة الشرائية", "Basic Basket Analysis"],
+          ["تحليل نقاط التفاعل في رحلة العميل", "Customer Journey Analysis"],
+          ["التقرير التحليلي الشامل للمتاجر الإلكترونية", "E-commerce Performance Report"]
         ]
       },
       {
         id: "da-8",
-        wheelAr: ["التحليل المالي", "والإداري"],
+        wheelAr: ["التحليل المالي", "والتقارير"],
         wheelEn: ["Financial &", "Management"],
-        titleAr: "التحليل المالي وإعداد التقارير الإدارية",
+        titleAr: "التحليل المالي والتقارير الإدارية",
         titleEn: "Financial & Management Reporting",
         pool: "bi",
         services: [
-          ["إعداد تقارير تحليل الإيرادات والمصروفات", "Revenue & Expense Analysis"],
-          ["تحليل ومقارنة الموازنة التقديرية بالأداء الفعلي", "Budget vs. Actual Analysis"],
-          ["تحليل التدفقات النقدية التشغيلية والسيولة", "Operating Cash Flow Analysis"],
-          ["تحليل هوامش الربح الإجمالية والصافية", "Profit Margin Analysis"],
-          ["تحليل هيكل التكاليف وتوزيع نفقات الأنشطة", "Cost Breakdown Analysis"],
-          ["تحليل الذمم المدينة وأعمار الديون المستحقة", "Accounts Receivable Aging Analysis"],
-          ["إعداد النماذج المبسطة للتوقعات المالية المستقبلية", "Basic Financial Forecasting"],
-          ["قياس وتحليل معدلات نمو الإيرادات الدورية", "Revenue Growth Analysis"],
-          ["تصميم لوحة مؤشرات الأداء المالي للمنشأة", "Financial KPI Dashboard"],
-          ["إعداد تقرير الأداء الإداري والتنفيذي الشهري", "Monthly Management Report"]
+          ["تحليل هيكل الإيرادات والمصروفات التشغيلية", "Revenue & Expense Analysis"],
+          ["تحليل أداء الموازنات التقديرية مقابل الفعلية", "Budget vs. Actual Analysis"],
+          ["تحليل التدفقات النقدية ومؤشرات السيولة", "Operating Cash Flow Analysis"],
+          ["تحليل هوامش الربحية الإجمالية والصافية", "Profit Margin Analysis"],
+          ["تحليل مراكز التكلفة وتوزيع النفقات", "Cost Breakdown Analysis"],
+          ["تحليل أعمار الديون ومعدلات التحصيل", "Accounts Receivable Aging Analysis"],
+          ["بناء نماذج التوقعات المالية المستقبلية", "Basic Financial Forecasting"],
+          ["تحليل معدلات النمو المالي السنوي والربعي", "Revenue Growth Analysis"],
+          ["تصميم لوحة المؤشرات المالية التنفيذية", "Financial KPI Dashboard"],
+          ["إعداد تقارير الأداء المالي لمجلس الإدارة", "Monthly Management Report"]
         ]
       },
       {
         id: "da-9",
-        wheelAr: ["العمليات والموارد", "والأثر"],
+        wheelAr: ["كفاءة العمليات", "والموارد"],
         wheelEn: ["Operations,", "HR & Impact"],
-        titleAr: "تحليلات العمليات والموارد البشرية وقياس الأثر",
+        titleAr: "تحليلات الكفاءة التشغيلية والموارد البشرية",
         titleEn: "Operations, HR & Impact Analytics",
         pool: "bi",
         services: [
-          ["تحليل مستويات المخزون ومعدلات الدوران", "Inventory Level Analysis"],
-          ["تحليل عمليات المشتريات وتقييم أداء الموردين", "Procurement & Supplier Analysis"],
-          ["تحليل الأزمنة المستغرقة لتنفيذ وتسليم الطلبات", "Order Fulfillment Time Analysis"],
-          ["قياس وتحليل كفاءة وإنتاجية العمليات التشغيلية", "Operational Productivity Analysis"],
-          ["تحليل أوقات الانتظار وجودة تقديم الخدمة", "Waiting Time & Service Analysis"],
-          ["تحليل سجلات الحضور والانصراف والغياب", "Attendance & Absence Analysis"],
-          ["تحليل معدلات دوران الموظفين والاستبقاء الوظيفي", "Employee Turnover Analysis"],
-          ["تصميم لوحة مؤشرات أداء الموارد البشرية", "HR KPI Dashboard"],
-          ["متابعة وقياس مؤشرات إنجاز المشاريع والمبادرات", "Project Performance Monitoring"],
-          ["إعداد تقارير قياس ومتابعة الأثر المجتمعي والمؤسسي", "Impact Monitoring Reports"]
+          ["تحليل كفاءة المخزون ومعدلات الدوران", "Inventory Level Analysis"],
+          ["تحليل سلاسل الإمداد وتقييم أداء الموردين", "Procurement & Supplier Analysis"],
+          ["تحليل زمن إنجاز وتسليم الطلبات التشغيلية", "Order Fulfillment Time Analysis"],
+          ["قياس مؤشرات الإنتاجية والكفاءة التشغيلية", "Operational Productivity Analysis"],
+          ["تحليل جودة الخدمة وأزمنة الاستجابة", "Waiting Time & Service Analysis"],
+          ["تحليل بيانات الانضباط الوظيفي والحضور", "Attendance & Absence Analysis"],
+          ["تحليل معدلات الدوران الوظيفي والاستبقاء", "Employee Turnover Analysis"],
+          ["تصميم داشبورد مؤشرات الموارد البشرية", "HR KPI Dashboard"],
+          ["متابعة مؤشرات الإنجاز للمشاريع الاستراتيجية", "Project Performance Monitoring"],
+          ["إعداد تقارير قياس الأثر المؤسسي والمجتمعي", "Impact Monitoring Reports"]
         ]
       },
       {
         id: "da-10",
-        wheelAr: ["الإحصاء", "والتنبؤ"],
+        wheelAr: ["النمذجة الإحصائية", "والتنبؤ"],
         wheelEn: ["Statistics &", "Forecasting"],
-        titleAr: "التحليل الإحصائي والاستبيانات والتنبؤ",
+        titleAr: "النمذجة الإحصائية والتنبؤ المستقبلي",
         titleEn: "Statistics, Surveys & Forecasting",
         pool: "analytics",
         services: [
-          ["تنظيف وترميز وجدولة بيانات الاستبيانات", "Survey Data Coding & Cleaning"],
-          ["التحليل الشامل لنتائج واستجابات الاستبيانات", "Survey Results Analysis"],
-          ["إعداد الجداول التقاطعية للمتغيرات المتعددة", "Cross-tabulation Analysis"],
-          ["حساب مقاييس الإحصاء الوصفي والنزعة المركزية", "Descriptive Statistics"],
-          ["إجراء اختبارات الفرضيات الإحصائية والدلالة", "Statistical Hypothesis Testing"],
-          ["تحليل معاملات الارتباط وقوة العلاقة بين المتغيرات", "Correlation Analysis"],
-          ["بناء نماذج تحليل الانحدار الخطي الأساسي", "Basic Regression Analysis"],
-          ["التقدير والتنبؤ باتجاهات المبيعات المستقبلية", "Basic Sales Forecasting"],
-          ["تحليل السلاسل الزمنية والأنماط الموسمية", "Basic Time Series Analysis"],
-          ["تحليل الحساسية ومحاكاة السيناريوهات البديلة", "Sensitivity & Scenario Analysis"],
-          ["صياغة وإعداد التقارير الإحصائية التطبيقية", "Applied Statistical Report Writing"]
+          ["هيكلة وترميز وتدقيق بيانات الاستبيانات", "Survey Data Coding & Cleaning"],
+          ["التحليل الإحصائي المتكامل لنتائج الاستطلاعات", "Survey Results Analysis"],
+          ["بناء الجداول التقاطعية متعددة المتغيرات", "Cross-tabulation Analysis"],
+          ["استخراج مؤشرات الإحصاء الوصفي المتقدم", "Descriptive Statistics"],
+          ["إجراء اختبارات الفرضيات والدلالة الإحصائية", "Statistical Hypothesis Testing"],
+          ["تحليل مصفوفات الارتباط بين المتغيرات", "Correlation Analysis"],
+          ["بناء نماذج الانحدار الخطي وتفسير العوامل", "Basic Regression Analysis"],
+          ["بناء نماذج التنبؤ بالمبيعات والطلب", "Basic Sales Forecasting"],
+          ["تحليل السلاسل الزمنية والتغيرات الموسمية", "Basic Time Series Analysis"],
+          ["تحليل الحساسية ومحاكاة السيناريوهات", "Sensitivity & Scenario Analysis"],
+          ["إعداد التقارير الإحصائية والأبحاث التطبيقية", "Applied Statistical Report Writing"]
         ]
       }
     ];
@@ -2102,29 +2388,29 @@
     const MX_CATEGORIES = [
       {
         id: "mx-1",
-        titleAr: "الخدمات المتكاملة (تصميم بصري مدعوم بتحليل البيانات)",
+        titleAr: "الحلول المتكاملة التي تدمج التصميم الإبداعي بذكاء البيانات",
         titleEn: "Integrated Design & Analytics Deliverables",
         pool: "bi",
         services: [
-          ["تقرير أداء منصات التواصل مع تصميم بصري احترافي", "Instagram Performance Report & Visual Design"],
-          ["تصميم لوحة مؤشرات تفاعلية متوافقة مع هوية الشركة", "Branded KPI Dashboard Design"],
-          ["تصميم لوحات معلوماتية مصورة قائمة على بيانات موثقة", "Data-driven Infographic Design"],
-          ["تصميم التقرير السنوي للمؤسسة بناءً على مؤشرات الأداء", "Data-driven Annual Report Design"],
-          ["تصميم عروض المستثمرين المدعومة بالبيانات والإحصاءات", "Data-backed Pitch Deck Design"],
-          ["حزمة تقارير الحملات التسويقية المصممة بهوية العلامة", "Branded Marketing Analytics Report Pack"],
-          ["تصميم التقرير البصري التحليلي لأداء المتاجر الإلكترونية", "E-commerce Analytics & Visual Report"],
-          ["تصميم تقارير قياس الأثر للمؤسسات غير الربحية", "Nonprofit Impact Report & Infographics"],
-          ["تصميم تقارير ولوحات الأداء للعيادات والمراكز الخدمية", "Clinic Performance Report & Dashboard"],
-          ["تصميم قوالب التقارير الدورية المرئية القابلة لإعادة الاستخدام", "Reusable Visual Reporting Templates"],
-          ["تطوير النظام البصري للرسوم البيانية الخاص بالعلامة التجارية", "Branded Data Visualization System"],
-          ["إعداد وتصميم دراسات الحالة المبنية على البيانات والنتائج", "Data-informed Visual Case Study"]
+          ["التقرير التحليلي المصور لأداء منصات التواصل", "Instagram Performance Report & Visual Design"],
+          ["تصميم داشبورد تفاعلي متكامل مع الهوية البصرية", "Branded KPI Dashboard Design"],
+          ["تصميم الإنفوجرافيك الإحصائي المبني على البيانات", "Data-driven Infographic Design"],
+          ["الإخراج الإبداعي للتقارير السنوية المدعومة بالمؤشرات", "Data-driven Annual Report Design"],
+          ["تصميم عروض المستثمرين المدعومة بالتحليل المالي", "Data-backed Pitch Deck Design"],
+          ["حزمة تقارير الأداء التسويقي المصممة بهوية المنشأة", "Branded Marketing Analytics Report Pack"],
+          ["التقرير البصري التحليلي لنمو المتاجر الإلكترونية", "E-commerce Analytics & Visual Report"],
+          ["تصميم تقارير قياس الأثر للمبادرات والقطاعات غير الربحية", "Nonprofit Impact Report & Infographics"],
+          ["تصميم منظومة تقارير الأداء للقطاعات الطبية والخدمية", "Clinic Performance Report & Dashboard"],
+          ["بناء قوالب التقارير التنفيذية الذكية القابلة للتحديث", "Reusable Visual Reporting Templates"],
+          ["تأسيس الدليل البصري الموحد للرسوم البيانية والمؤشرات", "Branded Data Visualization System"],
+          ["إعداد وتصميم دراسات الحالة الموثقة بالبيانات والنتائج", "Data-informed Visual Case Study"]
         ]
       }
     ];
 
     const I18N = {
       en: {
-        brandTagline: "DESIGN & ANALYTICS",
+        brandTagline: "CREATIVE INTELLIGENCE",
         navHome: "Home",
         navGD: "Graphic Design",
         navDA: "Data Analytics",
@@ -2133,8 +2419,8 @@
         floatWheels: "Domains",
         floatServices: "Services",
         floatOrder: "Request Service",
-        heroBadge: "CREATIVE & ANALYTICAL INTELLIGENCE",
-        heroTitleHTML: 'Insight, made <span class="gold-gradient-text">visible.</span>',
+        heroBadge: "CREATIVE INTELLIGENCE STUDIO",
+        heroTitleHTML: 'Insight made <span class="gold-gradient-text">visible.</span>',
         heroSubtitle: "A distinctive visual language where aesthetic judgment in graphic design meets analytical intelligence in data science. Turning complex data into clear visual stories people can understand and act on.",
         pillar1Num: "01 / PERCEPTION",
         pillar1Title: "Visual Perception",
@@ -2168,7 +2454,7 @@
         gdWheelSub: "Hover over a segment to preview visual samples or click to explore tasks",
         catalogTag: "COMPREHENSIVE SERVICE DIRECTORY",
         catalogHeading: "Specialized Services & Deliverables",
-        catalogSubheading: "Hover over any primary service category below to reveal its specialized sub-services, then click any task to view full requirements and request execution.",
+        catalogSubheading: "Hover over or tap any primary service category below to reveal its specialized sub-services, then select any task to view full requirements and request execution.",
         searchPlaceholder: "Search for any service or deliverable...",
         daColHeader: "Data Analytics Services (106 Tasks)",
         gdColHeader: "Graphic Design Services (105 Tasks)",
@@ -2197,77 +2483,77 @@
         modalNotesPlaceholder: "Briefly describe your project goals and timeline..."
       },
       ar: {
-        brandTagline: "التصميم الجرافيكي وتحليل البيانات",
+        brandTagline: "CREATIVE INTELLIGENCE",
         navHome: "الرئيسية",
         navGD: "التصميم الجرافيكي",
         navDA: "تحليل البيانات",
-        navMX: "الخدمات المتكاملة",
+        navMX: "الحلول المتكاملة",
         floatTop: "الأعلى",
-        floatWheels: "العجلات التفاعلية",
+        floatWheels: "النطاقات",
         floatServices: "دليل الخدمات",
-        floatOrder: "طلب مشروع",
-        heroBadge: "الذكاء الإبداعي والتحليلي المتكامل",
-        heroTitleHTML: 'البصيرة، حين تصبح <span class="gold-gradient-text">مرئية.</span>',
-        heroSubtitle: "منظومة بصرية يلتقي فيها الحكم الجمالي في التصميم الجرافيكي مع الدقة الإحصائية في تحليل البيانات؛ لنحول الأرقام المعقدة إلى قصص بصرية واضحة تدعم اتخاذ القرار السليم.",
-        pillar1Num: "٠١ / الإدراك",
+        floatOrder: "اطلب خدمة",
+        heroBadge: "استوديو الذكاء الإبداعي والتحليلي",
+        heroTitleHTML: 'حين تتجسد البيانات في <span class="gold-gradient-text">رؤية بصرية ملهمة</span>',
+        heroSubtitle: "منظومة إبداعية تجمع بين الذائقة البصرية في التصميم الجرافيكي والمنهجية الدقيقة في علم البيانات لتحويل المؤشرات والأرقام المعقدة إلى هويات راسخة وتقارير بصرية تقود القرار التنفيذي",
+        pillar1Num: "٠١ / البصيرة",
         pillar1Title: "الإدراك البصري",
-        pillar1Sub: "إبراز الجوهر وما يهم فعلاً",
+        pillar1Sub: "إبراز الجوهر وصناعة الأثر",
         pillar2Num: "٠٢ / الدقة",
-        pillar2Title: "القياس المنهجي",
-        pillar2Sub: "تحليل دقيق مبني على الدليل",
-        pillar3Num: "٠٣ / التركيب",
-        pillar3Title: "التكوين الإبداعي",
-        pillar3Sub: "صياغة النتائج في قالب بصري",
-        btnExploreWheels: "استكشف عجلات الأقسام",
+        pillar2Title: "الرصانة التحليلية",
+        pillar2Sub: "قياس منهجي مبني على البيانات",
+        pillar3Num: "٠٣ / الابتكار",
+        pillar3Title: "التكامل الإبداعي",
+        pillar3Sub: "صياغة المعلومة في قالب بصري",
+        btnExploreWheels: "استكشف عجلات التخصصات",
         btnBrowseCatalog: "تصفح دليل الخدمات الشامل",
-        cardVisualTag: "الوضوح يصنع القرار",
-        cardVisualSys: "المنهجية البصرية والتحليلية",
-        cardVisualTitle: "البيانات وحدها ليست بصيرة.",
-        cardVisualSub: "التصميم البصري المدروس يختصر الجهد الذهني، ويحول الجداول الصماء إلى رؤية تنفيذية واضحة.",
-        bar1Val: "٤٫٠٪",
-        bar1Label: "بيانات خام غير مصنفة",
-        bar2Val: "٨٫٤٪",
-        bar2Label: "بيانات محللة ومصممة بصرياً",
-        cardVisualFooter: "١٠٥ خدمات تصميم جرافيكي • ١٠٦ خدمات تحليل بيانات",
-        cardVisualEdition: "١٢ خدمة هجينة متكاملة",
+        cardVisualTag: "الوضوح البصري يصنع القرار",
+        cardVisualSys: "منهجية التصميم والتحليل",
+        cardVisualTitle: "البيانات الخام لا تكفي وحدها لصناعة القرار",
+        cardVisualSub: "التصميم المعلوماتي المدروس يختصر الجهد الذهني ويحول الجداول المعقدة إلى رؤية استراتيجية واضحة",
+        bar1Val: "٤.٠٪",
+        bar1Label: "بيانات خام غير مهيكلة",
+        bar2Val: "٨.٤٪",
+        bar2Label: "ذكاء تحليلي مصمم بصرياً",
+        cardVisualFooter: "١٠٥ خدمات تصميم إبداعي • ١٠٦ خدمات تحليل بيانات",
+        cardVisualEdition: "١٢ حلاً متكاملاً",
         wheelsTag: "عجلات التخصصات التفاعلية",
-        wheelsHeading: "الأقسام الرئيسية للخدمات",
-        wheelsSubheading: "أشّر بمؤشر الفأرة على أي قسم داخل العجلتين لإظهار نافذة الاستعراض المصور الفوري على يمين المؤشر، أو انقر على القسم للانتقال المباشر إلى قائمة مهامه.",
-        daPill: "التفكير التحليلي والرقمي",
-        daWheelTitle: "أقسام تحليل البيانات",
-        daWheelSub: "أشّر على أي قسم لاستعراض نماذج معبرة أو انقر للانتقال إلى المهام",
-        gdPill: "التفكير التصميمي والبصري",
-        gdWheelTitle: "أقسام التصميم الجرافيكي",
-        gdWheelSub: "أشّر على أي قسم لاستعراض نماذج معبرة أو انقر للانتقال إلى المهام",
-        catalogTag: "الدليل الشامل للمهام والمخرجات",
-        catalogHeading: "استعراض الخدمات الرئيسية والفرعية",
-        catalogSubheading: "أشّر بمؤشر الفأرة على أي خدمة رئيسية لتنسدل قائمة الخدمات الفرعية التابعة لها، وانقر على أي خدمة فرعية لفتح صفحتها التفصيلية وطلبها.",
-        searchPlaceholder: "ابحث عن أي خدمة رئيسية أو فرعية...",
-        daColHeader: "خدمات ومهام تحليل البيانات (١٠٦ مهام)",
-        gdColHeader: "خدمات ومهام التصميم الجرافيكي (١٠٥ مهام)",
+        wheelsHeading: "النطاقات الرئيسية للخدمات",
+        wheelsSubheading: "مرر المؤشر أو اضغط على أي تخصص داخل العجلتين لاستعراض النماذج البصرية والانتقال المباشر إلى المهام التنفيذية الخاصة بكل مجال",
+        daPill: "ذكاء البيانات والتحليل",
+        daWheelTitle: "تخصصات تحليل البيانات",
+        daWheelSub: "اختر أي قطاع لاستعراض النماذج أو الانتقال إلى قائمة المهام",
+        gdPill: "التفكير التصميمي والإبداعي",
+        gdWheelTitle: "تخصصات التصميم الجرافيكي",
+        gdWheelSub: "اختر أي قطاع لاستعراض النماذج أو الانتقال إلى قائمة المهام",
+        catalogTag: "الدليل التنفيذي للخدمات والمخرجات",
+        catalogHeading: "الخدمات التخصصية والمخرجات الاحترافية",
+        catalogSubheading: "اضغط أو مرر المؤشر على أي فئة رئيسية لفتح قائمة الخدمات الفرعية واختيار المهمة المطلوبة للاطلاع على متطلباتها وطلب تنفيذها",
+        searchPlaceholder: "ابحث عن أي خدمة في التصميم أو تحليل البيانات...",
+        daColHeader: "خدمات تحليل البيانات وذكاء الأعمال (١٠٦ مهام)",
+        gdColHeader: "خدمات التصميم الجرافيكي والهوية (١٠٥ مهام)",
         btnBackToServices: "العودة إلى دليل الخدمات",
-        detailReqHeading: "متطلبات البدء بتنفيذ الخدمة",
-        detailDelivHeading: "المخرجات النهائية المسلمة للعميل",
-        btnOrderNow: "اطلب هذه الخدمة الآن",
-        footerCtaTitle: "هل أنت مستعد لتحويل بياناتك وهويتك إلى حضور بصري مؤثر؟",
-        footerCtaSub: "اختر أي خدمة تخصصية من الدليل أو اطلب حزمة متكاملة مصممة خصيصاً لمشروعك.",
+        detailReqHeading: "متطلبات ومدخلات العمل",
+        detailDelivHeading: "المخرجات النهائية المعتمدة",
+        btnOrderNow: "اطلب تنفيذ الخدمة",
+        footerCtaTitle: "هل تتطلع لتحويل بياناتك وهويتك إلى حضور بصري استثنائي؟",
+        footerCtaSub: "اختر أي خدمة تخصصية من الدليل الشامل أو اطلب باقة مخصصة تلائم أهداف منشأتك",
         footerCtaBtn: "ابدأ مشروعك الآن",
-        footerBio: "منصة متخصصة يلتقي فيها التصميم الجرافيكي مع تحليل البيانات لبناء هويات بصرية راسخة، وتقارير تنفيذية دقيقة، وأنظمة معلوماتية واضحة.",
-        footerColGD: "أقسام التصميم الجرافيكي",
-        footerColDA: "أقسام تحليل البيانات",
-        footerColNav: "التنقل السريع",
-        footerOrderLink: "طلب خدمة مخصصة",
-        footerRights: "جميع الحقوق محفوظة.",
-        footerCraft: "صُمم بدقة تحليلية ورؤية بصرية متكاملة.",
+        footerBio: "استوديو متكامل يلتقي فيه الإبداع البصري مع ذكاء البيانات لبناء العلامات التجارية وتطوير لوحات المؤشرات وإخراج التقارير المؤسسية بأعلى المعايير المهنية",
+        footerColGD: "التصميم الجرافيكي",
+        footerColDA: "تحليل البيانات",
+        footerColNav: "روابط سريعة",
+        footerOrderLink: "طلب مشروع مخصص",
+        footerRights: "جميع الحقوق محفوظة",
+        footerCraft: "صُمم بمعايير الدقة التحليلية والجاذبية البصرية",
         modalTitle: "طلب تنفيذ خدمة احترافية",
         modalServiceLabel: "الخدمة المختارة",
-        modalNameLabel: "الاسم الكامل أو اسم الجهة",
-        modalEmailLabel: "البريد الإلكتروني أو رقم الهاتف",
-        modalNotesLabel: "تفاصيل المشروع والمتطلبات",
-        modalSubmitBtn: "إرسال الطلب الآن",
-        modalNamePlaceholder: "أدخل اسمك الكريم أو اسم المؤسسة...",
-        modalContactPlaceholder: "أدخل بريدك الإلكتروني أو رقم التواصل...",
-        modalNotesPlaceholder: "اشرح باختصار طبيعة المشروع والمخرجات المطلوبة..."
+        modalNameLabel: "الاسم الكامل أو اسم المنشأة",
+        modalEmailLabel: "البريد الإلكتروني أو رقم الجوال",
+        modalNotesLabel: "نطاق المشروع والمتطلبات التنفيذية",
+        modalSubmitBtn: "إرسال الطلب",
+        modalNamePlaceholder: "أدخل الاسم الكامل أو اسم الشركة...",
+        modalContactPlaceholder: "أدخل البريد الإلكتروني أو رقم التواصل...",
+        modalNotesPlaceholder: "اكتب نبذة مختصرة عن المشروع والمخرجات المطلوبة..."
       }
     };
 
@@ -2278,12 +2564,14 @@
     let activeFlashImages = [];
     let activeFlashIndex = 0;
 
+    /* بناء القائمة الجانبية بأيقونات SVG مدمجة (بما فيها LinkedIn و Instagram) */
     function renderSocialSidebar() {
       const container = document.getElementById("social-sidebar-container");
       container.innerHTML = SITE_CONFIG.socialLinks.map(item => `
         <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="social-link"
-           title="${currentLang === 'ar' ? item.titleAr : item.titleEn}">
-          <i data-lucide="${item.icon}" style="width:18px;height:18px;"></i>
+           title="${currentLang === 'ar' ? item.titleAr : item.titleEn}"
+           aria-label="${currentLang === 'ar' ? item.titleAr : item.titleEn}">
+          ${item.svg}
         </a>
       `).join("");
     }
@@ -2294,6 +2582,8 @@
       const mxDrop = document.getElementById("nav-mx-dropdown");
       const footerGD = document.getElementById("footer-gd-links");
       const footerDA = document.getElementById("footer-da-links");
+      const mobileGD = document.getElementById("mobile-gd-links");
+      const mobileDA = document.getElementById("mobile-da-links");
 
       gdDrop.innerHTML = GD_CATEGORIES.map(cat => `
         <a class="dropdown-item" onclick="scrollToCategory('${cat.id}')">
@@ -2313,6 +2603,24 @@
         </a>
       `).join("");
 
+      if (mobileGD) {
+        mobileGD.innerHTML = GD_CATEGORIES.map(cat => `
+          <a class="mobile-nav-item" onclick="toggleMobileDrawer(); scrollToCategory('${cat.id}')">
+            <span>${currentLang === 'ar' ? cat.titleAr : cat.titleEn}</span>
+            <span style="color:var(--gold);">→</span>
+          </a>
+        `).join("");
+      }
+
+      if (mobileDA) {
+        mobileDA.innerHTML = DA_CATEGORIES.map(cat => `
+          <a class="mobile-nav-item" onclick="toggleMobileDrawer(); scrollToCategory('${cat.id}')">
+            <span>${currentLang === 'ar' ? cat.titleAr : cat.titleEn}</span>
+            <span style="color:var(--gold);">→</span>
+          </a>
+        `).join("");
+      }
+
       footerGD.innerHTML = GD_CATEGORIES.slice(0, 6).map(cat => `
         <li><a onclick="scrollToCategory('${cat.id}')">${currentLang === 'ar' ? cat.titleAr : cat.titleEn}</a></li>
       `).join("");
@@ -2322,64 +2630,104 @@
       `).join("");
     }
 
+    function toggleMobileDrawer() {
+      const drawer = document.getElementById("mobile-drawer");
+      drawer.classList.toggle("open");
+    }
+
     /* =========================================================================
-       رسم عجلات الدوائر مع ربط حركة الماوس بنافذة الفلاش على يمين المؤشر
+       رسم عجلة الدوائر بهندسة مشابهة لعلامة Google Chrome وتباين قوي من ألوان الهوية
        ========================================================================= */
     function createInteractiveWheel(containerId, categoriesArray, centerTitleEn, centerTitleAr) {
       const container = document.getElementById(containerId);
       const count = categoriesArray.length;
-      const size = 440;
+      const size = 460;
       const cx = size / 2;
       const cy = size / 2;
-      const outerR = 204;
-      const innerR = 68;
+      const outerR = 212;
+      const innerR = 78;
+      const twistAngle = 0.28; // انحناء شفرات العجلة بأسلوب علامة جوجل كروم حول المركز
 
       const centerText = currentLang === "ar" ? centerTitleAr : centerTitleEn;
 
-      let svgContent = `<svg viewBox="0 0 ${size} ${size}" width="100%" height="100%" onmousemove="moveWheelFlashRightOfCursor(event)" onmouseleave="hideWheelFlash()">`;
+      /* استخدام ألوان الموقع الـ 5 حصرياً بتباين قوي ومتناوب حول العجلة */
+      const brandPalette = [
+        { bg: "#D4AA65", text: "#191C22" }, // Gold
+        { bg: "#191C22", text: "#F6F2E9" }, // Obsidian
+        { bg: "#F1D396", text: "#191C22" }, // Champagne
+        { bg: "#383D46", text: "#F6F2E9" }, // Graphite
+        { bg: "#F6F2E9", text: "#191C22" }  // Porcelain
+      ];
+
+      let svgContent = `
+        <svg viewBox="0 0 ${size} ${size}" width="100%" height="100%"
+             onmousemove="moveWheelFlashRightOfCursor(event)"
+             onmouseleave="hideWheelFlash()">
+          <defs>
+            <radialGradient id="coreGrad-${containerId}" cx="35%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#F1D396" />
+              <stop offset="45%" stop-color="#D4AA65" />
+              <stop offset="100%" stop-color="#191C22" />
+            </radialGradient>
+          </defs>
+      `;
 
       categoriesArray.forEach((cat, i) => {
-        const startAngle = (i * 2 * Math.PI) / count - Math.PI / 2;
-        const endAngle = ((i + 1) * 2 * Math.PI) / count - Math.PI / 2;
+        const a0 = (i * 2 * Math.PI) / count - Math.PI / 2;
+        const a1 = ((i + 1) * 2 * Math.PI) / count - Math.PI / 2;
 
-        const x1 = cx + outerR * Math.cos(startAngle);
-        const y1 = cy + outerR * Math.sin(startAngle);
-        const x2 = cx + outerR * Math.cos(endAngle);
-        const y2 = cy + outerR * Math.sin(endAngle);
+        // نقاط الحلقة الداخلية
+        const ix0 = cx + innerR * Math.cos(a0);
+        const iy0 = cy + innerR * Math.sin(a0);
+        const ix1 = cx + innerR * Math.cos(a1);
+        const iy1 = cy + innerR * Math.sin(a1);
 
-        const x3 = cx + innerR * Math.cos(endAngle);
-        const y3 = cy + innerR * Math.sin(endAngle);
-        const x4 = cx + innerR * Math.cos(startAngle);
-        const y4 = cy + innerR * Math.sin(startAngle);
+        // نقاط الحلقة الخارجية مع إزاحة زاوية تمنح شكل شفرات Google Chrome الملتفة
+        const ox0 = cx + outerR * Math.cos(a0 + twistAngle);
+        const oy0 = cy + outerR * Math.sin(a0 + twistAngle);
+        const ox1 = cx + outerR * Math.cos(a1 + twistAngle);
+        const oy1 = cy + outerR * Math.sin(a1 + twistAngle);
 
-        const largeArc = (endAngle - startAngle) > Math.PI ? 1 : 0;
+        // نقاط التحكم للمنحنى المماسي مثل شعار كروم
+        const midR = (innerR + outerR) * 0.54;
+        const cx0 = cx + midR * Math.cos(a0 + twistAngle * 0.62);
+        const cy0 = cy + midR * Math.sin(a0 + twistAngle * 0.62);
+        const cx1 = cx + midR * Math.cos(a1 + twistAngle * 0.62);
+        const cy1 = cy + midR * Math.sin(a1 + twistAngle * 0.62);
 
         const pathData = [
-          `M ${x1} ${y1}`,
-          `A ${outerR} ${outerR} 0 ${largeArc} 1 ${x2} ${y2}`,
-          `L ${x3} ${y3}`,
-          `A ${innerR} ${innerR} 0 ${largeArc} 0 ${x4} ${y4}`,
+          `M ${ix0} ${iy0}`,
+          `Q ${cx0} ${cy0} ${ox0} ${oy0}`,
+          `A ${outerR} ${outerR} 0 0 1 ${ox1} ${oy1}`,
+          `Q ${cx1} ${cy1} ${ix1} ${iy1}`,
+          `A ${innerR} ${innerR} 0 0 0 ${ix0} ${iy0}`,
           "Z"
         ].join(" ");
 
-        const midAngle = (startAngle + endAngle) / 2;
-        const labelR = (outerR + innerR) / 2 + 8;
+        // حساب موقع النص في قلب كل شفرة منحنية
+        const midAngle = (a0 + a1) / 2 + twistAngle * 0.56;
+        const labelR = (outerR + innerR) / 2 + 5;
         const lx = cx + labelR * Math.cos(midAngle);
         const ly = cy + labelR * Math.sin(midAngle);
 
-        const isLight = currentTheme === "light";
-        const shadeEven = isLight ? "rgba(235, 226, 208, 0.92)" : "rgba(56, 61, 70, 0.85)";
-        const shadeOdd = isLight ? "rgba(248, 244, 235, 0.96)" : "rgba(29, 33, 41, 0.92)";
-        const fillShade = i % 2 === 0 ? shadeEven : shadeOdd;
-
+        const colorItem = brandPalette[i % brandPalette.length];
         const lines = currentLang === "ar" ? cat.wheelAr : cat.wheelEn;
 
         svgContent += `
           <g class="wheel-group"
              onmouseenter="showWheelFlash('${cat.id}', event)"
-             onclick="scrollToCategory('${cat.id}')">
-            <path d="${pathData}" fill="${fillShade}" class="wheel-sector" />
-            <text x="${lx}" y="${ly - 5}" text-anchor="middle" dominant-baseline="middle" class="wheel-label-line">
+             onclick="handleWheelSegmentClick('${cat.id}', event)">
+            <path d="${pathData}"
+                  fill="${colorItem.bg}"
+                  stroke="#191C22"
+                  stroke-width="3.2"
+                  stroke-linejoin="round"
+                  class="chrome-blade" />
+            <text x="${lx}" y="${ly - 5}"
+                  text-anchor="middle"
+                  dominant-baseline="middle"
+                  fill="${colorItem.text}"
+                  class="wheel-label-line">
               <tspan x="${lx}" dy="0">${lines[0]}</tspan>
               <tspan x="${lx}" dy="13">${lines[1] || ""}</tspan>
             </text>
@@ -2387,10 +2735,14 @@
         `;
       });
 
+      /* النواة المركزية المستوحاة من عدسة Google Chrome بألوان الهوية */
       svgContent += `
-        <circle cx="${cx}" cy="${cy}" r="${innerR - 4}" fill="#191C22" stroke="#D4AA65" stroke-width="2.5" />
+        <circle cx="${cx}" cy="${cy}" r="${innerR + 2}" fill="none" stroke="#191C22" stroke-width="7" />
+        <circle cx="${cx}" cy="${cy}" r="${innerR - 4}" fill="#F6F2E9" stroke="#D4AA65" stroke-width="2.5" />
+        <circle cx="${cx}" cy="${cy}" r="${innerR - 14}" fill="#191C22" stroke="#D4AA65" stroke-width="2" />
+        <circle cx="${cx}" cy="${cy}" r="${innerR - 22}" fill="url(#coreGrad-${containerId})" opacity="0.22" />
         <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle"
-              fill="#D4AA65" font-size="12.5" font-weight="700">
+              fill="#F1D396" font-size="12.5" font-weight="800" style="letter-spacing:0.06em;">
           ${centerText}
         </text>
       </svg>`;
@@ -2398,21 +2750,22 @@
       container.innerHTML = svgContent;
     }
 
-    /* =========================================================================
-       تحريك نافذة الفلاش لتظهر دائماً على يمين مؤشر الماوس أثناء التنقل في العجلة
-       ========================================================================= */
+    function handleWheelSegmentClick(catId, e) {
+      scrollToCategory(catId);
+    }
+
     function moveWheelFlashRightOfCursor(e) {
+      if (window.innerWidth <= 680) return;
       const popover = document.getElementById("wheel-flash-popover");
       if (!popover.classList.contains("visible")) return;
 
-      const offsetRight = 24; // المسافة على يمين مؤشر الماوس
+      const offsetRight = 24;
       const popWidth = popover.offsetWidth || 320;
       const popHeight = popover.offsetHeight || 290;
 
-      // وضع البطاقة على يمين المؤشر دائماً، مع ضمان عدم خروجها خارج الحافة اليمنى للشاشة
       let posX = e.clientX + offsetRight;
-      if (posX + popWidth > window.innerWidth - 12) {
-        posX = window.innerWidth - popWidth - 12;
+      if (posX + popWidth > window.innerWidth - 70) {
+        posX = e.clientX - popWidth - 20;
       }
 
       let posY = e.clientY - popHeight / 2;
@@ -2439,7 +2792,7 @@
 
       document.getElementById("flash-cat-title").textContent = currentLang === "ar" ? cat.titleAr : cat.titleEn;
       document.getElementById("flash-service-count").textContent = currentLang === "ar"
-        ? `${cat.services.length} خدمة فرعية`
+        ? `${cat.services.length} خدمة تخصصية`
         : `${cat.services.length} Deliverables`;
 
       activeFlashImages = SITE_CONFIG.imagePools[cat.pool] || SITE_CONFIG.imagePools.branding;
@@ -2487,6 +2840,13 @@
       counterEl.textContent = `${activeFlashIndex + 1} / ${activeFlashImages.length}`;
     }
 
+    /* فتح وإغلاق قوائم الخدمات باللمس على الموبايل أو النقر */
+    function toggleServiceGroup(catId) {
+      const el = document.getElementById(`cat-box-${catId}`);
+      if (!el) return;
+      el.classList.toggle("open");
+    }
+
     function renderServicesSplitCatalog() {
       const query = (document.getElementById("service-search-input")?.value || "").trim().toLowerCase();
       const daCol = document.getElementById("da-column-list");
@@ -2496,8 +2856,8 @@
 
       let daHTML = `
         <div class="column-minimal-header">
-          <h3 style="font-size:1.35rem;">${dict.daColHeader}</h3>
-          <i data-lucide="bar-chart-3" style="width:26px;height:26px;color:var(--gold);"></i>
+          <h3 style="font-size:1.3rem;">${dict.daColHeader}</h3>
+          <i data-lucide="bar-chart-3" style="width:26px;height:26px;color:var(--gold);flex-shrink:0;"></i>
         </div>
       `;
 
@@ -2510,7 +2870,7 @@
 
         daHTML += `
           <div class="service-hover-group ${query ? 'force-open' : ''}" id="cat-box-${cat.id}">
-            <button class="service-main-trigger" type="button">
+            <button class="service-main-trigger" type="button" onclick="toggleServiceGroup('${cat.id}')">
               <span>${currentLang === 'ar' ? cat.titleAr : cat.titleEn}</span>
               <i data-lucide="chevron-down" class="trigger-icon" style="width:18px;height:18px;"></i>
             </button>
@@ -2518,7 +2878,7 @@
               ${filtered.map(({ srv, idx }) => `
                 <button class="sub-service-link" onclick="openServiceDetail('${cat.id}', ${idx})">
                   <span>• ${currentLang === 'ar' ? srv[0] : srv[1]}</span>
-                  <span style="font-size:0.78rem;color:var(--gold);">${currentLang === 'ar' ? 'التفاصيل ←' : 'View →'}</span>
+                  <span style="font-size:0.78rem;color:var(--gold);flex-shrink:0;">${currentLang === 'ar' ? 'التفاصيل ←' : 'View →'}</span>
                 </button>
               `).join("")}
             </div>
@@ -2528,8 +2888,8 @@
 
       let gdHTML = `
         <div class="column-minimal-header">
-          <h3 style="font-size:1.35rem;">${dict.gdColHeader}</h3>
-          <i data-lucide="pen-tool" style="width:26px;height:26px;color:var(--gold);"></i>
+          <h3 style="font-size:1.3rem;">${dict.gdColHeader}</h3>
+          <i data-lucide="pen-tool" style="width:26px;height:26px;color:var(--gold);flex-shrink:0;"></i>
         </div>
       `;
 
@@ -2542,7 +2902,7 @@
 
         gdHTML += `
           <div class="service-hover-group ${query ? 'force-open' : ''}" id="cat-box-${cat.id}">
-            <button class="service-main-trigger" type="button">
+            <button class="service-main-trigger" type="button" onclick="toggleServiceGroup('${cat.id}')">
               <span>${currentLang === 'ar' ? cat.titleAr : cat.titleEn}</span>
               <i data-lucide="chevron-down" class="trigger-icon" style="width:18px;height:18px;"></i>
             </button>
@@ -2550,7 +2910,7 @@
               ${filtered.map(({ srv, idx }) => `
                 <button class="sub-service-link" onclick="openServiceDetail('${cat.id}', ${idx})">
                   <span>• ${currentLang === 'ar' ? srv[0] : srv[1]}</span>
-                  <span style="font-size:0.78rem;color:var(--gold);">${currentLang === 'ar' ? 'التفاصيل ←' : 'View →'}</span>
+                  <span style="font-size:0.78rem;color:var(--gold);flex-shrink:0;">${currentLang === 'ar' ? 'التفاصيل ←' : 'View →'}</span>
                 </button>
               `).join("")}
             </div>
@@ -2561,15 +2921,15 @@
       const mxCat = MX_CATEGORIES[0];
       let mxHTML = `
         <div class="service-hover-group ${query ? 'force-open' : ''}" id="cat-box-mx-1" style="border-top:2px solid var(--gold);">
-          <button class="service-main-trigger" type="button">
-            <span style="font-size:1.15rem;color:var(--gold);">${currentLang === 'ar' ? mxCat.titleAr : mxCat.titleEn}</span>
+          <button class="service-main-trigger" type="button" onclick="toggleServiceGroup('mx-1')">
+            <span style="font-size:1.12rem;color:var(--gold);">${currentLang === 'ar' ? mxCat.titleAr : mxCat.titleEn}</span>
             <i data-lucide="chevron-down" class="trigger-icon" style="width:20px;height:20px;"></i>
           </button>
           <div class="service-sub-dropdown">
             ${mxCat.services.map((srv, idx) => `
               <button class="sub-service-link" onclick="openServiceDetail('mx-1', ${idx})">
                 <span>• ${currentLang === 'ar' ? srv[0] : srv[1]}</span>
-                <span style="font-size:0.78rem;color:var(--gold);">${currentLang === 'ar' ? 'التفاصيل ←' : 'View →'}</span>
+                <span style="font-size:0.78rem;color:var(--gold);flex-shrink:0;">${currentLang === 'ar' ? 'التفاصيل ←' : 'View →'}</span>
               </button>
             `).join("")}
           </div>
@@ -2596,7 +2956,7 @@
       document.getElementById("detail-service-title").textContent = serviceTitle;
 
       document.getElementById("detail-service-desc").textContent = currentLang === "ar"
-        ? `تُنفذ خدمة «${serviceTitle}» ضمن قسم «${categoryTitle}» وفق منهجية احترافية تجمع بين الدقة التحليلية والوضوح البصري، لضمان تسليم مخرجات متكاملة وجاهزة للاستخدام الفوري بما يلبي تطلعات المؤسسة وأهدافها.`
+        ? `تُنفذ خدمة «${serviceTitle}» ضمن مسار «${categoryTitle}» بمنهجية احترافية تدمج بين الدقة التحليلية وجودة الإخراج البصري لتسليم مخرجات تنفيذية جاهزة للاعتماد الفوري وتدعم تحقيق مستهدفات المنشأة`
         : `"${serviceTitle}" is delivered under our "${categoryTitle}" practice, combining analytical rigor with refined visual execution to provide clear, actionable, and production-ready deliverables tailored to your objectives.`;
 
       const pool = SITE_CONFIG.imagePools[cat.pool] || SITE_CONFIG.imagePools.branding;
@@ -2607,14 +2967,14 @@
 
       const reqsAr = isDA
         ? [
-            "تزويدنا بنسخة من ملفات البيانات الخام أو صلاحية الوصول إلى الجداول المستهدفة.",
-            "تحديد الأهداف التحليلية والأسئلة التنفيذية المطلوب الإجابة عنها.",
-            "توضيح الفترة الزمنية ومؤشرات القياس المعتمدة لدى إدارتكم."
+            "تزويد الفريق بنسخة من قواعد البيانات أو الجداول المراد تحليلها",
+            "تحديد المستهدفات التحليلية والأسئلة التنفيذية المطلوب قياسها",
+            "توضيح النطاق الزمني ومؤشرات الأداء المعتمدة لدى المنشأة"
           ]
         : [
-            "نبذة تعريفية عن المشروع والجمهور المستهدف والرسالة الأساسية.",
-            "إرفاق الشعار الحالي وعناصر الهوية البصرية والنصوص المعتمدة.",
-            "تحديد المقاسات الفنية أو المنصات المطلوب تهيئة التصميم لها."
+            "ملخص تعريفي بالمشروع والفئة المستهدفة والرسالة الاتصالية",
+            "إرفاق دليل الهوية البصرية والشعار والمحتوى النصي المعتمد",
+            "تحديد المنصات الرقمية أو المواصفات الفنية للمطبوعات المطلوبة"
           ];
 
       const reqsEn = isDA
@@ -2631,14 +2991,14 @@
 
       const delivAr = isDA
         ? [
-            "ملفات بيانات منظمة ومدققة أو لوحة مؤشرات تفاعلية متكاملة حسب نطاق الخدمة.",
-            "تقرير تنفيذي مصور يوضح أبرز النتائج والاستنتاجات والتوصيات العملية.",
-            "توثيق واضح لخطوات المعالجة والمعادلات مع جلسة مراجعة واعتماد."
+            "ملفات بيانات مهيكلة ومدققة أو لوحة مؤشرات تفاعلية متكاملة",
+            "تقرير تنفيذي مصور يستعرض النتائج الجوهرية والتوصيات العملية",
+            "توثيق منهجي للمعادلات والنماذج التحليلية مع جلسة استعراض واعتماد"
           ]
         : [
-            "ملفات التصميم النهائية بأعلى جودة قياسية جاهزة للنشر أو الطباعة.",
-            "الملفات المصدرية المفتوحة القابلة للتعديل مستقبلاً بكل سهولة.",
-            "نماذج عرض واقعية توضح مظهر التصميم في بيئة استخدامه الفعلية."
+            "ملفات التصميم النهائية بأعلى دقة قياسية جاهزة للنشر أو الطباعة",
+            "الملفات المصدرية المفتوحة المنظمة لسهولة التعديل المستقبلي",
+            "نماذج محاكاة بصرية واقعية تبرز تطبيقات التصميم في بيئة العمل"
           ];
 
       const delivEn = isDA
@@ -2683,11 +3043,12 @@
       setTimeout(() => {
         const el = document.getElementById(`cat-box-${catId}`);
         if (el) {
+          el.classList.add("open");
           el.classList.add("force-open");
           el.scrollIntoView({ behavior: "smooth", block: "center" });
-          setTimeout(() => { el.classList.remove("force-open"); }, 4000);
+          setTimeout(() => { el.classList.remove("force-open"); }, 4500);
         }
-      }, 120);
+      }, 150);
     }
 
     function renderFilmstrip100Frames() {
@@ -2771,19 +3132,24 @@
     function submitOrderForm(e) {
       e.preventDefault();
       alert(currentLang === "ar"
-        ? "تم استلام طلبك بنجاح! سنتواصل معك في أقرب وقت لبدء التنفيذ."
+        ? "تم استلام طلبك بنجاح وسيتواصل معك فريقنا في أقرب وقت لبدء التنفيذ"
         : "Your request has been received! We will contact you shortly.");
       closeOrderModal();
     }
 
+    /* =========================================================================
+       خلفية متحركة احترافية متعددة الطبقات (موجات بيانات حريرية + شبكة ذكية + توهج)
+       ========================================================================= */
     function initInteractiveCanvas() {
       const canvas = document.getElementById("brand-canvas");
       const ctx = canvas.getContext("2d");
       let width = (canvas.width = window.innerWidth);
       let height = (canvas.height = window.innerHeight);
+      let tick = 0;
 
       const particles = [];
-      const count = 50;
+      const orbs = [];
+      const count = window.innerWidth < 680 ? 32 : 68;
       const mouse = { x: -1000, y: -1000 };
 
       window.addEventListener("resize", () => {
@@ -2796,49 +3162,118 @@
         mouse.y = e.clientY;
       });
 
+      // هالات ضوئية ناعمة في الخلفية
+      for (let i = 0; i < 3; i++) {
+        orbs.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          r: Math.min(width, height) * (0.32 + i * 0.08),
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3
+        });
+      }
+
+      // عقد البيانات والتصميم المترابطة
       for (let i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          r: Math.random() * 2 + 1
+          vx: (Math.random() - 0.5) * 0.45,
+          vy: (Math.random() - 0.5) * 0.45,
+          r: Math.random() * 2.2 + 1,
+          pulse: Math.random() * Math.PI * 2
         });
       }
 
+      function drawFlowWaves(isLight) {
+        const waveCount = 3;
+        for (let w = 0; w < waveCount; w++) {
+          ctx.beginPath();
+          const baseY = height * (0.28 + w * 0.22);
+          for (let x = 0; x <= width; x += 24) {
+            const y = baseY
+              + Math.sin(x * 0.003 + tick * 0.012 + w * 1.4) * 38
+              + Math.cos(x * 0.007 - tick * 0.008 + w) * 18;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.strokeStyle = isLight
+            ? `rgba(176, 130, 56, ${0.08 - w * 0.015})`
+            : `rgba(212, 170, 101, ${0.09 - w * 0.02})`;
+          ctx.lineWidth = 1.4;
+          ctx.stroke();
+        }
+      }
+
       function animate() {
+        tick++;
+        const isLight = currentTheme === "light";
         ctx.clearRect(0, 0, width, height);
+
+        // 1. رسم الهالات الضوئية المتحركة
+        orbs.forEach((orb, idx) => {
+          orb.x += orb.vx;
+          orb.y += orb.vy;
+          if (orb.x < -200 || orb.x > width + 200) orb.vx *= -1;
+          if (orb.y < -200 || orb.y > height + 200) orb.vy *= -1;
+
+          const grad = ctx.createRadialGradient(orb.x, orb.y, 10, orb.x, orb.y, orb.r);
+          if (isLight) {
+            grad.addColorStop(0, idx % 2 === 0 ? "rgba(212, 170, 101, 0.12)" : "rgba(56, 61, 70, 0.06)");
+            grad.addColorStop(1, "rgba(246, 242, 233, 0)");
+          } else {
+            grad.addColorStop(0, idx % 2 === 0 ? "rgba(212, 170, 101, 0.09)" : "rgba(56, 61, 70, 0.16)");
+            grad.addColorStop(1, "rgba(25, 28, 34, 0)");
+          }
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(orb.x, orb.y, orb.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // 2. رسم موجات التدفق الانسيابية
+        drawFlowWaves(isLight);
+
+        // 3. رسم شبكة الجزيئات الذكية المتفاعلة
         for (let i = 0; i < count; i++) {
           const p = particles[i];
           p.x += p.vx;
           p.y += p.vy;
+          p.pulse += 0.03;
+
           if (p.x < 0 || p.x > width) p.vx *= -1;
           if (p.y < 0 || p.y > height) p.vy *= -1;
 
+          const alpha = 0.35 + Math.sin(p.pulse) * 0.2;
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(212, 170, 101, 0.5)";
+          ctx.fillStyle = isLight
+            ? `rgba(176, 130, 56, ${alpha})`
+            : `rgba(241, 211, 150, ${alpha})`;
           ctx.fill();
 
           for (let j = i + 1; j < count; j++) {
             const p2 = particles[j];
             const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-            if (dist < 135) {
+            if (dist < 140) {
               ctx.beginPath();
               ctx.moveTo(p.x, p.y);
               ctx.lineTo(p2.x, p2.y);
-              ctx.strokeStyle = `rgba(212, 170, 101, ${0.13 * (1 - dist / 135)})`;
-              ctx.lineWidth = 1;
+              ctx.strokeStyle = isLight
+                ? `rgba(176, 130, 56, ${0.12 * (1 - dist / 140)})`
+                : `rgba(212, 170, 101, ${0.15 * (1 - dist / 140)})`;
+              ctx.lineWidth = 0.9;
               ctx.stroke();
             }
           }
 
           const mDist = Math.hypot(p.x - mouse.x, p.y - mouse.y);
-          if (mDist < 170) {
+          if (mDist < 180) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(mouse.x, mouse.y);
-            ctx.strokeStyle = `rgba(241, 211, 150, ${0.28 * (1 - mDist / 170)})`;
+            ctx.strokeStyle = `rgba(241, 211, 150, ${0.32 * (1 - mDist / 180)})`;
+            ctx.lineWidth = 1.1;
             ctx.stroke();
           }
         }
